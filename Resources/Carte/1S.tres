@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3 uid="uid://bybk73l5qrn51"]
+
+[ext_resource type="Texture2D" uid="uid://bwh3r5155r7tt" path="res://Assets/Carte/Spade/1 S.jpg" id="1_xwake"]
+[ext_resource type="Script" uid="uid://36jadl667l56" path="res://Resources/card_data_script.gd" id="2_287lc"]
+
+[resource]
+script = ExtResource("2_287lc")
+suit = "Spade"
+cardTexture = ExtResource("1_xwake")

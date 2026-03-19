@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3 uid="uid://ba62vfyafdkmo"]
+
+[ext_resource type="Script" uid="uid://36jadl667l56" path="res://Resources/card_data_script.gd" id="1_vuf1d"]
+[ext_resource type="Texture2D" uid="uid://buake1oupxykh" path="res://Assets/Carte/Denari/2 D.jpg" id="1_xlijj"]
+
+[resource]
+script = ExtResource("1_vuf1d")
+value = 2
+cardTexture = ExtResource("1_xlijj")

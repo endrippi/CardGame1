@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://cm5vtcujl8h6c"]
+
+[ext_resource type="PackedScene" uid="uid://2refwwm0j7qp" path="res://Scenes/deck.tscn" id="1_dae6x"]
+
+[node name="Test Deck" type="Node2D" unique_id=994703932]
+
+[node name="Button" type="Button" parent="." unique_id=346990291]
+offset_left = 114.0
+offset_top = 543.0
+offset_right = 346.0
+offset_bottom = 662.0
+text = "Prendi Carta"
+
+[node name="Deck" parent="." unique_id=1553971301 node_paths=PackedStringArray("hand") instance=ExtResource("1_dae6x")]
+position = Vector2(247, 337)
+hand = NodePath("../Mano")
+
+[node name="Mano" type="Marker2D" parent="." unique_id=697555342]
+position = Vector2(665, 599)

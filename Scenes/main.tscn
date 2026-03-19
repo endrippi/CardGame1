@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://c362obk6iqxn1"]
+
+[ext_resource type="Script" uid="uid://bhwanv608gnhw" path="res://Scripts/StateMachine/StateMachine.gd" id="1_8gbba"]
+[ext_resource type="Script" uid="uid://fm5pmuxg1t41" path="res://Scripts/StateMachine/State.gd" id="2_jjvhh"]
+[ext_resource type="PackedScene" uid="uid://2refwwm0j7qp" path="res://Scenes/deck.tscn" id="3_8gbba"]
+
+[node name="Main" type="Node2D" unique_id=1476234443]
+
+[node name="StateMachine" type="Node" parent="." unique_id=918915526]
+script = ExtResource("1_8gbba")
+metadata/_custom_type_script = "uid://bhwanv608gnhw"
+
+[node name="Start" type="Node" parent="StateMachine" unique_id=104914660]
+script = ExtResource("2_jjvhh")
+metadata/_custom_type_script = "uid://fm5pmuxg1t41"
+
+[node name="Logica" type="Node" parent="StateMachine" unique_id=939592393]
+script = ExtResource("2_jjvhh")
+metadata/_custom_type_script = "uid://fm5pmuxg1t41"
+
+[node name="Fine" type="Node" parent="StateMachine" unique_id=258067131]
+script = ExtResource("2_jjvhh")
+metadata/_custom_type_script = "uid://fm5pmuxg1t41"
+
+[node name="mano" type="Marker2D" parent="." unique_id=995058845]
+position = Vector2(784, 556)
+
+[node name="tavolo" type="Marker2D" parent="." unique_id=190371086]
+position = Vector2(784, 237)
+
+[node name="Spazio Carte" type="ColorRect" parent="." unique_id=424705157]
+offset_left = 501.0
+offset_top = 113.0
+offset_right = 1066.0
+offset_bottom = 353.0
+color = Color(0.40832946, 0.40832946, 0.40832946, 1)
+
+[node name="Spazio Carte2" type="ColorRect" parent="." unique_id=78320241]
+offset_left = 567.0
+offset_top = 491.0
+offset_right = 997.0
+offset_bottom = 628.0
+color = Color(0.40832946, 0.40832946, 0.40832946, 1)
+
+[node name="Deck" parent="." unique_id=1553971301 instance=ExtResource("3_8gbba")]
+position = Vector2(264, 556)

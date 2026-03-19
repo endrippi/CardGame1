@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3 uid="uid://brj3nrw7ejo1r"]
+
+[ext_resource type="Texture2D" uid="uid://dcjvsuh8l732s" path="res://Assets/Carte/Bastoni/10 B.jpg" id="1_3cmf5"]
+[ext_resource type="Script" uid="uid://36jadl667l56" path="res://Resources/card_data_script.gd" id="2_k7n4g"]
+
+[resource]
+script = ExtResource("2_k7n4g")
+value = 10
+suit = "Bastoni"
+cardTexture = ExtResource("1_3cmf5")

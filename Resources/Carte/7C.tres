@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3 uid="uid://dswckiiwofswd"]
+
+[ext_resource type="Texture2D" uid="uid://cgnyak6ber0js" path="res://Assets/Carte/Coppe/7 C.jpg" id="1_gjq3c"]
+[ext_resource type="Script" uid="uid://36jadl667l56" path="res://Resources/card_data_script.gd" id="2_gv7rn"]
+
+[resource]
+script = ExtResource("2_gv7rn")
+value = 7
+suit = "Coppe"
+cardTexture = ExtResource("1_gjq3c")

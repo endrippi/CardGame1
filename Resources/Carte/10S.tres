@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3 uid="uid://dji2jef8un785"]
+
+[ext_resource type="Texture2D" uid="uid://p4gc0vafwkis" path="res://Assets/Carte/Spade/10 S.jpg" id="1_wp54v"]
+[ext_resource type="Script" uid="uid://36jadl667l56" path="res://Resources/card_data_script.gd" id="2_mtejw"]
+
+[resource]
+script = ExtResource("2_mtejw")
+value = 10
+suit = "Spade"
+cardTexture = ExtResource("1_wp54v")
