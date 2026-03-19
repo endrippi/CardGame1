@@ -1,10 +1,31 @@
 [gd_scene format=3 uid="uid://c362obk6iqxn1"]
 
 [ext_resource type="Script" uid="uid://bhwanv608gnhw" path="res://Scripts/StateMachine/StateMachine.gd" id="1_8gbba"]
+[ext_resource type="Script" uid="uid://r0hhmgyvhs8s" path="res://Scripts/main.gd" id="1_jjvhh"]
 [ext_resource type="Script" uid="uid://fm5pmuxg1t41" path="res://Scripts/StateMachine/State.gd" id="2_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://2refwwm0j7qp" path="res://Scenes/deck.tscn" id="3_8gbba"]
+[ext_resource type="Script" uid="uid://b3mhnqrn8cu22" path="res://Scripts/mano.gd" id="4_kry3j"]
+[ext_resource type="Script" uid="uid://b2pjw02pn32h3" path="res://Scripts/tavolo.gd" id="5_21xkr"]
+[ext_resource type="PackedScene" uid="uid://hjbl2cy8qe8c" path="res://Scenes/card.tscn" id="7_6bp64"]
 
-[node name="Main" type="Node2D" unique_id=1476234443]
+[node name="Main" type="Node2D" unique_id=1476234443 node_paths=PackedStringArray("mano", "tavolo", "deck")]
+script = ExtResource("1_jjvhh")
+mano = NodePath("mano")
+tavolo = NodePath("tavolo")
+deck = NodePath("Deck")
+
+[node name="Deck" parent="." unique_id=1553971301 instance=ExtResource("3_8gbba")]
+position = Vector2(233, 538)
+cardScene = ExtResource("7_6bp64")
+
+[node name="counterCarte" type="Label" parent="Deck" unique_id=1833304008]
+offset_left = -27.0
+offset_top = 52.0
+offset_right = 27.0
+offset_bottom = 75.0
+text = "40/40"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="StateMachine" type="Node" parent="." unique_id=918915526]
 script = ExtResource("1_8gbba")
@@ -22,25 +43,31 @@ metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 script = ExtResource("2_jjvhh")
 metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 
-[node name="mano" type="Marker2D" parent="." unique_id=995058845]
-position = Vector2(784, 556)
+[node name="Button" type="Button" parent="." unique_id=47666116]
+offset_left = 166.0
+offset_top = 299.0
+offset_right = 296.58063
+offset_bottom = 387.0
+text = "Start"
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=424945385]
+position = Vector2(436.08508, 123.2)
+scale = Vector2(3.5425525, 2.6000001)
+color = Color(0.5802277, 0.58022773, 0.58022773, 1)
+polygon = PackedVector2Array(-2, -2, 89.36389, -2, 185.34947, -1.6153831, 185.34947, 49.153835, 186, 93, -2, 93)
+
+[node name="Polygon2D2" type="Polygon2D" parent="." unique_id=1981126309]
+position = Vector2(533.3297, 451.99997)
+scale = Vector2(2.6648936, 2.6000001)
+color = Color(0.5802277, 0.58022773, 0.58022773, 1)
+polygon = PackedVector2Array(-2, -2, 89.36389, -2, 185.34947, -1.6153831, 185.34947, 49.153835, 186, 93, -2, 93)
 
 [node name="tavolo" type="Marker2D" parent="." unique_id=190371086]
-position = Vector2(784, 237)
+position = Vector2(536, 254)
+script = ExtResource("5_21xkr")
 
-[node name="Spazio Carte" type="ColorRect" parent="." unique_id=424705157]
-offset_left = 501.0
-offset_top = 113.0
-offset_right = 1066.0
-offset_bottom = 353.0
-color = Color(0.40832946, 0.40832946, 0.40832946, 1)
+[node name="mano" type="Marker2D" parent="." unique_id=995058845]
+position = Vector2(637, 590)
+script = ExtResource("4_kry3j")
 
-[node name="Spazio Carte2" type="ColorRect" parent="." unique_id=78320241]
-offset_left = 567.0
-offset_top = 491.0
-offset_right = 997.0
-offset_bottom = 628.0
-color = Color(0.40832946, 0.40832946, 0.40832946, 1)
-
-[node name="Deck" parent="." unique_id=1553971301 instance=ExtResource("3_8gbba")]
-position = Vector2(264, 556)
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

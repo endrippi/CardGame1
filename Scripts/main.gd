@@ -1,12 +1,17 @@
+class_name Main
 extends Node2D
+
+@export var mano : Marker2D
+@export var tavolo : Marker2D
+@export var deck : Deck
+
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	for i in range(2, 40):
-		print("ciao ", i)
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
 	pass
+
+
+func _on_button_pressed() -> void:
+	deck.drawCard(4, tavolo)
+	deck.drawCard(3, mano)
