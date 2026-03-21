@@ -6,13 +6,14 @@
 [ext_resource type="PackedScene" uid="uid://2refwwm0j7qp" path="res://Scenes/deck.tscn" id="3_8gbba"]
 [ext_resource type="Script" uid="uid://b3mhnqrn8cu22" path="res://Scripts/mano.gd" id="4_kry3j"]
 [ext_resource type="Script" uid="uid://b2pjw02pn32h3" path="res://Scripts/tavolo.gd" id="5_21xkr"]
+[ext_resource type="Script" uid="uid://d12r31mfklfpa" path="res://Scripts/StateMachine/start.gd" id="5_344ge"]
 [ext_resource type="PackedScene" uid="uid://hjbl2cy8qe8c" path="res://Scenes/card.tscn" id="7_6bp64"]
 
-[node name="Main" type="Node2D" unique_id=1476234443 node_paths=PackedStringArray("mano", "tavolo", "deck")]
+[sub_resource type="LabelSettings" id="LabelSettings_344ge"]
+font_color = Color(0, 0, 0, 1)
+
+[node name="Main" type="Node2D" unique_id=1476234443]
 script = ExtResource("1_jjvhh")
-mano = NodePath("mano")
-tavolo = NodePath("tavolo")
-deck = NodePath("Deck")
 
 [node name="Deck" parent="." unique_id=1553971301 instance=ExtResource("3_8gbba")]
 position = Vector2(233, 538)
@@ -27,12 +28,16 @@ text = "40/40"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="StateMachine" type="Node" parent="." unique_id=918915526]
+[node name="StateMachine" type="Node" parent="." unique_id=918915526 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("1_8gbba")
+initial_state = NodePath("Start")
 metadata/_custom_type_script = "uid://bhwanv608gnhw"
 
-[node name="Start" type="Node" parent="StateMachine" unique_id=104914660]
-script = ExtResource("2_jjvhh")
+[node name="Start" type="Node" parent="StateMachine" unique_id=104914660 node_paths=PackedStringArray("mano", "tavolo", "deck")]
+script = ExtResource("5_344ge")
+mano = NodePath("../../mano")
+tavolo = NodePath("../../tavolo")
+deck = NodePath("../../Deck")
 metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 
 [node name="Logica" type="Node" parent="StateMachine" unique_id=939592393]
@@ -42,13 +47,6 @@ metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 [node name="Fine" type="Node" parent="StateMachine" unique_id=258067131]
 script = ExtResource("2_jjvhh")
 metadata/_custom_type_script = "uid://fm5pmuxg1t41"
-
-[node name="Button" type="Button" parent="." unique_id=47666116]
-offset_left = 166.0
-offset_top = 299.0
-offset_right = 296.58063
-offset_bottom = 387.0
-text = "Start"
 
 [node name="Polygon2D" type="Polygon2D" parent="." unique_id=424945385]
 position = Vector2(436.08508, 123.2)
@@ -70,4 +68,24 @@ script = ExtResource("5_21xkr")
 position = Vector2(637, 590)
 script = ExtResource("4_kry3j")
 
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[node name="SegnaPunti" type="ColorRect" parent="." unique_id=1625471360]
+offset_left = 206.0
+offset_top = 254.0
+offset_right = 255.0
+offset_bottom = 294.0
+
+[node name="Label" type="Label" parent="SegnaPunti" unique_id=377623044]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 49.0
+offset_bottom = 64.0
+text = "Points"
+
+[node name="num" type="Label" parent="SegnaPunti" unique_id=2070132183]
+layout_mode = 0
+offset_right = 49.0
+offset_bottom = 40.0
+text = "0"
+label_settings = SubResource("LabelSettings_344ge")
+horizontal_alignment = 1
+vertical_alignment = 1

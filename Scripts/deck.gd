@@ -33,7 +33,8 @@ func drawCard(num : int, spazio : Marker2D) -> void:
 		card.suit = data.suit 
 		card.cardTexture = data.cardTexture
 		card.position.x = card.position.x + i*offset_x
-	
+		card.z_index = i
+		
 		spazio.add_child(card)
 		cardAdded.emit(card)
 		
