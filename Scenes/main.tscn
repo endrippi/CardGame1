@@ -89,3 +89,12 @@ text = "0"
 label_settings = SubResource("LabelSettings_344ge")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="PlayButton" type="Button" parent="." unique_id=1431584151]
+offset_left = 362.0
+offset_top = 538.0
+offset_right = 459.0
+offset_bottom = 624.0
+text = "Play Cards"
+
+[connection signal="pressed" from="PlayButton" to="StateMachine/Start" method="_on_play_button_pressed"]

@@ -20,11 +20,15 @@ func _process(delta: float) -> void:
 	pass
 
 
-func drawCard(num : int, spazio : Marker2D) -> void:
+func drawCard(num : int, spazio : Marker2D) -> Array[Card]:
 	var offset_x : int = 130
+	
+	var cardsDrawn : Array[Card]
+	
 	if carte.is_empty():
 		print("Vuoto!")
-		return
+		return cardsDrawn
+
 	for i in range(0, num):
 		var data : Resource = carte.pop_back()
 		var card : Card = cardScene.instantiate()
@@ -36,7 +40,10 @@ func drawCard(num : int, spazio : Marker2D) -> void:
 		card.z_index = i
 		
 		spazio.add_child(card)
+		cardsDrawn.append(card)
 		cardAdded.emit(card)
 		
 		counterCarte.text = str(carte.size())+"/40"
+		
+	return cardsDrawn
 	
