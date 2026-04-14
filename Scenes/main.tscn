@@ -30,17 +30,17 @@ vertical_alignment = 1
 
 [node name="StateMachine" type="Node" parent="." unique_id=918915526 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("1_8gbba")
-initial_state = NodePath("Start")
+initial_state = NodePath("SelezioneCarte")
 metadata/_custom_type_script = "uid://bhwanv608gnhw"
 
-[node name="Start" type="Node" parent="StateMachine" unique_id=104914660 node_paths=PackedStringArray("mano", "tavolo", "deck")]
+[node name="SelezioneCarte" type="Node" parent="StateMachine" unique_id=104914660 node_paths=PackedStringArray("mano", "tavolo", "deck")]
 script = ExtResource("5_344ge")
 mano = NodePath("../../mano")
 tavolo = NodePath("../../tavolo")
 deck = NodePath("../../Deck")
 metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 
-[node name="Logica" type="Node" parent="StateMachine" unique_id=939592393]
+[node name="Giocato" type="Node" parent="StateMachine" unique_id=939592393]
 script = ExtResource("2_jjvhh")
 metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 
@@ -97,4 +97,4 @@ offset_right = 459.0
 offset_bottom = 624.0
 text = "Play Cards"
 
-[connection signal="pressed" from="PlayButton" to="StateMachine/Start" method="_on_play_button_pressed"]
+[connection signal="pressed" from="PlayButton" to="StateMachine/SelezioneCarte" method="_on_play_button_pressed"]
