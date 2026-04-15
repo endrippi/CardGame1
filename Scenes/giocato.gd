@@ -1,11 +1,24 @@
 extends State
 
+@onready var numLabel: Label = $"../../SegnaPunti/num"
+var shouldGoBack := false
 
 # Called when the node enters the scene tree for the first time.
-func enter() -> void:
-	print("ciao") # Replace with function body.
-
+func enter(data : GameData) -> void:
+	print("ciao sono nello stato Giocato") # Replace with function body.
+	print("Mano di ", data.selectedHandCard.value, " con somma di tavolo di ", data.currentTableSum)
+	if data.selectedHandCard.value == data.currentTableSum: #Fatto bene
+		data.totalPoints += data.selectedHandCard.value + data.currentTableSum
+		numLabel.text = str(data.totalPoints)
+	else:
+		shouldGoBack = true
+		data.currentTableSum = 0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func update(_delta: float) -> void:
-	print("woooo")
+	if shouldGoBack:
+		transitioned.emit(self, "selezionecarte")
+
+
+func exit(data : GameData) -> void:
+	pass
