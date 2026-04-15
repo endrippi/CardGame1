@@ -7,8 +7,6 @@ extends State
 @onready var carteMano : Array[Card]
 @onready var carteTavolo : Array[Card]
 
-@onready var currentCard : Card
-
 var selectedHandCard : Card
 var selectedTableCards: Array[Card]
 var currentTableSum : int = 0
@@ -23,12 +21,13 @@ func enter() -> void:
 	for carta in carteTavolo:
 		carta.cardSelected.connect(_on_card_table_clicked)
 
-func update(_delta: float) -> void:
-	pass
+
+#func update(_delta: float) -> void:
+#	pass
 
 
 func _on_play_button_pressed() -> void:
-	pass
+	transitioned.emit(self, "Giocato")
 
 func _on_card_table_clicked(card : Card):
 	if card.selected == true:
@@ -68,3 +67,16 @@ func updateHandVisuals() -> void:
 func updateTableVisuals() -> void:
 	for carta in carteTavolo:
 		carta.updateCardVisual()
+		
+		
+func exit() -> void:
+	for carta in carteTavolo:
+		if carta.cardSelected.is_connected(_on_card_table_clicked):
+			carta.cardSelected.disconnect(_on_card_table_clicked)
+		carta.selected = false
+	for carta in carteMano:
+		if carta.cardSelected.is_connected(_on_card_hand_clicked):
+			carta.cardSelected.disconnect(_on_card_hand_clicked)
+		carta.selected = false
+	updateHandVisuals()
+	updateTableVisuals()

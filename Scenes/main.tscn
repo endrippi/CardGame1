@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://b3mhnqrn8cu22" path="res://Scripts/mano.gd" id="4_kry3j"]
 [ext_resource type="Script" uid="uid://b2pjw02pn32h3" path="res://Scripts/tavolo.gd" id="5_21xkr"]
 [ext_resource type="Script" uid="uid://d12r31mfklfpa" path="res://Scripts/StateMachine/start.gd" id="5_344ge"]
+[ext_resource type="Script" uid="uid://bnbd7snxglhvt" path="res://Scenes/giocato.gd" id="6_ynf5e"]
 [ext_resource type="PackedScene" uid="uid://hjbl2cy8qe8c" path="res://Scenes/card.tscn" id="7_6bp64"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_344ge"]
@@ -41,7 +42,7 @@ deck = NodePath("../../Deck")
 metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 
 [node name="Giocato" type="Node" parent="StateMachine" unique_id=939592393]
-script = ExtResource("2_jjvhh")
+script = ExtResource("6_ynf5e")
 metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 
 [node name="Fine" type="Node" parent="StateMachine" unique_id=258067131]
