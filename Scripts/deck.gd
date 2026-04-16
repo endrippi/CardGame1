@@ -21,7 +21,7 @@ func _process(delta: float) -> void:
 
 
 func drawCard(num : int, spazio : Marker2D) -> Array[Card]:
-	var offset_x : int = 130
+	#var offset_x : int = 130
 	
 	var cardsDrawn : Array[Card]
 	
@@ -36,10 +36,8 @@ func drawCard(num : int, spazio : Marker2D) -> Array[Card]:
 		card.value = data.value
 		card.suit = data.suit 
 		card.cardTexture = data.cardTexture
-		card.position.x = card.position.x + i*offset_x
 		card.z_index = i
 		
-		spazio.add_child(card)
 		cardsDrawn.append(card)
 		cardAdded.emit(card)
 		
