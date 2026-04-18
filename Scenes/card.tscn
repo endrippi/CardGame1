@@ -8,6 +8,7 @@
 size = Vector2(55, 80)
 
 [node name="Card" type="Node2D" unique_id=570757034]
+position = Vector2(-100, 0)
 scale = Vector2(2, 2)
 script = ExtResource("1_wf8id")
 

@@ -11,11 +11,18 @@ var selectedHandCard : Card
 var selectedTableCards: Array[Card]
 var currentTableSum : int = 0
 
+signal tableCardsUpdated(cards : Array[Card])
+signal handCardsUpdated(cards : Array[Card])
+
 
 # Called when the node enters the scene tree for the first time.
 func enter() -> void:
 	carteTavolo = deck.drawCard(4, tavolo)
 	carteMano = deck.drawCard(3, mano)
+	
+	tableCardsUpdated.emit(carteTavolo)
+	handCardsUpdated.emit(carteMano)
+	
 	for carta in carteMano:
 		carta.cardSelected.connect(_on_card_hand_clicked)
 	for carta in carteTavolo:
