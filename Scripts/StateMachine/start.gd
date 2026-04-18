@@ -16,9 +16,21 @@ signal handCardsUpdated(cards : Array[Card])
 
 
 # Called when the node enters the scene tree for the first time.
-func enter() -> void:
-	carteTavolo = deck.drawCard(4, tavolo)
-	carteMano = deck.drawCard(3, mano)
+func enter(data : GameData) -> void:
+	print("ciao sono nello stato iniziale")
+	mano = data.mano
+	tavolo = data.tavolo
+	deck = data.deck
+	carteMano = data.carteMano
+	carteTavolo = data.carteTavolo
+	selectedHandCard = data.selectedHandCard
+	selectedTableCards = data.selectedTableCards
+	currentTableSum = data.currentTableSum
+	
+	if carteTavolo.is_empty():
+		carteTavolo = deck.drawCard(4, tavolo)
+	if carteMano.is_empty():
+		carteMano = deck.drawCard(3, mano)
 	
 	tableCardsUpdated.emit(carteTavolo)
 	handCardsUpdated.emit(carteMano)
@@ -27,7 +39,7 @@ func enter() -> void:
 		carta.cardSelected.connect(_on_card_hand_clicked)
 	for carta in carteTavolo:
 		carta.cardSelected.connect(_on_card_table_clicked)
-
+	
 
 #func update(_delta: float) -> void:
 #	pass
@@ -76,7 +88,7 @@ func updateTableVisuals() -> void:
 		carta.updateCardVisual()
 		
 		
-func exit() -> void:
+func exit(data : GameData) -> void:
 	for carta in carteTavolo:
 		if carta.cardSelected.is_connected(_on_card_table_clicked):
 			carta.cardSelected.disconnect(_on_card_table_clicked)
@@ -87,3 +99,12 @@ func exit() -> void:
 		carta.selected = false
 	updateHandVisuals()
 	updateTableVisuals()
+	
+	data.mano = mano
+	data.tavolo = tavolo
+	data.deck = deck
+	data.carteMano = carteMano
+	data.carteTavolo = carteTavolo
+	data.selectedHandCard = selectedHandCard
+	data.selectedTableCards = selectedTableCards
+	data.currentTableSum = currentTableSum

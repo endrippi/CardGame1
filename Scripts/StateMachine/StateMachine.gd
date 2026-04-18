@@ -6,6 +6,7 @@ var current_state: State
 
 var states: Dictionary[String, State] = {}
 
+@export var gameData : GameData = null
 
 func _ready() -> void:
 	for child in get_children():
@@ -16,7 +17,7 @@ func _ready() -> void:
 			print("Added ",child.name," to dictionary")
 	
 	if initial_state:
-		initial_state.enter()
+		initial_state.enter(gameData)
 		current_state = initial_state
 
 func on_child_transition(state : State, new_state_name : String):
@@ -27,9 +28,9 @@ func on_child_transition(state : State, new_state_name : String):
 		return
 
 	if current_state:
-		current_state.exit()
+		current_state.exit(gameData)
 		
-	new_state.enter()
+	new_state.enter(gameData)
 	current_state = new_state
 		
 
@@ -48,8 +49,8 @@ func change_state(new_state_name: String) -> void:
 	assert(new_state, "State not found: "+ new_state_name)
 	
 	if current_state:
-		current_state.exit()
+		current_state.exit(gameData)
 	
-	new_state.enter()
+	new_state.enter(gameData)
 	
 	current_state = new_state
