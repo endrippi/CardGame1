@@ -48,8 +48,6 @@ func _on_area_2d_mouse_exited() -> void:
 	else:
 		downscaleCard()
 	#area2d.z_index +- 10
-	
-
 
 func _on_area_2d_card_clicked(left: bool) -> void:
 	if left:
@@ -68,7 +66,7 @@ func updateCardVisual() -> void:
 			#selected = false
 	# if in hand then we raise them but depending on their current radius (done by mano.gd)
 	else:
-		print("This is card ", value, " which has been clicked.")
+		#print("This is card ", value, " which has been clicked.")
 		if not selected:
 			cardInHandToLower.emit(self)
 		elif selected:

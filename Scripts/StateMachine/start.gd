@@ -30,7 +30,7 @@ func enter(data : GameData) -> void:
 	if carteTavolo.is_empty():
 		carteTavolo = deck.drawCard(4, tavolo)
 	if carteMano.is_empty():
-		carteMano = deck.drawCard(3, mano)
+		carteMano = deck.drawCard(5, mano)
 	
 	tableCardsUpdated.emit(carteTavolo)
 	handCardsUpdated.emit(carteMano)
