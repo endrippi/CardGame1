@@ -2,21 +2,24 @@ extends Marker2D
 
 var carteArray
 @onready var selectionState = $"../StateMachine/SelezioneCarte"
+@onready var gameData: GameData = $"../GameData"
+var spazioCarteTavolo : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	selectionState.tableCardsUpdated.connect(_on_tableCardsUpdated)
+	spazioCarteTavolo = gameData.spazioCarteTavolo
 	pass
 	
 # Position cards on the table.
 func positionCards() -> void:
 	var i = 1
-	var offset_x : int = 130
+	var offset_x : float = (spazioCarteTavolo-110)/carteArray.size()
 	
 	for card in carteArray:
 		print(card)
 		# Position the card with offset
-		card.position.x = card.position.x + i * offset_x
+		card.position.x =  i * offset_x
 		card.z_index = i
 		# Add it as children to the table
 		self.add_child(card)

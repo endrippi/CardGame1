@@ -14,3 +14,5 @@ var selectedHandCard : Card
 var selectedTableCards: Array[Card]
 var currentTableSum : int = 0
 var totalPoints: int = 0
+
+var spazioCarteTavolo : int = 662

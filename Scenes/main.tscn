@@ -36,7 +36,7 @@ deck = NodePath("../Deck")
 metadata/_custom_type_script = "uid://b45o4s6ijk315"
 
 [node name="tavolo" type="Marker2D" parent="." unique_id=190371086]
-position = Vector2(536, 254)
+position = Vector2(429, 254)
 script = ExtResource("5_21xkr")
 
 [node name="mano" type="Marker2D" parent="." unique_id=995058845]
@@ -81,10 +81,13 @@ script = ExtResource("2_jjvhh")
 metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 
 [node name="Polygon2D" type="Polygon2D" parent="." unique_id=424945385]
+visible = false
+z_index = -90
 position = Vector2(436.08508, 123.2)
 scale = Vector2(3.5425525, 2.6000001)
 color = Color(0.5802277, 0.58022773, 0.58022773, 1)
 polygon = PackedVector2Array(-2, -2, 89.36389, -2, 185.34947, -1.6153831, 185.34947, 49.153835, 186, 93, -2, 93)
+metadata/_edit_lock_ = true
 
 [node name="Polygon2D2" type="Polygon2D" parent="." unique_id=1981126309]
 visible = false

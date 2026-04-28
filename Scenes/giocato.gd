@@ -1,7 +1,7 @@
 extends State
 
 @onready var numLabel: Label = $"../../SegnaPunti/num"
-var shouldGoBack := false
+var shouldGoBack : bool = false
 
 # Called when the node enters the scene tree for the first time.
 func enter(data : GameData) -> void:
@@ -10,6 +10,8 @@ func enter(data : GameData) -> void:
 	if data.selectedHandCard.value == data.currentTableSum: #Fatto bene
 		data.totalPoints += data.selectedHandCard.value + data.currentTableSum
 		numLabel.text = str(data.totalPoints)
+		print("Ciaooo")
+		shouldGoBack = false
 	else:
 		shouldGoBack = true
 		data.currentTableSum = 0
