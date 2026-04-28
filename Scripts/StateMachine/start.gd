@@ -14,6 +14,9 @@ var currentTableSum : int = 0
 signal tableCardsUpdated(cards : Array[Card])
 signal handCardsUpdated(cards : Array[Card])
 
+@onready var valTavolo: Label = $"../../DebugValoreTavolo"
+
+@onready var valMano: Label = $"../../DebugValoreMano"
 
 # Called when the node enters the scene tree for the first time.
 func enter(data : GameData) -> void:
@@ -46,7 +49,8 @@ func enter(data : GameData) -> void:
 
 
 func _on_play_button_pressed() -> void:
-	transitioned.emit(self, "Giocato")
+	if selectedHandCard != null:
+		transitioned.emit(self, "Giocato")
 
 func _on_card_table_clicked(card : Card):
 	if card.selected == true:
@@ -59,7 +63,8 @@ func _on_card_table_clicked(card : Card):
 		currentTableSum += card.value
 	card.updateCardVisual()
 	print("Array di size ", selectedTableCards.size(), " con somma: ", currentTableSum)
-	#updateTableVisuals()
+	
+	valTavolo.text = str(currentTableSum)
 
 
 func _on_card_hand_clicked(card : Card) -> void:
@@ -67,16 +72,20 @@ func _on_card_hand_clicked(card : Card) -> void:
 		card.selected = false
 		selectedHandCard = null
 		print("Deselezionata")
+		valMano.text = "0"
 	else:
 		if selectedHandCard != null:
 			selectedHandCard.selected = false
 			selectedHandCard = card
 			print("Clickata ", selectedHandCard.value, " di papapapa (cambiando da carta)")
+			valMano.text = str(selectedHandCard.value)
 		else:
 			selectedHandCard = card
 			print("Clickata ", selectedHandCard.value, " di papapapa")
+			valMano.text = str(selectedHandCard.value)
 		selectedHandCard.selected = true
 	updateHandVisuals()
+	
 
 
 func updateHandVisuals() -> void:

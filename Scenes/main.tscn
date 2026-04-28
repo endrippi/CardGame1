@@ -15,6 +15,16 @@
 [sub_resource type="LabelSettings" id="LabelSettings_344ge"]
 font_color = Color(0, 0, 0, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_d1ilt"]
+font_size = 50
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_6iyac"]
+font_size = 50
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
+
 [node name="Main" type="Node2D" unique_id=1476234443]
 script = ExtResource("1_jjvhh")
 
@@ -116,5 +126,22 @@ text = "Play Cards"
 stream = ExtResource("9_ynf5e")
 autoplay = true
 parameters/looping = true
+
+[node name="DebugValoreMano" type="Label" parent="." unique_id=346488157]
+offset_left = 393.0
+offset_top = 468.0
+offset_right = 447.0
+offset_bottom = 537.0
+text = "0"
+label_settings = SubResource("LabelSettings_d1ilt")
+metadata/_edit_use_anchors_ = true
+
+[node name="DebugValoreTavolo" type="Label" parent="." unique_id=800976719]
+offset_left = 725.0
+offset_top = 21.0
+offset_right = 765.0
+offset_bottom = 90.0
+text = "0"
+label_settings = SubResource("LabelSettings_6iyac")
 
 [connection signal="pressed" from="PlayButton" to="StateMachine/SelezioneCarte" method="_on_play_button_pressed"]
