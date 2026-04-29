@@ -85,7 +85,7 @@ func _on_cardAreaEntered(card : Card):
 			currentlyHovering.downscaleCard()
 			card.upscaleCard()
 			currentlyHovering = card
-	#updateClickableCards()
+	updateClickableCards()
 	
 # If there is potentially another card to switch to, I switch and hover on it.
 func _on_cardAreaExited(card : Card):
@@ -105,7 +105,7 @@ func _on_cardAreaExited(card : Card):
 		if cardsWhereMouseIsOn[0] != currentlyHovering:
 			cardsWhereMouseIsOn[0].upscaleCard()
 		currentlyHovering = cardsWhereMouseIsOn[0]
-	#updateClickableCards()
+	updateClickableCards()
 
 # Raise card in hand.
 func _on_cardInHandToRaise(card : Card) -> void:
@@ -120,6 +120,16 @@ func _on_cardInHandToLower(card : Card) -> void:
 	#print("\tnow should lower card ", card.value)
 	card.position = Vector2(0, -radius)
 	print("Chiamando suono da _on_cardInHandToLower")
+	
+# Function to update which area2ds can be enabled for clicking
+# (only the currently hovered one)
+func updateClickableCards() -> void:
+	print("updating!")
+	for card in carteArray:
+		if card != currentlyHovering:
+			card.disableClicks()
+		else:
+			card.enableClicks()
 
 # Utility to print card values in string.
 func printArray(cards : Array[Card]) -> String:

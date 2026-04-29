@@ -53,6 +53,7 @@ func _on_cardAreaEntered(card : Card) -> void:
 			currentlyHovering.downscaleCard()
 			card.upscaleCard()
 			currentlyHovering = card
+	updateClickableCards()
 	
 func _on_cardAreaExited(card : Card) -> void:
 	# If there is nothing to switch to and I am still hovering the card
@@ -71,6 +72,19 @@ func _on_cardAreaExited(card : Card) -> void:
 		if cardsWhereMouseIsOn[0] != currentlyHovering:
 			cardsWhereMouseIsOn[0].upscaleCard()
 		currentlyHovering = cardsWhereMouseIsOn[0]
+	updateClickableCards()
+		
+		
+# Function to update which area2ds can be enabled for clicking
+# (only the currently hovered one)
+func updateClickableCards() -> void:
+	print("updating!")
+	print("qui currently hovering è ", currentlyHovering)
+	for card in carteArray:
+		if card != currentlyHovering:
+			card.disableClicks()
+		else:
+			card.enableClicks()
 	
 # Decreasing sort by z-index.
 func _sort_by_z_index(c1, c2):

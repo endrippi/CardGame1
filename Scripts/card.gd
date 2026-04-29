@@ -18,6 +18,10 @@ signal cardInHandToLower(card : Card)
 @onready var hoveringSound : AudioStreamPlayer = $HoveringSound
 @onready var clickingSound : AudioStreamPlayer = $ClickingSound
 
+# For click managament.
+@onready var clickableArea2D : Area2D = $Area2DClickable
+@onready var clickableCollisionShape : CollisionShape2D = $Area2DClickable/CollisionShape2DClickable
+
 # To mark whether the card is on the table or in the hand 
 # (needed for different processing of downscaling and on-hover behaviour)
 var inHand : bool
@@ -34,34 +38,34 @@ func _ready() -> void:
 	
 	
 func _on_area_2d_mouse_entered() -> void:
-	#scale.x += 0.10
-	#scale.y += 0.10
+	# Letting hand and table handle it
 	cardAreaEntered.emit(self)
-	#if inHand:
-	#	cardAreaEntered.emit(self)
-	#else:
-	#	upscaleCard()
 	#area2d.z_index += 10
 	#print("Questa carta è il ", self.value, " di ", self.suit, " con z-index ", self.z_index)
 
 
 func _on_area_2d_mouse_exited() -> void:
-	#scale.x -= 0.10
-	#scale.y -= 0.10
+	# Letting hand and table handle it
 	cardAreaExited.emit(self)
-	#if inHand:
-	#	cardAreaExited.emit(self)
-	#else:
-	#	downscaleCard()
 	#area2d.z_index +- 10
 	
-
-
-func _on_area_2d_card_clicked(left: bool) -> void:
+	
+func _on_area_2d_clickable_card_clicked(left: bool) -> void:
 	if left:
 		print(value, " di ", suit, " con z index: ", z_index)
 		cardSelected.emit(self)
 		updateCardVisual()
+		
+func disableClicks() -> void:
+	clickableArea2D.monitoring = false 
+	clickableArea2D.monitorable = false 
+	clickableCollisionShape.disabled = true
+	
+func enableClicks() -> void:
+	clickableArea2D.monitoring = true
+	clickableArea2D.monitorable = true
+	clickableCollisionShape.disabled = false
+	
 
 func updateCardVisual() -> void:
 	# if in table then we just raise them
