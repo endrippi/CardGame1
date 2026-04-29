@@ -34,7 +34,10 @@ stream = ExtResource("4_eumee")
 script = ExtResource("3_brehn")
 
 [node name="CollisionShape2DClickable" type="CollisionShape2D" parent="Area2DClickable" unique_id=1362159536]
+z_index = 42
+z_as_relative = false
 shape = SubResource("RectangleShape2D_eumee")
+debug_color = Color(0.93651915, 1.790464e-05, 0.63396853, 0.41960785)
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

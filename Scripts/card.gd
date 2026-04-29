@@ -52,16 +52,18 @@ func _on_area_2d_mouse_exited() -> void:
 	
 func _on_area_2d_clickable_card_clicked(left: bool) -> void:
 	if left:
-		print(value, " di ", suit, " con z index: ", z_index)
+		print('[!] CLICCATO IL ', value, " di ", suit, " con z index: ", z_index)
 		cardSelected.emit(self)
 		updateCardVisual()
 		
 func disableClicks() -> void:
+	#print('I am CARD ', value, ' of ', suit, ' and I have clicks disabled')
 	clickableArea2D.monitoring = false 
 	clickableArea2D.monitorable = false 
 	clickableCollisionShape.disabled = true
 	
 func enableClicks() -> void:
+	#print('I am CARD ', value, ' of ', suit, ' and I have clicks enabled')
 	clickableArea2D.monitoring = true
 	clickableArea2D.monitorable = true
 	clickableCollisionShape.disabled = false

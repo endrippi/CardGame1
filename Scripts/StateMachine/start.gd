@@ -31,9 +31,9 @@ func enter(data : GameData) -> void:
 	currentTableSum = data.currentTableSum
 	
 	if carteTavolo.is_empty():
-		carteTavolo = deck.drawCard(10, tavolo)
+		carteTavolo = deck.drawCard(4, tavolo)
 	if carteMano.is_empty():
-		carteMano = deck.drawCard(10, mano)
+		carteMano = deck.drawCard(3, mano)
 	
 	tableCardsUpdated.emit(carteTavolo)
 	handCardsUpdated.emit(carteMano)

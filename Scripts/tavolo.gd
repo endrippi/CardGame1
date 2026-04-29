@@ -79,11 +79,14 @@ func _on_cardAreaExited(card : Card) -> void:
 # (only the currently hovered one)
 func updateClickableCards() -> void:
 	print("updating!")
-	print("qui currently hovering è ", currentlyHovering)
+	if (currentlyHovering != null):
+		print("CURRENTLY HOVERING: ", currentlyHovering.value, " di ", currentlyHovering.suit)
 	for card in carteArray:
 		if card != currentlyHovering:
+			print('disabilitando ', card.value, ' di ', card.suit)
 			card.disableClicks()
 		else:
+			print('abilitando ', card.value, ' di ', card.suit)
 			card.enableClicks()
 	
 # Decreasing sort by z-index.

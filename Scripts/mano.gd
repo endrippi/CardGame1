@@ -125,10 +125,14 @@ func _on_cardInHandToLower(card : Card) -> void:
 # (only the currently hovered one)
 func updateClickableCards() -> void:
 	print("updating!")
+	if (currentlyHovering != null):
+		print("CURRENTLY HOVERING: ", currentlyHovering.value, " di ", currentlyHovering.suit)
 	for card in carteArray:
 		if card != currentlyHovering:
+			print('disabilitando ', card.value, ' di ', card.suit)
 			card.disableClicks()
 		else:
+			print('abilitando ', card.value, ' di ', card.suit)
 			card.enableClicks()
 
 # Utility to print card values in string.
