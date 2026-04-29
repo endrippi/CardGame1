@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://8x0kbiqmbb47" path="res://Assets/Carte/1 PlaceHolderr.png" id="1_0qqmn"]
 [ext_resource type="Script" uid="uid://beo5b7k0jbh4i" path="res://Scripts/card.gd" id="1_wf8id"]
 [ext_resource type="Script" uid="uid://qfp3r3afep1j" path="res://Scripts/areaScript.gd" id="3_brehn"]
+[ext_resource type="AudioStream" uid="uid://6jjq5kk3jyxg" path="res://Assets/Sound/Effects/tic_carta_1.mp3" id="4_eumee"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0qqmn"]
 size = Vector2(55, 80)
@@ -19,6 +20,13 @@ script = ExtResource("3_brehn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1280318576]
 shape = SubResource("RectangleShape2D_0qqmn")
+
+[node name="HoveringSound" type="AudioStreamPlayer" parent="." unique_id=15823828]
+stream = ExtResource("4_eumee")
+volume_db = -5.0
+
+[node name="ClickingSound" type="AudioStreamPlayer" parent="." unique_id=1166968636]
+stream = ExtResource("4_eumee")
 
 [connection signal="card_clicked" from="Area2D" to="." method="_on_area_2d_card_clicked"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]

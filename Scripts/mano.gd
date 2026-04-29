@@ -2,40 +2,59 @@ extends Marker2D
 
 var carteArray
 @onready var selectionState = $"../StateMachine/SelezioneCarte"
-@export var fan_angle : float = 25
+@export var fanAngle : float = 25
 @onready var pivot : Node2D = $CardPivot
 var radius := 300.0  # distance from pivot to card center
 
-var currentlyHovering : Card = null
-var nextHover : Card = null
-
+@export var currentlyHovering : Card = null
+var cardsWhereMouseIsOn : Array[Card] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	selectionState.handCardsUpdated.connect(_on_handCardsUpdated)
 
+# Function to get an array of angles for all the cards in hand
+# (so they are evenly spaced automatically).
+func getRotationAngles(count: int, angle: float) -> Array:
+	# Safety net
+	if count <= 0:
+		return []
+	# If only one value, it's just 0
+	if count == 1:
+		return [0.0]
+	# We start by calculating the starting value (leftmost)
+	# go all the way to the left and half it
+	# (like for angle 5 and 3 cards go to -10 and then it becomes -5)
+	var start = -angle * float(count - 1) / 2.0
+	var step = angle
+	var result = []
+	# Fill the array with values, stepping of angle
+	for i in range(count):
+		result.append(start + step * i)
+	return result
+	
+# Function to automatically adjust fan angle if there are more than 3 cards in hand.
+func adjustFanAngle(count : int, angle : float) -> float:
+	# Normally with 3 cards it covers 50 degrees, I want to evenly distribute that
+	return angle/count
+
 # Fan out cards in hand.
 func fanoutCards() -> void:
 	var N = carteArray.size()
+	var angles
+	# TODO Get correct fan angle according to number of cards in hand
+	if N > 3:
+		angles = getRotationAngles(N, adjustFanAngle(N, fanAngle*2.5))
+	else:
+		angles = getRotationAngles(N, fanAngle)
 	for i in range(N):
 		var currPivot = pivot.duplicate()
 		currPivot.add_child(carteArray[i])
 		carteArray[i].scale = Vector2(3, 3)
 		carteArray[i].position = Vector2(0, -radius)  # Placed on pivot's radius
 		
-		# Evenly spaced and centered around 0
-		var offset: float		
-		if N % 2 == 1:			
-			# Odd: center card at 0		
-			offset = i - int(N / 2)		
-		else:			
-			# Even: no center card	
-			offset = i - int(N / 2)			
-			if i >= N / 2:				
-				offset += 1
+		currPivot.rotation_degrees = angles[i]
 		
-		# Rotate the card accordingly
-		currPivot.rotation_degrees = offset * fan_angle
 		# Instantiate the pivot and the actual card
 		self.add_child(currPivot)
 	
@@ -53,6 +72,7 @@ func _on_handCardsUpdated(cards : Array[Card]) -> void:
 # the currently hovered card AND we have not entered the area of the NEXT card in hand.
 # Cards have increasing z-indexes so I can use those to see who comes first in hand.
 func _on_cardAreaEntered(card : Card):
+	cardsWhereMouseIsOn.append(card)
 	# If I am not hovering anything yet, I animate the card directly
 	if currentlyHovering == null:
 		card.upscaleCard()
@@ -65,32 +85,50 @@ func _on_cardAreaEntered(card : Card):
 			currentlyHovering.downscaleCard()
 			card.upscaleCard()
 			currentlyHovering = card
-		# If the card to which I am moving comes first then I remember it 
-		# and switch later
-		else:
-			nextHover = card
+	#updateClickableCards()
 	
 # If there is potentially another card to switch to, I switch and hover on it.
 func _on_cardAreaExited(card : Card):
 	# If there is nothing to switch to and I am still hovering the card
 	# (bc maybe I have already switched)
 	# then I update the card and that's it
-	if nextHover == null && currentlyHovering == card:
+	cardsWhereMouseIsOn.erase(card)
+	if cardsWhereMouseIsOn.is_empty():
 		card.downscaleCard()
+		currentlyHovering = null
 	# If there is a card to switch to, I switch to that one.
-	elif nextHover != null:
+	else:
+		# We want to switch to the card which is rightmost, so we sort it by z_index
 		card.downscaleCard()
-		nextHover.upscaleCard()
-		currentlyHovering = nextHover
-		nextHover = null
+		cardsWhereMouseIsOn.sort_custom(_sort_by_z_index)		
+			
+		if cardsWhereMouseIsOn[0] != currentlyHovering:
+			cardsWhereMouseIsOn[0].upscaleCard()
+		currentlyHovering = cardsWhereMouseIsOn[0]
+	#updateClickableCards()
 
-# Raise card in hand.	
-func _on_cardInHandToRaise(card : Card ) -> void:
+# Raise card in hand.
+func _on_cardInHandToRaise(card : Card) -> void:
 	var radius_offset = 25
-	#print("now should raise card ", card)
+	#print("\tnow should raise card ", card.value)
 	card.position = Vector2(0, -(radius + card.offset_y + radius_offset))
+	print("Chiamando suono da _on_cardInHandToRaise")
+	card.playClickingSound()
 
 # Lower card in hand.
 func _on_cardInHandToLower(card : Card) -> void:
-	#print("now should lower card ", card)
+	#print("\tnow should lower card ", card.value)
 	card.position = Vector2(0, -radius)
+	print("Chiamando suono da _on_cardInHandToLower")
+
+# Utility to print card values in string.
+func printArray(cards : Array[Card]) -> String:
+	var vals : String
+	for c in cards:
+		vals += str(c.value)
+		vals += ', '
+	return vals
+	
+# Decreasing sort by z-index.
+func _sort_by_z_index(c1, c2):
+	return c1.z_index > c2.z_index

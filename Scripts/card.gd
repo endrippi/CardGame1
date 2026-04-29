@@ -14,6 +14,10 @@ signal cardAreaExited(card : Card)
 signal cardInHandToRaise(card : Card)
 signal cardInHandToLower(card : Card)
 
+# Audio players.
+@onready var hoveringSound : AudioStreamPlayer = $HoveringSound
+@onready var clickingSound : AudioStreamPlayer = $ClickingSound
+
 # To mark whether the card is on the table or in the hand 
 # (needed for different processing of downscaling and on-hover behaviour)
 var inHand : bool
@@ -32,10 +36,11 @@ func _ready() -> void:
 func _on_area_2d_mouse_entered() -> void:
 	#scale.x += 0.10
 	#scale.y += 0.10
-	if inHand:
-		cardAreaEntered.emit(self)
-	else:
-		upscaleCard()
+	cardAreaEntered.emit(self)
+	#if inHand:
+	#	cardAreaEntered.emit(self)
+	#else:
+	#	upscaleCard()
 	#area2d.z_index += 10
 	#print("Questa carta è il ", self.value, " di ", self.suit, " con z-index ", self.z_index)
 
@@ -43,10 +48,11 @@ func _on_area_2d_mouse_entered() -> void:
 func _on_area_2d_mouse_exited() -> void:
 	#scale.x -= 0.10
 	#scale.y -= 0.10
-	if inHand:
-		cardAreaExited.emit(self)
-	else:
-		downscaleCard()
+	cardAreaExited.emit(self)
+	#if inHand:
+	#	cardAreaExited.emit(self)
+	#else:
+	#	downscaleCard()
 	#area2d.z_index +- 10
 	
 
@@ -78,6 +84,7 @@ func updateCardVisual() -> void:
 func upscaleCard() -> void:
 	scale.x += 0.10
 	scale.y += 0.10
+	playHoveringSound()
 
 # Different downscaling, depends on whether the card is in hand or on the table.
 func downscaleCard() -> void:
@@ -85,3 +92,28 @@ func downscaleCard() -> void:
 		scale = Vector2(3, 3)
 	else:
 		scale = Vector2(2, 2)
+		
+# Play hovering sound picking at random from the two available ones.
+# Also randomly changes the pitch.
+func playHoveringSound():
+	var audioPicker = randi()
+	if audioPicker % 2 == 0:
+		hoveringSound.stream = load("res://Assets/Sound/Effects/tic_carta_1.mp3")
+	else: 
+		hoveringSound.stream = load("res://Assets/Sound/Effects/tic_carta_2.mp3")
+	hoveringSound.pitch_scale = randf_range(1.2,1.5)
+	hoveringSound.volume_db = -12
+	hoveringSound.play()
+	
+# Play clicking sound picking at random from the three available ones.
+# Also randomly changes the pitch (not anymore).
+func playClickingSound():
+	print("clickingsound")
+	var audioPicker = randi()
+	if audioPicker % 2 == 0:
+		clickingSound.stream = load("res://Assets/Sound/Effects/tic_carta_1.mp3")
+	else: 
+		clickingSound.stream = load("res://Assets/Sound/Effects/tic_carta_2.mp3")
+	clickingSound.pitch_scale = randf_range(0.8,1.2)
+	clickingSound.volume_db = -5
+	clickingSound.play()
