@@ -19,8 +19,8 @@ func enter(data : GameData) -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func update(_delta: float) -> void:
 	if shouldGoBack:
+		print("Ora dovrei tornare a selezionecarte")
 		transitioned.emit(self, "selezionecarte")
-
 
 func exit(data : GameData) -> void:
 	pass

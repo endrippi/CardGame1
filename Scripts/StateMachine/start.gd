@@ -37,12 +37,10 @@ func enter(data : GameData) -> void:
 	
 	tableCardsUpdated.emit(carteTavolo)
 	handCardsUpdated.emit(carteMano)
-	
-	for carta in carteMano:
-		carta.cardSelected.connect(_on_card_hand_clicked)
-	for carta in carteTavolo:
-		carta.cardSelected.connect(_on_card_table_clicked)
-	
+
+	mano.valManoChanged.connect(_on_mano_valManoChanged)
+	mano.selectedHandCardChanged.connect(_on_mano_selectedHandCardChanged)
+	tavolo.tableChanged.connect(_on_tavolo_tableChanged)
 
 #func update(_delta: float) -> void:
 #	pass
@@ -52,62 +50,23 @@ func _on_play_button_pressed() -> void:
 	if selectedHandCard != null:
 		transitioned.emit(self, "Giocato")
 
-func _on_card_table_clicked(card : Card):
-	if card.selected == true:
-		selectedTableCards.erase(card)
-		card.selected = false
-		currentTableSum -= card.value
-	else:
-		selectedTableCards.append(card)
-		card.selected = true
-		currentTableSum += card.value
-	card.updateCardVisual()
-	print("Array di size ", selectedTableCards.size(), " con somma: ", currentTableSum)
+
+func _on_mano_valManoChanged(val : String) -> void:
+	valMano.text = val
 	
-	valTavolo.text = str(currentTableSum)
+func _on_mano_selectedHandCardChanged(card : Card) -> void:
+	selectedHandCard = card
 
+func _on_tavolo_tableChanged(val : String, cards: Array[Card], sum : int) -> void:
+	valTavolo.text = val
+	selectedTableCards = cards
+	currentTableSum = sum
 
-func _on_card_hand_clicked(card : Card) -> void:
-	if selectedHandCard == card:
-		card.selected = false
-		selectedHandCard = null
-		print("Deselezionata")
-		valMano.text = "0"
-	else:
-		if selectedHandCard != null:
-			selectedHandCard.selected = false
-			selectedHandCard = card
-			print("Clickata ", selectedHandCard.value, " di papapapa (cambiando da carta)")
-			valMano.text = str(selectedHandCard.value)
-		else:
-			selectedHandCard = card
-			print("Clickata ", selectedHandCard.value, " di papapapa")
-			valMano.text = str(selectedHandCard.value)
-		selectedHandCard.selected = true
-	updateHandVisuals()
-	
-
-
-func updateHandVisuals() -> void:
-	for carta in carteMano:
-		carta.updateCardVisual()
-		
-func updateTableVisuals() -> void:
-	for carta in carteTavolo:
-		carta.updateCardVisual()
-		
 		
 func exit(data : GameData) -> void:
-	for carta in carteTavolo:
-		if carta.cardSelected.is_connected(_on_card_table_clicked):
-			carta.cardSelected.disconnect(_on_card_table_clicked)
-		carta.selected = false
-	for carta in carteMano:
-		if carta.cardSelected.is_connected(_on_card_hand_clicked):
-			carta.cardSelected.disconnect(_on_card_hand_clicked)
-		carta.selected = false
-	updateHandVisuals()
-	updateTableVisuals()
+	print("exiting start")
+	mano.cleanupAfterStateExit()
+	tavolo.cleanupAfterStateExit()
 	
 	data.mano = mano
 	data.tavolo = tavolo

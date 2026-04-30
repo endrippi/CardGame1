@@ -34,7 +34,7 @@ func _ready() -> void:
 	sprite.texture = cardTexture
 	sprite.scale.x = 0.311 #55
 	sprite.scale.y = 0.267 #80
-	print("Spawnata")
+	#print("Spawnata")
 	
 	
 func _on_area_2d_mouse_entered() -> void:
@@ -51,27 +51,38 @@ func _on_area_2d_mouse_exited() -> void:
 	
 	
 func _on_area_2d_clickable_card_clicked(left: bool) -> void:
+	#print("Ricevuto segnale per ", value, " di ", suit)
 	if left:
 		print('[!] CLICCATO IL ', value, " di ", suit, " con z index: ", z_index)
 		cardSelected.emit(self)
+		var conns = get_signal_connection_list('cardSelected')
+		print('connections to cardSelected: ', conns)
 		updateCardVisual()
 		
 func disableClicks() -> void:
-	#print('I am CARD ', value, ' of ', suit, ' and I have clicks disabled')
+	clickableArea2D.disableClicks()
+	"""
+	#print('I am CARD ', value, ' of ', suit, ' and the signal ')
 	clickableArea2D.monitoring = false 
 	clickableArea2D.monitorable = false 
 	clickableCollisionShape.disabled = true
+	"""
 	
 func enableClicks() -> void:
+	clickableArea2D.enableClicks()
+	"""
 	#print('I am CARD ', value, ' of ', suit, ' and I have clicks enabled')
 	clickableArea2D.monitoring = true
 	clickableArea2D.monitorable = true
 	clickableCollisionShape.disabled = false
+	"""
 	
 
 func updateCardVisual() -> void:
+	print("Updating card visuals")
 	# if in table then we just raise them
 	if !inHand:
+		print("Not in hand")
 		if not selected:
 			position.y = 0
 			#selected = true
@@ -80,10 +91,13 @@ func updateCardVisual() -> void:
 			#selected = false
 	# if in hand then we raise them but depending on their current radius (done by mano.gd)
 	else:
-		print("This is card ", value, " which has been clicked.")
+		print("In hand")
+		#print("This is card ", value, " which has been clicked.")
 		if not selected:
+			print("Not selected")
 			cardInHandToLower.emit(self)
 		elif selected:
+			print("Selected")
 			cardInHandToRaise.emit(self)
 		
 		
@@ -114,7 +128,7 @@ func playHoveringSound():
 # Play clicking sound picking at random from the three available ones.
 # Also randomly changes the pitch (not anymore).
 func playClickingSound():
-	print("clickingsound")
+	#print("clickingsound")
 	var audioPicker = randi()
 	if audioPicker % 2 == 0:
 		clickingSound.stream = load("res://Assets/Sound/Effects/tic_carta_1.mp3")

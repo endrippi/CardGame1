@@ -9,6 +9,10 @@ var radius := 300.0  # distance from pivot to card center
 @export var currentlyHovering : Card = null
 var cardsWhereMouseIsOn : Array[Card] = []
 
+var selectedHandCard : Card
+signal valManoChanged(val : String)
+signal selectedHandCardChanged(card : Card)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	selectionState.handCardsUpdated.connect(_on_handCardsUpdated)
@@ -65,19 +69,60 @@ func _on_handCardsUpdated(cards : Array[Card]) -> void:
 		card.cardAreaExited.connect(_on_cardAreaExited)
 		card.cardInHandToRaise.connect(_on_cardInHandToRaise)
 		card.cardInHandToLower.connect(_on_cardInHandToLower)
+		
+		# Signals are now moved here from state "selezionecarte" in order
+		# to be handled regardless of play state
+		card.cardSelected.connect(_on_card_clicked)
+		
 		card.inHand = true
 	fanoutCards()
+	
+func _on_card_clicked(card : Card) -> void:
+	print("On card hand clicked per ", card.value, ' di ', card.suit)
+	var valMano : String = ''
+	if selectedHandCard == card:
+		card.selected = false
+		selectedHandCard = null
+		#print("Deselezionata")
+		valMano = "0"
+	else:
+		if selectedHandCard != null:
+			selectedHandCard.selected = false
+			selectedHandCard = card
+			#print("Clickata ", selectedHandCard.value, " di papapapa (cambiando da carta)")
+			valMano = str(selectedHandCard.value)
+		else:
+			selectedHandCard = card
+			#print("Clickata ", selectedHandCard.value, " di papapapa")
+			valMano = str(selectedHandCard.value)
+		selectedHandCard.selected = true
+		valManoChanged.emit(valMano)
+		selectedHandCardChanged.emit(selectedHandCard)
+	updateHandVisuals()
+
+func updateHandVisuals() -> void:
+	for carta in carteArray:
+		carta.updateCardVisual()
+		
+func cleanupAfterStateExit() -> void:
+	for carta in carteArray:
+		if carta.cardSelected.is_connected(_on_card_clicked):
+			carta.cardSelected.disconnect(_on_card_clicked)
+		carta.selected = false
+	updateHandVisuals()
 	
 # We don't want to receive interrupts to hover card IF: we have not exited the area of 
 # the currently hovered card AND we have not entered the area of the NEXT card in hand.
 # Cards have increasing z-indexes so I can use those to see who comes first in hand.
 func _on_cardAreaEntered(card : Card):
+	var needClickableChange = false
 	cardsWhereMouseIsOn.append(card)
 	# If I am not hovering anything yet, I animate the card directly
 	if currentlyHovering == null:
 		card.upscaleCard()
 		# Update the card I am hovering to point to this one
 		currentlyHovering = card
+		needClickableChange = true
 	# If I am already hovering on a card I must control if I can move the hover
 	else:
 		# If the card to which I am moving comes later then I switch
@@ -85,13 +130,16 @@ func _on_cardAreaEntered(card : Card):
 			currentlyHovering.downscaleCard()
 			card.upscaleCard()
 			currentlyHovering = card
-	updateClickableCards()
+			needClickableChange = true
+	if needClickableChange:
+		updateClickableCards()
 	
 # If there is potentially another card to switch to, I switch and hover on it.
 func _on_cardAreaExited(card : Card):
 	# If there is nothing to switch to and I am still hovering the card
 	# (bc maybe I have already switched)
 	# then I update the card and that's it
+	var needClickableChange = false
 	cardsWhereMouseIsOn.erase(card)
 	if cardsWhereMouseIsOn.is_empty():
 		card.downscaleCard()
@@ -100,39 +148,40 @@ func _on_cardAreaExited(card : Card):
 	else:
 		# We want to switch to the card which is rightmost, so we sort it by z_index
 		card.downscaleCard()
-		cardsWhereMouseIsOn.sort_custom(_sort_by_z_index)		
+		cardsWhereMouseIsOn.sort_custom(_sort_by_z_index)
 			
 		if cardsWhereMouseIsOn[0] != currentlyHovering:
 			cardsWhereMouseIsOn[0].upscaleCard()
 		currentlyHovering = cardsWhereMouseIsOn[0]
-	updateClickableCards()
+		needClickableChange = true
+		
+	if needClickableChange:
+		updateClickableCards()
 
 # Raise card in hand.
 func _on_cardInHandToRaise(card : Card) -> void:
 	var radius_offset = 25
-	#print("\tnow should raise card ", card.value)
 	card.position = Vector2(0, -(radius + card.offset_y + radius_offset))
-	print("Chiamando suono da _on_cardInHandToRaise")
+	#print("Chiamando suono da _on_cardInHandToRaise")
 	card.playClickingSound()
 
 # Lower card in hand.
 func _on_cardInHandToLower(card : Card) -> void:
-	#print("\tnow should lower card ", card.value)
 	card.position = Vector2(0, -radius)
-	print("Chiamando suono da _on_cardInHandToLower")
+	#print("Chiamando suono da _on_cardInHandToLower")
 	
 # Function to update which area2ds can be enabled for clicking
 # (only the currently hovered one)
 func updateClickableCards() -> void:
-	print("updating!")
-	if (currentlyHovering != null):
-		print("CURRENTLY HOVERING: ", currentlyHovering.value, " di ", currentlyHovering.suit)
+	#print("updating (mano)!")
+	#if (currentlyHovering != null):
+		#print("CURRENTLY HOVERING: ", currentlyHovering.value, " di ", currentlyHovering.suit)
 	for card in carteArray:
 		if card != currentlyHovering:
-			print('disabilitando ', card.value, ' di ', card.suit)
+			#print('disabilitando ', card.value, ' di ', card.suit)
 			card.disableClicks()
 		else:
-			print('abilitando ', card.value, ' di ', card.suit)
+			#print('abilitando ', card.value, ' di ', card.suit)
 			card.enableClicks()
 
 # Utility to print card values in string.
