@@ -12,11 +12,26 @@ var selectedTableCards: Array[Card]
 signal tableChanged(val : String, cards: Array[Card], sum : int)
 var currentTableSum : int = 0
 
+# Animation stuff
+var time: float = 0.0
+var sine_offset_mult: float = 0.003		# How much to emphasize the sine curve when card still.
+@export var time_multiplier: float = 2.0
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	selectionState.tableCardsUpdated.connect(_on_tableCardsUpdated)
 	spazioCarteTavolo = gameData.spazioCarteTavolo
 	pass
+	
+func _process(delta):
+	time += delta
+	var i = 0
+	for card in carteArray:
+		# Sine function to make it "float" regularly
+		var val: float = sin(i + (time * time_multiplier))
+		#print('card ', i, ' with val :', val)
+		card.position.y += val * sine_offset_mult
+		i += 1
 	
 # Position cards on the table.
 func positionCards() -> void:
@@ -82,6 +97,7 @@ func _on_cardAreaEntered(card : Card) -> void:
 	cardsWhereMouseIsOn.append(card)
 	# If I am not hovering anything yet, I animate the card directly
 	if currentlyHovering == null:
+		print('upscale chiamato da qui1')
 		card.upscaleCard()
 		# Update the card I am hovering to point to this one
 		currentlyHovering = card
@@ -91,6 +107,7 @@ func _on_cardAreaEntered(card : Card) -> void:
 		# If the card to which I am moving comes later then I switch
 		if card.z_index >= currentlyHovering.z_index:
 			currentlyHovering.downscaleCard()
+			print('upscale chiamato da qui2')
 			card.upscaleCard()
 			currentlyHovering = card
 			needClickableChange = true
@@ -113,6 +130,7 @@ func _on_cardAreaExited(card : Card) -> void:
 		cardsWhereMouseIsOn.sort_custom(_sort_by_z_index)		
 			
 		if cardsWhereMouseIsOn[0] != currentlyHovering:
+			print('upscale chiamato da qui3')
 			cardsWhereMouseIsOn[0].upscaleCard()
 		needClickableChange = true
 		currentlyHovering = cardsWhereMouseIsOn[0]

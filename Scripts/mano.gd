@@ -13,9 +13,25 @@ var selectedHandCard : Card
 signal valManoChanged(val : String)
 signal selectedHandCardChanged(card : Card)
 
+# Animation stuff
+var time: float = 0.0
+var sine_offset_mult: float = 0.005		# How much to emphasize the sine curve when card still.
+@export var time_multiplier: float = 2.0
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	selectionState.handCardsUpdated.connect(_on_handCardsUpdated)
+	
+func _process(delta):
+	time += delta
+	var i = 0
+	for card in carteArray:
+		# Sine function to make it "float" regularly:
+		# The index of the card is used to make the curve different for each card
+		# The time part is to make sure that the card oscillates (otherwise sin is fixed)
+		var val: float = sin(i + (time * time_multiplier))
+		card.position.y += val * sine_offset_mult
+		i += 1
 
 # Function to get an array of angles for all the cards in hand
 # (so they are evenly spaced automatically).
@@ -87,24 +103,25 @@ func _on_card_clicked(card : Card) -> void:
 	if selectedHandCard == card:
 		card.selected = false
 		selectedHandCard = null
-		#print("Deselezionata")
+		print("\tDeselezionata")
 		valMano = "0"
 	else:
 		if selectedHandCard != null:
 			selectedHandCard.selected = false
 			selectedHandCard = card
-			#print("Clickata ", selectedHandCard.value, " di papapapa (cambiando da carta)")
+			print("\tClickata ", selectedHandCard.value, " di ", selectedHandCard.suit, "(cambiando da carta)")
 			valMano = str(selectedHandCard.value)
 		else:
 			selectedHandCard = card
-			#print("Clickata ", selectedHandCard.value, " di papapapa")
+			print("\tClickata ", selectedHandCard.value, " di ", selectedHandCard.suit)
 			valMano = str(selectedHandCard.value)
 		selectedHandCard.selected = true
-		valManoChanged.emit(valMano)
-		selectedHandCardChanged.emit(selectedHandCard)
+	valManoChanged.emit(valMano)
+	selectedHandCardChanged.emit(selectedHandCard)
 	updateHandVisuals()
 
 func updateHandVisuals() -> void:
+	print('\n')
 	for carta in carteArray:
 		carta.updateCardVisual()
 		
@@ -166,13 +183,13 @@ func _on_cardAreaExited(card : Card):
 # Raise card in hand.
 func _on_cardInHandToRaise(card : Card) -> void:
 	var radius_offset = 25
-	card.position = Vector2(0, -(radius + card.offset_y + radius_offset))
-	#print("Chiamando suono da _on_cardInHandToRaise")
+	card.selectCardInHand(radius, radius_offset)
 	card.playClickingSound()
 
 # Lower card in hand.
 func _on_cardInHandToLower(card : Card) -> void:
-	card.position = Vector2(0, -radius)
+	#card.position = Vector2(0, -radius)
+	card.deselectCardInHand(radius)
 	# Play sound only if we are not switching card (otherwise it would play twice)
 	if currentlyHovering == card:
 		card.playClickingSound()
