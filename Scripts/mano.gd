@@ -61,7 +61,9 @@ func fanoutCards() -> void:
 		
 		# Instantiate the pivot and the actual card
 		self.add_child(currPivot)
-	
+
+# Function to connect the signals of the cards that are currently in hand to 
+# the hand script (for hovering and clicks).
 func _on_handCardsUpdated(cards : Array[Card]) -> void:
 	carteArray = cards
 	for card in carteArray:
@@ -76,7 +78,9 @@ func _on_handCardsUpdated(cards : Array[Card]) -> void:
 		
 		card.inHand = true
 	fanoutCards()
-	
+
+# Function that was previously in "selezioneCarte"
+# Handling which card is selected and signaling card and value to the connected state
 func _on_card_clicked(card : Card) -> void:
 	print("On card hand clicked per ", card.value, ' di ', card.suit)
 	var valMano : String = ''
@@ -104,6 +108,7 @@ func updateHandVisuals() -> void:
 	for carta in carteArray:
 		carta.updateCardVisual()
 		
+# Function to disconnect the signals of the cards from the observing hand script.
 func cleanupAfterStateExit() -> void:
 	for carta in carteArray:
 		if carta.cardSelected.is_connected(_on_card_clicked):
@@ -168,6 +173,9 @@ func _on_cardInHandToRaise(card : Card) -> void:
 # Lower card in hand.
 func _on_cardInHandToLower(card : Card) -> void:
 	card.position = Vector2(0, -radius)
+	# Play sound only if we are not switching card (otherwise it would play twice)
+	if currentlyHovering == card:
+		card.playClickingSound()
 	#print("Chiamando suono da _on_cardInHandToLower")
 	
 # Function to update which area2ds can be enabled for clicking

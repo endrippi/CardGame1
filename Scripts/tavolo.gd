@@ -9,9 +9,6 @@ var spazioCarteTavolo : int = 0
 var cardsWhereMouseIsOn : Array[Card] = []
 
 var selectedTableCards: Array[Card]
-#signal valTavoloChanged(val : String)
-#signal selectedTableCardsChanged(cards : Array[Card])
-#signal currentTableSumChanged()
 signal tableChanged(val : String, cards: Array[Card], sum : int)
 var currentTableSum : int = 0
 
@@ -46,7 +43,10 @@ func _on_tableCardsUpdated(cards : Array[Card]) -> void:
 	#print("carteArrray da tavolo dopo segnale: ", carteArray)
 		card.cardSelected.connect(_on_card_clicked)
 	positionCards()
-	
+
+# Function that was previously in "selezioneCarte"
+# Handling which cards are selected and signaling selected cards, their value,
+# and sum to the connected state.
 func _on_card_clicked(card : Card):
 	var valTavolo : String = ''
 	#print("On card table clicked per ", card.value, ' di ', card.suit)
@@ -62,16 +62,14 @@ func _on_card_clicked(card : Card):
 	#print("Array di size ", selectedTableCards.size(), " con somma: ", currentTableSum)
 	
 	valTavolo = str(currentTableSum)
-	
 	tableChanged.emit(valTavolo, selectedTableCards, currentTableSum)
-	#valTavoloChanged.emit(valTavolo)
-	#selectedTableCardsChanged.emit(selectedTableCards)
-	
+
 func updateTableVisuals() -> void:
 	#print("Updating (table) visuals")
 	for carta in carteArray:
 		carta.updateCardVisual()
-		
+
+# Function to disconnect cards' signals from the observing table.
 func cleanupAfterStateExit() -> void:
 	for carta in carteArray:
 		if carta.cardSelected.is_connected(_on_card_clicked):

@@ -35,9 +35,14 @@ func enter(data : GameData) -> void:
 	if carteMano.is_empty():
 		carteMano = deck.drawCard(3, mano)
 	
+	# These two signals are super important to emit as soon as cards are updated in
+	# some way (especially after play etc) to make sure that all signals are 
+	# correctly connected between card and hand/table 
+	# (like for clicking visuals)
 	tableCardsUpdated.emit(carteTavolo)
 	handCardsUpdated.emit(carteMano)
 
+	# Connecting signals that handle the update of hand/table cards
 	mano.valManoChanged.connect(_on_mano_valManoChanged)
 	mano.selectedHandCardChanged.connect(_on_mano_selectedHandCardChanged)
 	tavolo.tableChanged.connect(_on_tavolo_tableChanged)
@@ -49,7 +54,6 @@ func enter(data : GameData) -> void:
 func _on_play_button_pressed() -> void:
 	if selectedHandCard != null:
 		transitioned.emit(self, "Giocato")
-
 
 func _on_mano_valManoChanged(val : String) -> void:
 	valMano.text = val
@@ -65,6 +69,9 @@ func _on_tavolo_tableChanged(val : String, cards: Array[Card], sum : int) -> voi
 		
 func exit(data : GameData) -> void:
 	print("exiting start")
+	
+	# Functions to disconnect the signals emitted from the cards to the 
+	# observers in hand/table
 	mano.cleanupAfterStateExit()
 	tavolo.cleanupAfterStateExit()
 	

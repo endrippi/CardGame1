@@ -61,43 +61,34 @@ func _on_area_2d_clickable_card_clicked(left: bool) -> void:
 		
 func disableClicks() -> void:
 	clickableArea2D.disableClicks()
-	"""
-	#print('I am CARD ', value, ' of ', suit, ' and the signal ')
-	clickableArea2D.monitoring = false 
-	clickableArea2D.monitorable = false 
-	clickableCollisionShape.disabled = true
-	"""
 	
 func enableClicks() -> void:
 	clickableArea2D.enableClicks()
-	"""
-	#print('I am CARD ', value, ' of ', suit, ' and I have clicks enabled')
-	clickableArea2D.monitoring = true
-	clickableArea2D.monitorable = true
-	clickableCollisionShape.disabled = false
-	"""
 	
 
 func updateCardVisual() -> void:
-	print("Updating card visuals")
+	print("updating (card) visuals")
 	# if in table then we just raise them
 	if !inHand:
-		print("Not in hand")
+		print("in table")
 		if not selected:
+			print("not selected")
 			position.y = 0
 			#selected = true
 		elif selected:
+			print("selected")
 			position.y -= offset_y
+		playClickingSound()
 			#selected = false
 	# if in hand then we raise them but depending on their current radius (done by mano.gd)
 	else:
-		print("In hand")
+		print("in hand")
 		#print("This is card ", value, " which has been clicked.")
 		if not selected:
-			print("Not selected")
+			print("not selected")
 			cardInHandToLower.emit(self)
 		elif selected:
-			print("Selected")
+			print("selected")
 			cardInHandToRaise.emit(self)
 		
 		
