@@ -14,9 +14,10 @@ signal valManoChanged(val : String)
 signal selectedHandCardChanged(card : Card)
 
 # Animation stuff
-var time: float = 0.0
-var sine_offset_mult: float = 0.005		# How much to emphasize the sine curve when card still.
-@export var time_multiplier: float = 2.0
+var time : float = 0.0
+var sine_offset_mult : float = 0.003		# How much to emphasize the sine curve when card still.
+var cosine_offset_mult : float = 0.00002
+@export var time_multiplier : float = 2.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -31,7 +32,10 @@ func _process(delta):
 		# The time part is to make sure that the card oscillates (otherwise sin is fixed)
 		var val: float = sin(i + (time * time_multiplier))
 		card.position.y += val * sine_offset_mult
+		# Rotate
+		card.rotation += cos(i + (time * time_multiplier)) * cosine_offset_mult
 		i += 1
+
 
 # Function to get an array of angles for all the cards in hand
 # (so they are evenly spaced automatically).

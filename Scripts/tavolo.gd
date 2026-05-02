@@ -13,9 +13,10 @@ signal tableChanged(val : String, cards: Array[Card], sum : int)
 var currentTableSum : int = 0
 
 # Animation stuff
-var time: float = 0.0
-var sine_offset_mult: float = 0.003		# How much to emphasize the sine curve when card still.
-@export var time_multiplier: float = 2.0
+var time : float = 0.0
+var sine_offset_mult : float = 0.005		# How much to emphasize the sine curve when card still.
+var cosine_offset_mult  : float = 0.00005
+@export var time_multiplier : float = 2.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -31,7 +32,11 @@ func _process(delta):
 		var val: float = sin(i + (time * time_multiplier))
 		#print('card ', i, ' with val :', val)
 		card.position.y += val * sine_offset_mult
+		# Also rotate
+		card.rotation += cos(i + (time * time_multiplier)) * cosine_offset_mult
 		i += 1
+		
+		
 	
 # Position cards on the table.
 func positionCards() -> void:
