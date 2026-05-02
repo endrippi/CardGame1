@@ -14,9 +14,11 @@ var currentTableSum : int = 0
 
 # Animation stuff
 var time : float = 0.0
-var sine_offset_mult : float = 0.005		# How much to emphasize the sine curve when card still.
-var cosine_offset_mult  : float = 0.00005
-@export var time_multiplier : float = 2.0
+var sineOffsetMult : float = 0.005		# How much to emphasize the sine curve when card still.
+var cosineOffsetMult  : float = 0.00005
+@export var timeMultiplier : float = 2.0
+var tween : Tween
+@export var drawingSpeed : float = 0.4
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -29,32 +31,49 @@ func _process(delta):
 	var i = 0
 	for card in carteArray:
 		# Sine function to make it "float" regularly
-		var val: float = sin(i + (time * time_multiplier))
+		var val: float = sin(i + (time * timeMultiplier))
 		#print('card ', i, ' with val :', val)
-		card.position.y += val * sine_offset_mult
+		card.position.y += val * sineOffsetMult
 		# Also rotate
-		card.rotation += cos(i + (time * time_multiplier)) * cosine_offset_mult
+		card.rotation += cos(i + (time * timeMultiplier)) * cosineOffsetMult
 		i += 1
-		
-		
 	
 # Position cards on the table.
-func positionCards() -> void:
+func positionCards(justDrawn : bool) -> void:
 	var i = 1
 	var offset_x : float = (spazioCarteTavolo-110)/carteArray.size()
 	
-	for card in carteArray:
-		print(card)
-		# Position the card with offset
-		card.position.x =  i * offset_x
-		card.z_index = i
-		# Add it as children to the table
-		self.add_child(card)
-		i += 1
+	# If cards are just drawn, then animate them to come from the deck to the table.
+	if justDrawn:
+		if tween and tween.is_running():
+			tween.kill()
+		tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+		for card in carteArray:
+			print(card)
+			# Position the card with offset
+			var finalPosition =  Vector2(i * offset_x, card.position.y)
+			# Starting from where the deck is located (circa), then card is animated to its place
+			var startingPosition = Vector2(-233,300)
+			card.position = startingPosition
+			card.z_index = i
+			# Add it as children to the table
+			self.add_child(card)
+			tween.parallel().tween_property(card, "position", finalPosition, drawingSpeed + (i * 0.075))
+			i += 1
+	# Otherwise, just rearrrange them (TODO update in the future with animation).
+	else:
+		for card in carteArray:
+			print(card)
+			# Position the card with offset
+			card.position.x =  i * offset_x
+			card.z_index = i
+			# Add it as children to the table
+			self.add_child(card)
+			i += 1
 	#print('figli del tavolo: ', self.get_child_count())
 
 # On signal _on_tableCardsUpdated, updates current cards in table and later updates visuals.
-func _on_tableCardsUpdated(cards : Array[Card]) -> void:
+func _on_tableCardsUpdated(cards : Array[Card], justDrawn : bool) -> void:
 	carteArray = cards 
 	for card in carteArray:
 		card.inHand = false
@@ -62,7 +81,7 @@ func _on_tableCardsUpdated(cards : Array[Card]) -> void:
 		card.cardAreaExited.connect(_on_cardAreaExited)
 	#print("carteArrray da tavolo dopo segnale: ", carteArray)
 		card.cardSelected.connect(_on_card_clicked)
-	positionCards()
+	positionCards(justDrawn)
 
 # Function that was previously in "selezioneCarte"
 # Handling which cards are selected and signaling selected cards, their value,

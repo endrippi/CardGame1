@@ -11,12 +11,15 @@ var selectedHandCard : Card
 var selectedTableCards: Array[Card]
 var currentTableSum : int = 0
 
-signal tableCardsUpdated(cards : Array[Card])
-signal handCardsUpdated(cards : Array[Card])
+signal tableCardsUpdated(cards : Array[Card], justDrawn : bool)
+signal handCardsUpdated(cards : Array[Card], justDrawn : bool)
 
 @onready var valTavolo: Label = $"../../DebugValoreTavolo"
 
 @onready var valMano: Label = $"../../DebugValoreMano"
+
+@onready var shuffleSound : AudioStreamPlayer = $"../../ShuffleSound"
+var drawingSpeed = 0.4
 
 # Called when the node enters the scene tree for the first time.
 func enter(data : GameData) -> void:
@@ -39,8 +42,10 @@ func enter(data : GameData) -> void:
 	# some way (especially after play etc) to make sure that all signals are 
 	# correctly connected between card and hand/table 
 	# (like for clicking visuals)
-	tableCardsUpdated.emit(carteTavolo)
-	handCardsUpdated.emit(carteMano)
+	tableCardsUpdated.emit(carteTavolo, true)
+	handCardsUpdated.emit(carteMano, true)
+	#shuffleSound.pitch_scale = 4
+	#shuffleSound.play()
 
 	# Connecting signals that handle the update of hand/table cards
 	mano.valManoChanged.connect(_on_mano_valManoChanged)

@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://bnbd7snxglhvt" path="res://Scenes/giocato.gd" id="6_ynf5e"]
 [ext_resource type="PackedScene" uid="uid://hjbl2cy8qe8c" path="res://Scenes/card.tscn" id="7_6bp64"]
 [ext_resource type="AudioStream" uid="uid://1yo888ayttkv" path="res://Assets/Sound/Cardtone.mp3" id="9_ynf5e"]
+[ext_resource type="AudioStream" uid="uid://cnde6mwvdf0i1" path="res://Assets/Sound/Effects/deck.mp3" id="12_6iyac"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_344ge"]
 font_color = Color(0, 0, 0, 1)
@@ -147,5 +148,8 @@ offset_right = 765.0
 offset_bottom = 90.0
 text = "0"
 label_settings = SubResource("LabelSettings_6iyac")
+
+[node name="ShuffleSound" type="AudioStreamPlayer" parent="." unique_id=763463917]
+stream = ExtResource("12_6iyac")
 
 [connection signal="pressed" from="PlayButton" to="StateMachine/SelezioneCarte" method="_on_play_button_pressed"]

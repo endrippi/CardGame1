@@ -15,9 +15,11 @@ signal selectedHandCardChanged(card : Card)
 
 # Animation stuff
 var time : float = 0.0
-var sine_offset_mult : float = 0.003		# How much to emphasize the sine curve when card still.
-var cosine_offset_mult : float = 0.00002
-@export var time_multiplier : float = 2.0
+var sineOffsetMult : float = 0.003		# How much to emphasize the sine curve when card still.
+var cosineOffsetMult : float = 0.00002
+@export var timeMultiplier : float = 2.0
+var tween : Tween
+@export var drawingSpeed : float = 0.4
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -30,10 +32,10 @@ func _process(delta):
 		# Sine function to make it "float" regularly:
 		# The index of the card is used to make the curve different for each card
 		# The time part is to make sure that the card oscillates (otherwise sin is fixed)
-		var val: float = sin(i + (time * time_multiplier))
-		card.position.y += val * sine_offset_mult
+		var val: float = sin(i + (time * timeMultiplier))
+		card.position.y += val * sineOffsetMult
 		# Rotate
-		card.rotation += cos(i + (time * time_multiplier)) * cosine_offset_mult
+		card.rotation += cos(i + (time * timeMultiplier)) * cosineOffsetMult
 		i += 1
 
 
@@ -63,7 +65,7 @@ func adjustFanAngle(count : int, angle : float) -> float:
 	return angle/count
 
 # Fan out cards in hand.
-func fanoutCards() -> void:
+func fanoutCards(justDrawn : bool) -> void:
 	var N = carteArray.size()
 	var angles
 	# TODO Get correct fan angle according to number of cards in hand
@@ -71,20 +73,42 @@ func fanoutCards() -> void:
 		angles = getRotationAngles(N, adjustFanAngle(N, fanAngle*2.5))
 	else:
 		angles = getRotationAngles(N, fanAngle)
-	for i in range(N):
-		var currPivot = pivot.duplicate()
-		currPivot.add_child(carteArray[i])
-		carteArray[i].scale = Vector2(3, 3)
-		carteArray[i].position = Vector2(0, -radius)  # Placed on pivot's radius
 		
-		currPivot.rotation_degrees = angles[i]
-		
-		# Instantiate the pivot and the actual card
-		self.add_child(currPivot)
+	if justDrawn:
+		if tween and tween.is_running():
+			tween.kill()
+		tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+		for i in range(N):
+			var currPivot = pivot.duplicate()
+			currPivot.add_child(carteArray[i])
+			
+			var startingPosition = Vector2(-550,-400)
+			carteArray[i].position = startingPosition
+			#carteArray[i].scale = Vector2(3, 3)
+			var finalPosition = Vector2(0, -radius)  # Placed on pivot's radius
+			
+			tween.parallel().tween_property(carteArray[i], "position", finalPosition, drawingSpeed + (i * 0.075))
+			tween.parallel().tween_property(currPivot, "rotation_degrees", angles[i], drawingSpeed + (i * 0.075))
+			tween.parallel().tween_property(carteArray[i], "scale", Vector2(3, 3), drawingSpeed + (i * 0.075))
+			#currPivot.rotation_degrees = angles[i]
+			
+			# Instantiate the pivot and the actual card
+			self.add_child(currPivot)
+	else:
+		for i in range(N):
+			var currPivot = pivot.duplicate()
+			currPivot.add_child(carteArray[i])
+			carteArray[i].scale = Vector2(3, 3)
+			carteArray[i].position = Vector2(0, -radius)  # Placed on pivot's radius
+			
+			currPivot.rotation_degrees = angles[i]
+			
+			# Instantiate the pivot and the actual card
+			self.add_child(currPivot)
 
 # Function to connect the signals of the cards that are currently in hand to 
 # the hand script (for hovering and clicks).
-func _on_handCardsUpdated(cards : Array[Card]) -> void:
+func _on_handCardsUpdated(cards : Array[Card], justDrawn : bool) -> void:
 	carteArray = cards
 	for card in carteArray:
 		card.cardAreaEntered.connect(_on_cardAreaEntered)
@@ -97,7 +121,7 @@ func _on_handCardsUpdated(cards : Array[Card]) -> void:
 		card.cardSelected.connect(_on_card_clicked)
 		
 		card.inHand = true
-	fanoutCards()
+	fanoutCards(justDrawn)
 
 # Function that was previously in "selezioneCarte"
 # Handling which card is selected and signaling card and value to the connected state
