@@ -21,6 +21,10 @@ signal handCardsUpdated(cards : Array[Card], justDrawn : bool)
 @onready var shuffleSound : AudioStreamPlayer = $"../../ShuffleSound"
 var drawingSpeed = 0.4
 
+# Temporary way to note if we have to play the shuffling sound and animation
+# Will be refactored once state machine is complete
+var isHandStart = false
+
 # Called when the node enters the scene tree for the first time.
 func enter(data : GameData) -> void:
 	print("ciao sono nello stato iniziale")
@@ -37,15 +41,18 @@ func enter(data : GameData) -> void:
 		carteTavolo = deck.drawCard(4, tavolo)
 	if carteMano.is_empty():
 		carteMano = deck.drawCard(3, mano)
+		isHandStart = true
 	
 	# These two signals are super important to emit as soon as cards are updated in
 	# some way (especially after play etc) to make sure that all signals are 
 	# correctly connected between card and hand/table 
 	# (like for clicking visuals)
-	tableCardsUpdated.emit(carteTavolo, true)
-	handCardsUpdated.emit(carteMano, true)
-	#shuffleSound.pitch_scale = 4
-	#shuffleSound.play()
+	tableCardsUpdated.emit(carteTavolo, true)	# True for now but will be refactored later
+	handCardsUpdated.emit(carteMano, isHandStart)
+	
+	if isHandStart:
+		shuffleSound.pitch_scale = 2
+		shuffleSound.play()
 
 	# Connecting signals that handle the update of hand/table cards
 	mano.valManoChanged.connect(_on_mano_valManoChanged)
