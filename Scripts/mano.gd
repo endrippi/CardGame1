@@ -1,7 +1,8 @@
 extends Marker2D
 
 var carteArray
-@onready var selectionState = $"../StateMachine/SelezioneCarte"
+@onready var selectionState: Node = $"../StateMachine/SelezioneCarte"
+
 @export var fan_angle : float = 25
 @onready var pivot : Node2D = $CardPivot
 var radius := 300.0  # distance from pivot to card center
@@ -40,6 +41,7 @@ func fanoutCards() -> void:
 		self.add_child(currPivot)
 	
 func _on_handCardsUpdated(cards : Array[Card]) -> void:
+	print("Segnale ricevuto")
 	carteArray = cards
 	for card in carteArray:
 		card.cardAreaEntered.connect(_on_cardAreaEntered)

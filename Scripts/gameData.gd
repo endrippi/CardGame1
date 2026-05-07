@@ -3,9 +3,9 @@ class_name GameData extends Node
 
 
 
-@export var mano : Marker2D
-@export var tavolo : Marker2D
-@export var deck : Deck
+#@export var mano : Marker2D
+#@export var tavolo : Marker2D
+#@export var deck : Deck
 
 @onready var carteMano : Array[Card]
 @onready var carteTavolo : Array[Card]

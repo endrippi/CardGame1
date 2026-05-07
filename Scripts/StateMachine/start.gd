@@ -3,9 +3,12 @@ extends State
 @export var mano : Marker2D
 @export var tavolo : Marker2D
 @export var deck : Deck
+@onready var uiManager: UiManager = $"../../UiManager"
 
 @onready var carteMano : Array[Card]
 @onready var carteTavolo : Array[Card]
+@onready var gameData: GameData = $"../../GameData"
+
 
 var selectedHandCard : Card
 var selectedTableCards: Array[Card]
@@ -21,9 +24,9 @@ signal handCardsUpdated(cards : Array[Card])
 # Called when the node enters the scene tree for the first time.
 func enter(data : GameData) -> void:
 	print("ciao sono nello stato iniziale")
-	mano = data.mano
-	tavolo = data.tavolo
-	deck = data.deck
+	#mano = data.mano
+	#tavolo = data.tavolo
+	#deck = data.deck
 	carteMano = data.carteMano
 	carteTavolo = data.carteTavolo
 	selectedHandCard = data.selectedHandCard
@@ -31,12 +34,16 @@ func enter(data : GameData) -> void:
 	currentTableSum = data.currentTableSum
 	
 	if carteTavolo.is_empty():
-		carteTavolo = deck.drawCard(10, tavolo)
+		carteTavolo = deck.drawCard(4, tavolo)
 	if carteMano.is_empty():
 		carteMano = deck.drawCard(3, mano)
+		print(carteMano)
+	
+	#updateGameData(gameData)
+	gameData.carteMano = carteMano
 	
 	tableCardsUpdated.emit(carteTavolo)
-	handCardsUpdated.emit(carteMano)
+	handCardsUpdated.emit.call_deferred(carteMano)
 	
 	for carta in carteMano:
 		carta.cardSelected.connect(_on_card_hand_clicked)
@@ -84,18 +91,18 @@ func _on_card_hand_clicked(card : Card) -> void:
 			print("Clickata ", selectedHandCard.value, " di papapapa")
 			valMano.text = str(selectedHandCard.value)
 		selectedHandCard.selected = true
-	updateHandVisuals()
+	uiManager.updateHandVisuals()
 	
+func updateGameData(data : GameData) -> void:
+	#data.mano = mano
+	#data.tavolo = tavolo
+	#data.deck = deck
+	data.carteMano = carteMano
+	data.carteTavolo = carteTavolo
+	data.selectedHandCard = selectedHandCard
+	data.selectedTableCards = selectedTableCards
+	data.currentTableSum = currentTableSum
 
-
-func updateHandVisuals() -> void:
-	for carta in carteMano:
-		carta.updateCardVisual()
-		
-func updateTableVisuals() -> void:
-	for carta in carteTavolo:
-		carta.updateCardVisual()
-		
 		
 func exit(data : GameData) -> void:
 	for carta in carteTavolo:
@@ -106,14 +113,7 @@ func exit(data : GameData) -> void:
 		if carta.cardSelected.is_connected(_on_card_hand_clicked):
 			carta.cardSelected.disconnect(_on_card_hand_clicked)
 		carta.selected = false
-	updateHandVisuals()
-	updateTableVisuals()
+	uiManager.updateHandVisuals()
+	uiManager.updateTableVisuals()
+	updateGameData(gameData)
 	
-	data.mano = mano
-	data.tavolo = tavolo
-	data.deck = deck
-	data.carteMano = carteMano
-	data.carteTavolo = carteTavolo
-	data.selectedHandCard = selectedHandCard
-	data.selectedTableCards = selectedTableCards
-	data.currentTableSum = currentTableSum
