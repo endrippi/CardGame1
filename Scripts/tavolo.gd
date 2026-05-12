@@ -14,9 +14,6 @@ func _ready() -> void:
 	
 # Position cards on the table.
 func positionCards() -> void:
-	uiManager.clearTableVisuals()
-	
-	
 	var i = 1
 	var offset_x : float = (spazioCarteTavolo-110)/carteArray.size()
 	
@@ -32,8 +29,9 @@ func positionCards() -> void:
 
 # On signal _on_tableCardsUpdated, updates current cards in table and later updates visuals.
 func _on_tableCardsUpdated(cards : Array[Card]) -> void:
+	print("Segnale di update ricevuto")
 	carteArray = cards 
 	for card in carteArray:
 		card.inHand = false
-	#print("carteArrray da tavolo dopo segnale: ", carteArray)
+	print("carteArray da tavolo dopo segnale: ", carteArray)
 	positionCards()

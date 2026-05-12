@@ -14,6 +14,7 @@ class_name UiManager extends Node
 @onready var labelCardsDiscard: Label = %labelCardsDiscard
 @onready var playButton: Button = %PlayButton
 @onready var sfocatura: ColorRect = %sfocatura
+@onready var placeOnTableButton: Button = $"../placeOnTableButton"
 
 
 
@@ -22,10 +23,6 @@ class_name UiManager extends Node
 func _ready() -> void:
 	pass
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 
 func updatePoints() -> void:
@@ -47,6 +44,7 @@ func enableDiscardMode(val : bool) -> void:
 	undoDiscardButton.visible = val
 	confirmDiscardButton.visible = val
 	labelCardsDiscard.visible = val
+	placeOnTableButton.visible = !val
 
 func clearTableVisuals() -> void:
 	for child in get_children():
@@ -59,3 +57,6 @@ func _on_discard_pressed() -> void:
 
 func _on_undo_discard_pressed() -> void:
 	enableDiscardMode(false)
+
+func hideDiscard(val : bool) -> void:
+	discardButton.visible = val

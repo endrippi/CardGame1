@@ -23,7 +23,7 @@ func enter(data : GameData) -> void:
 	if data.selectedHandCard.value == data.currentTableSum:
 		print("Combinazione giusta")
 		# Punti
-		data.totalPoints += data.currentTableSum
+		data.totalPoints += data.currentTableSum + data.selectedHandCard.value
 		numeroPunti.text = str(data.totalPoints)
 
 		# Rimuove carte tavolo
@@ -46,6 +46,7 @@ func enter(data : GameData) -> void:
 		data.currentTableSum = 0
 		uiManager.updateTableVisuals()
 		shouldGoBack = true
+
 
 func update(_delta: float) -> void:
 	if shouldGoBack:

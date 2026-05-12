@@ -37,18 +37,20 @@ func _on_undo_discard_pressed() -> void:
 
 func _on_confirm_discard_pressed() -> void:
 	var sz : int = selectedHandCards.size()
+	if sz == 0:
+		return
+
 	for card in selectedHandCards:
 		discardCard(card, gameData)
 
 	selectedHandCards.clear()
-
 	uiManager.enableDiscardMode(false)
-
 	var newCards = gameData.deck.drawCard(sz, gameData.mano)
-
 	gameData.carteMano.append_array(newCards)
+	gameData.scartiDisponibili -=1
 	
-	#handCardsUpdated.emit(gameData.carteMano)
+	if gameData.scartiDisponibili <= 0:
+		uiManager.discardButton.visible = false
 	
 	transitioned.emit(self, "SelezioneCarte")
 	

@@ -18,16 +18,19 @@ signal tableCardsUpdated(cards : Array[Card])
 signal handCardsUpdated(cards : Array[Card])
 
 @onready var valTavolo: Label = $"../../DebugValoreTavolo"
-
+@onready var discard: Button = %discard
 @onready var valMano: Label = $"../../DebugValoreMano"
 
 var canDiscard : bool = true
+var handEmpty : bool = false
 
 # Called when the node enters the scene tree for the first time.
 func enter(data : GameData) -> void:
 	print("ciao sono nello stato iniziale")
-	#mano = data.mano
-	#tavolo = data.tavolo
+	if data.mano:
+		mano = data.mano
+	if data.tavolo:
+		tavolo = data.tavolo
 	deck = data.deck
 	carteMano = data.carteMano
 	carteTavolo = data.carteTavolo
@@ -40,8 +43,8 @@ func enter(data : GameData) -> void:
 	if carteMano.is_empty():
 		carteMano = gameData.deck.drawCard(3, data.mano)
 		print(carteMano)
-	
-	#updateGameData(gameData)
+
+	updateGameData(gameData)
 	gameData.carteMano = carteMano
 	
 	tableCardsUpdated.emit(carteTavolo)
@@ -122,3 +125,45 @@ func exit(data : GameData) -> void:
 
 func _on_discard_pressed() -> void:
 	transitioned.emit(self, "Scarto")
+
+
+
+
+func placeCardOnTable(card : Card) -> void:
+
+	gameData.carteMano.erase(card)
+	gameData.carteTavolo.append(card)
+
+	card.selected = false
+	card.inHand = false
+
+	card.scale = Vector2(2,2)
+
+	card.rotation = 0
+
+	gameData.selectedHandCard = null
+	selectedHandCard = null
+	card.cardSelected.disconnect(_on_card_hand_clicked)
+	card.cardSelected.connect(_on_card_table_clicked)
+	
+	# Rimuove dal pivot della mano
+	if card.get_parent():
+		card.get_parent().remove_child(card)
+	
+	gameData.carteRimaste -= 1
+	
+	print("Ecco l'array prima della chiamata al segnale ", gameData.carteTavolo)
+	# Aggiorna layout
+	tableCardsUpdated.emit(gameData.carteTavolo)
+	handCardsUpdated.emit(gameData.carteMano)
+	uiManager.updateTableVisuals()
+	uiManager.updateHandVisuals()
+
+
+func _on_place_on_table_button_pressed() -> void:
+	if selectedHandCard:
+		placeCardOnTable(selectedHandCard)
+		
+
+func refreshHand() -> void:
+	gameData.deck.drawCard(3, gameData.mano)

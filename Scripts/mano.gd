@@ -1,6 +1,6 @@
 extends Marker2D
 
-var carteArray
+var carteArray : Array[Card]
 @onready var selectionState: Node = $"../StateMachine/SelezioneCarte"
 
 @export var fan_angle : float = 25

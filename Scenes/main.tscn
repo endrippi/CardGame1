@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://b45o4s6ijk315" path="res://Scripts/gameData.gd" id="2_hptm8"]
 [ext_resource type="Script" uid="uid://byhtiltp2wtjk" path="res://Scenes/hands_counter.gd" id="2_jkdf5"]
 [ext_resource type="PackedScene" uid="uid://2refwwm0j7qp" path="res://Scenes/deck.tscn" id="3_8gbba"]
+[ext_resource type="Script" uid="uid://bxkxakiwbj2u8" path="res://Scenes/discardsLabel.gd" id="3_wsu2k"]
 [ext_resource type="Script" uid="uid://b3mhnqrn8cu22" path="res://Scripts/mano.gd" id="4_kry3j"]
 [ext_resource type="Script" uid="uid://b2pjw02pn32h3" path="res://Scripts/tavolo.gd" id="5_21xkr"]
 [ext_resource type="Script" uid="uid://d12r31mfklfpa" path="res://Scripts/StateMachine/start.gd" id="5_344ge"]
@@ -14,6 +15,10 @@
 [ext_resource type="AudioStream" uid="uid://1yo888ayttkv" path="res://Assets/Sound/Cardtone.mp3" id="9_ynf5e"]
 [ext_resource type="Script" uid="uid://by5ook3t8dtk6" path="res://Scripts/StateMachine/scarto.gd" id="10_fdnlq"]
 [ext_resource type="Script" uid="uid://5eb6n7a8rvut" path="res://Scripts/ui_manager.gd" id="12_6iyac"]
+[ext_resource type="Script" uid="uid://ct4wqj3ltogqq" path="res://Scenes/sconfitta.gd" id="13_h1bgf"]
+[ext_resource type="Script" uid="uid://b01amloy5ykfq" path="res://Scenes/vittoria.gd" id="14_h1bgf"]
+[ext_resource type="Script" uid="uid://f2k5ta251v2q" path="res://Scenes/target.gd" id="16_b3802"]
+[ext_resource type="Script" uid="uid://bla8gh5k8h4rh" path="res://Scenes/label.gd" id="19_fevyy"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_344ge"]
 font_color = Color(0, 0, 0, 1)
@@ -33,6 +38,9 @@ font_size = 30
 
 [sub_resource type="LabelSettings" id="LabelSettings_jkdf5"]
 font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_hibaj"]
+font_size = 25
 
 [node name="Main" type="Node2D" unique_id=1476234443]
 script = ExtResource("1_jjvhh")
@@ -62,6 +70,7 @@ offset_right = 278.0
 offset_bottom = 414.0
 text = "Discards : 0
 "
+script = ExtResource("3_wsu2k")
 
 [node name="GameData" type="Node" parent="." unique_id=746342371 node_paths=PackedStringArray("mano", "tavolo", "deck")]
 script = ExtResource("2_hptm8")
@@ -112,6 +121,14 @@ metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 
 [node name="Scarto" type="Node" parent="StateMachine" unique_id=686930959]
 script = ExtResource("10_fdnlq")
+metadata/_custom_type_script = "uid://fm5pmuxg1t41"
+
+[node name="Sconfitta" type="Node" parent="StateMachine" unique_id=692983190]
+script = ExtResource("13_h1bgf")
+metadata/_custom_type_script = "uid://fm5pmuxg1t41"
+
+[node name="Vittoria" type="Node" parent="StateMachine" unique_id=665810551]
+script = ExtResource("14_h1bgf")
 metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 
 [node name="Polygon2D" type="Polygon2D" parent="." unique_id=424945385]
@@ -191,6 +208,7 @@ offset_right = 126.0
 offset_bottom = 132.0
 text = "100"
 label_settings = SubResource("LabelSettings_fdnlq")
+script = ExtResource("16_b3802")
 
 [node name="Label" type="Label" parent="Target" unique_id=1497851860]
 unique_name_in_owner = true
@@ -266,9 +284,26 @@ offset_right = 806.0
 offset_bottom = 429.0
 text = "Pick cards to discard"
 
+[node name="placeOnTableButton" type="Button" parent="." unique_id=431266765]
+offset_left = 668.0
+offset_top = 372.0
+offset_right = 838.0
+offset_bottom = 414.0
+text = "Place card on table"
+
+[node name="counterCarteMano" type="Label" parent="." unique_id=1898004316]
+offset_left = 1188.0
+offset_top = 559.0
+offset_right = 1242.0
+offset_bottom = 594.0
+text = "0/0"
+label_settings = SubResource("LabelSettings_hibaj")
+script = ExtResource("19_fevyy")
+
 [connection signal="pressed" from="PlayButton" to="StateMachine/SelezioneCarte" method="_on_play_button_pressed"]
 [connection signal="pressed" from="discard" to="StateMachine/SelezioneCarte" method="_on_discard_pressed"]
 [connection signal="pressed" from="discard" to="UiManager" method="_on_discard_pressed"]
-[connection signal="pressed" from="UndoDiscard" to="UiManager" method="_on_undo_discard_pressed"]
 [connection signal="pressed" from="UndoDiscard" to="StateMachine/Scarto" method="_on_undo_discard_pressed"]
+[connection signal="pressed" from="UndoDiscard" to="UiManager" method="_on_undo_discard_pressed"]
 [connection signal="pressed" from="ConfirmDiscard" to="StateMachine/Scarto" method="_on_confirm_discard_pressed"]
+[connection signal="pressed" from="placeOnTableButton" to="StateMachine/SelezioneCarte" method="_on_place_on_table_button_pressed"]

@@ -17,6 +17,9 @@ var totalPoints: int = 0
 
 var spazioCarteTavolo : int = 662
 
+var manoIniziata : bool = false
+var carteRimaste : int = 3
+
 @export var targetPunti : int = 80
 @export var maniDisponibili : int = 4
 @export var scartiDisponibili: int = 3
