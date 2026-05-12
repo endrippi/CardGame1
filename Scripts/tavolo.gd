@@ -4,6 +4,7 @@ var carteArray
 @onready var selectionState = $"../StateMachine/SelezioneCarte"
 @onready var gameData: GameData = $"../GameData"
 var spazioCarteTavolo : int = 0
+@onready var uiManager: UiManager = $"../UiManager"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -13,6 +14,9 @@ func _ready() -> void:
 	
 # Position cards on the table.
 func positionCards() -> void:
+	uiManager.clearTableVisuals()
+	
+	
 	var i = 1
 	var offset_x : float = (spazioCarteTavolo-110)/carteArray.size()
 	

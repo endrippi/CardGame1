@@ -21,12 +21,14 @@ signal handCardsUpdated(cards : Array[Card])
 
 @onready var valMano: Label = $"../../DebugValoreMano"
 
+var canDiscard : bool = true
+
 # Called when the node enters the scene tree for the first time.
 func enter(data : GameData) -> void:
 	print("ciao sono nello stato iniziale")
 	#mano = data.mano
 	#tavolo = data.tavolo
-	#deck = data.deck
+	deck = data.deck
 	carteMano = data.carteMano
 	carteTavolo = data.carteTavolo
 	selectedHandCard = data.selectedHandCard
@@ -34,9 +36,9 @@ func enter(data : GameData) -> void:
 	currentTableSum = data.currentTableSum
 	
 	if carteTavolo.is_empty():
-		carteTavolo = deck.drawCard(4, tavolo)
+		carteTavolo = gameData.deck.drawCard(4, data.tavolo)
 	if carteMano.is_empty():
-		carteMano = deck.drawCard(3, mano)
+		carteMano = gameData.deck.drawCard(3, data.mano)
 		print(carteMano)
 	
 	#updateGameData(gameData)
@@ -51,8 +53,6 @@ func enter(data : GameData) -> void:
 		carta.cardSelected.connect(_on_card_table_clicked)
 	
 
-#func update(_delta: float) -> void:
-#	pass
 
 
 func _on_play_button_pressed() -> void:
@@ -94,16 +94,17 @@ func _on_card_hand_clicked(card : Card) -> void:
 	uiManager.updateHandVisuals()
 	
 func updateGameData(data : GameData) -> void:
-	#data.mano = mano
-	#data.tavolo = tavolo
-	#data.deck = deck
+	data.mano = mano
+	data.tavolo = tavolo
+	data.deck = deck
 	data.carteMano = carteMano
 	data.carteTavolo = carteTavolo
 	data.selectedHandCard = selectedHandCard
 	data.selectedTableCards = selectedTableCards
 	data.currentTableSum = currentTableSum
 
-		
+
+
 func exit(data : GameData) -> void:
 	for carta in carteTavolo:
 		if carta.cardSelected.is_connected(_on_card_table_clicked):
@@ -117,3 +118,7 @@ func exit(data : GameData) -> void:
 	uiManager.updateTableVisuals()
 	updateGameData(gameData)
 	
+
+
+func _on_discard_pressed() -> void:
+	transitioned.emit(self, "Scarto")

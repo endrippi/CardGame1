@@ -3,9 +3,9 @@ class_name GameData extends Node
 
 
 
-#@export var mano : Marker2D
-#@export var tavolo : Marker2D
-#@export var deck : Deck
+@export var mano : Marker2D
+@export var tavolo : Marker2D
+@export var deck : Deck
 
 @onready var carteMano : Array[Card]
 @onready var carteTavolo : Array[Card]
@@ -16,3 +16,7 @@ var currentTableSum : int = 0
 var totalPoints: int = 0
 
 var spazioCarteTavolo : int = 662
+
+@export var targetPunti : int = 80
+@export var maniDisponibili : int = 4
+@export var scartiDisponibili: int = 3

@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://bhwanv608gnhw" path="res://Scripts/StateMachine/StateMachine.gd" id="1_8gbba"]
 [ext_resource type="Script" uid="uid://r0hhmgyvhs8s" path="res://Scripts/main.gd" id="1_jjvhh"]
 [ext_resource type="Script" uid="uid://b45o4s6ijk315" path="res://Scripts/gameData.gd" id="2_hptm8"]
-[ext_resource type="Script" uid="uid://byhtiltp2wtjk" path="res://Scenes/hands_counter.gd" id="2_jkdf5"]
 [ext_resource type="PackedScene" uid="uid://2refwwm0j7qp" path="res://Scenes/deck.tscn" id="3_8gbba"]
 [ext_resource type="Script" uid="uid://b3mhnqrn8cu22" path="res://Scripts/mano.gd" id="4_kry3j"]
 [ext_resource type="Script" uid="uid://b2pjw02pn32h3" path="res://Scripts/tavolo.gd" id="5_21xkr"]
@@ -52,7 +51,6 @@ offset_right = 278.0
 offset_bottom = 372.0
 text = "Hands : 0
 "
-script = ExtResource("2_jkdf5")
 
 [node name="Discards" type="Label" parent="." unique_id=1595919175]
 unique_name_in_owner = true

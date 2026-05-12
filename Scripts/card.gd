@@ -68,7 +68,7 @@ func updateCardVisual() -> void:
 			#selected = false
 	# if in hand then we raise them but depending on their current radius (done by mano.gd)
 	else:
-		print("This is card ", value, " which has been clicked.")
+		#print("This is card ", value, " which has been clicked.")
 		if not selected:
 			cardInHandToLower.emit(self)
 		elif selected:

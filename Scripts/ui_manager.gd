@@ -48,6 +48,10 @@ func enableDiscardMode(val : bool) -> void:
 	confirmDiscardButton.visible = val
 	labelCardsDiscard.visible = val
 
+func clearTableVisuals() -> void:
+	for child in get_children():
+		if child is Card:
+			remove_child(child)
 
 func _on_discard_pressed() -> void:
 	enableDiscardMode(true)

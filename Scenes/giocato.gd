@@ -1,26 +1,54 @@
 extends State
 
-@onready var numLabel: Label = $"../../SegnaPunti/num"
+@onready var numeroPunti: Label = %numeroPunti
 var shouldGoBack : bool = false
+var canGoForward : bool = false
+@onready var uiManager: UiManager = $"../../UiManager"
 
-# Called when the node enters the scene tree for the first time.
 func enter(data : GameData) -> void:
-	print("ciao sono nello stato Giocato") # Replace with function body.
-	print("Mano di ", data.selectedHandCard.value, " con somma di tavolo di ", data.currentTableSum)
-	if data.selectedHandCard.value == data.currentTableSum: #Fatto bene
-		data.totalPoints += data.selectedHandCard.value + data.currentTableSum
-		numLabel.text = str(data.totalPoints)
-		print("Ciaooo")
-		shouldGoBack = false
-	else:
-		shouldGoBack = true
-		data.currentTableSum = 0
+	print("ciao sono nello stato Giocato")
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+	if data.selectedHandCard == null:
+		transitioned.emit(self, "SelezioneCarte")
+		return
+
+	print(
+		"Mano di ",
+		data.selectedHandCard.value,
+		" con somma di tavolo di ",
+		data.currentTableSum
+	)
+
+	# COMBINAZIONE CORRETTA
+	if data.selectedHandCard.value == data.currentTableSum:
+		print("Combinazione giusta")
+		# Punti
+		data.totalPoints += data.currentTableSum
+		numeroPunti.text = str(data.totalPoints)
+
+		# Rimuove carte tavolo
+		for card in data.selectedTableCards:
+			data.carteTavolo.erase(card)
+			card.queue_free()
+			
+		# Rimuove carta mano
+		data.carteMano.erase(data.selectedHandCard)
+		data.selectedHandCard.queue_free()
+
+		# Reset selezioni
+		data.selectedTableCards.clear()
+
+		data.selectedHandCard = null
+
+		data.currentTableSum = 0
+		canGoForward = true
+	else:
+		data.currentTableSum = 0
+		uiManager.updateTableVisuals()
+		shouldGoBack = true
+
 func update(_delta: float) -> void:
 	if shouldGoBack:
-		transitioned.emit(self, "selezionecarte")
-
-
-func exit(data : GameData) -> void:
-	pass
+		transitioned.emit(self, "SelezioneCarte")
+	if canGoForward:
+		transitioned.emit(self, "Fine")

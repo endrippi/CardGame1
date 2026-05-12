@@ -9,21 +9,23 @@ extends Node2D
 var i : int = 0
 
 signal cardAdded(card : Card)
+signal deckEmptied()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	carte.shuffle()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 
 func drawCard(num : int, spazio : Marker2D) -> Array[Card]:
 	#var offset_x : int = 130
 	
 	var cardsDrawn : Array[Card]
+	
+	if num > carte.size():
+		print("Troppe poche carte!")
+		num = carte.size()
 	
 	if carte.is_empty():
 		print("Vuoto!")
