@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://b01amloy5ykfq" path="res://Scenes/vittoria.gd" id="14_h1bgf"]
 [ext_resource type="Script" uid="uid://f2k5ta251v2q" path="res://Scenes/target.gd" id="16_b3802"]
 [ext_resource type="Script" uid="uid://bla8gh5k8h4rh" path="res://Scenes/label.gd" id="19_fevyy"]
+[ext_resource type="Script" uid="uid://bohmggogv464r" path="res://Scripts/animationManager.gd" id="19_hibaj"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_344ge"]
 font_color = Color(0, 0, 0, 1)
@@ -73,6 +74,7 @@ text = "Discards : 0
 script = ExtResource("3_wsu2k")
 
 [node name="GameData" type="Node" parent="." unique_id=746342371 node_paths=PackedStringArray("mano", "tavolo", "deck")]
+unique_name_in_owner = true
 script = ExtResource("2_hptm8")
 mano = NodePath("../mano")
 tavolo = NodePath("../tavolo")
@@ -258,6 +260,10 @@ position = Vector2(3, 264)
 [node name="UiManager" type="Node" parent="." unique_id=1122069883]
 script = ExtResource("12_6iyac")
 metadata/_custom_type_script = "uid://5eb6n7a8rvut"
+
+[node name="AnimationManager" type="Node" parent="." unique_id=834772117]
+unique_name_in_owner = true
+script = ExtResource("19_hibaj")
 
 [node name="labelCardsDiscard" type="Label" parent="." unique_id=1488117215]
 unique_name_in_owner = true

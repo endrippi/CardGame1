@@ -7,6 +7,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0qqmn"]
 size = Vector2(55, 80)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_brehn"]
+size = Vector2(55, 80)
+
 [node name="Card" type="Node2D" unique_id=570757034]
 scale = Vector2(2, 2)
 script = ExtResource("1_wf8id")
@@ -15,11 +18,20 @@ script = ExtResource("1_wf8id")
 texture = ExtResource("1_0qqmn")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=845082699]
-script = ExtResource("3_brehn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1280318576]
 shape = SubResource("RectangleShape2D_0qqmn")
 
-[connection signal="card_clicked" from="Area2D" to="." method="_on_area_2d_card_clicked"]
+[node name="ClickableArea2D" type="Area2D" parent="." unique_id=1813834559]
+script = ExtResource("3_brehn")
+
+[node name="CollisionShape2DClickable" type="CollisionShape2D" parent="ClickableArea2D" unique_id=387297283]
+shape = SubResource("RectangleShape2D_brehn")
+
+[node name="HoveringSound" type="AudioStreamPlayer" parent="." unique_id=500890650]
+
+[node name="ClickingSound" type="AudioStreamPlayer" parent="." unique_id=360462420]
+
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
+[connection signal="card_clicked" from="ClickableArea2D" to="." method="_on_clickable_area_2d_card_clicked"]

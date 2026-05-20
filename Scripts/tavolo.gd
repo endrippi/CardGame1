@@ -6,11 +6,23 @@ var carteArray
 var spazioCarteTavolo : int = 0
 @onready var uiManager: UiManager = $"../UiManager"
 
+# Animation stuff!
+@onready var animationManager = %AnimationManager
+var time : float = 0.0
+var sineOffsetMult : float = 0.005		# How much to emphasize the sine curve when card still.
+var cosineOffsetMult  : float = 0.00005
+@export var timeMultiplier : float = 2.0
+var tween : Tween
+@export var drawingSpeed : float = 0.4
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	selectionState.tableCardsUpdated.connect(_on_tableCardsUpdated)
 	spazioCarteTavolo = gameData.spazioCarteTavolo
 	pass
+	
+func _process(delta):
+	time = animationManager.animateCardRow(false, delta, time, sineOffsetMult, cosineOffsetMult, timeMultiplier)
 	
 # Position cards on the table.
 func positionCards() -> void:
