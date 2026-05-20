@@ -12,6 +12,7 @@ func enter(data : GameData) -> void:
 	if data.carteRimaste <= 0:
 		data.maniDisponibili -= 1
 		data.carteRimaste = 3
+		data.carteMano = data.deck.drawCard(3, data.mano)
 	if data.totalPoints >= data.targetPunti:
 		hasWon = true
 		win()

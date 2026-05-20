@@ -38,11 +38,11 @@ func enter(data : GameData) -> void:
 	selectedTableCards = data.selectedTableCards
 	currentTableSum = data.currentTableSum
 	
-	if carteTavolo.is_empty():
+	if carteTavolo.is_empty() and !data.partitaIniziata:
 		carteTavolo = gameData.deck.drawCard(4, data.tavolo)
+		data.partitaIniziata = true
 	if carteMano.is_empty():
 		carteMano = gameData.deck.drawCard(3, data.mano)
-		print(carteMano)
 
 	updateGameData(gameData)
 	gameData.carteMano = carteMano
@@ -151,6 +151,9 @@ func placeCardOnTable(card : Card) -> void:
 		card.get_parent().remove_child(card)
 	
 	gameData.carteRimaste -= 1
+	if gameData.carteRimaste <= 0:
+		refreshHand()
+		gameData.carteRimaste = 3
 	
 	print("Ecco l'array prima della chiamata al segnale ", gameData.carteTavolo)
 	# Aggiorna layout
@@ -166,4 +169,23 @@ func _on_place_on_table_button_pressed() -> void:
 		
 
 func refreshHand() -> void:
-	gameData.deck.drawCard(3, gameData.mano)
+	# Scala le mani disponibili (se le regole del tuo gioco lo prevedono)
+	gameData.maniDisponibili -= 1
+	
+	# Se le mani sono finite, potresti voler gestire la fine della partita qui
+	if gameData.maniDisponibili <= 0:
+		transitioned.emit(self, "Sconfitta") # O lo stato di game over appropriato
+		return
+
+	# 1. Pesca e salva le nuove carte
+	var nuoveCarte = gameData.deck.drawCard(3, gameData.mano)
+	gameData.carteMano.append_array(nuoveCarte)
+	carteMano = gameData.carteMano
+	
+	# 2. Connetti i segnali
+	for carta in nuoveCarte:
+		if not carta.cardSelected.is_connected(_on_card_hand_clicked):
+			carta.cardSelected.connect(_on_card_hand_clicked)
+	
+	# 3. Notifica la Ui
+	handCardsUpdated.emit.call_deferred(gameData.carteMano)
