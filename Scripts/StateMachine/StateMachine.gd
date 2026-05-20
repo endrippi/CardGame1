@@ -17,7 +17,7 @@ func _ready() -> void:
 			print("Added ",child.name," to dictionary")
 	
 	if initial_state:
-		initial_state.enter(gameData)
+		initial_state.enter(gameData, current_state)
 		current_state = initial_state
 
 func on_child_transition(state : State, new_state_name : String):
@@ -30,7 +30,7 @@ func on_child_transition(state : State, new_state_name : String):
 	if current_state:
 		current_state.exit(gameData)
 		
-	new_state.enter(gameData)
+	new_state.enter(gameData, state)
 	current_state = new_state
 		
 
@@ -51,6 +51,6 @@ func change_state(new_state_name: String) -> void:
 	if current_state:
 		current_state.exit(gameData)
 	
-	new_state.enter(gameData)
+	new_state.enter(gameData, current_state)
 	
 	current_state = new_state

@@ -41,7 +41,7 @@ func positionCards() -> void:
 
 # On signal _on_tableCardsUpdated, updates current cards in table and later updates visuals.
 func _on_tableCardsUpdated(cards : Array[Card]) -> void:
-	print("Segnale di update ricevuto")
+	print("Segnale di TABLE UPDATE ricevuto")
 	carteArray = cards 
 	for card in carteArray:
 		card.inHand = false

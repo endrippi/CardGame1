@@ -5,7 +5,7 @@ var selectedHandCards : Array[Card]
 @onready var gameData: GameData = $"../../GameData"
 
 
-func enter(data : GameData) -> void:
+func enter(data : GameData, previousState : State) -> void:
 	print("Sono nello scarto")
 	for card in data.carteMano:
 		card.cardSelected.connect(_on_card_hand_clicked)

@@ -5,7 +5,7 @@ var shouldGoBack : bool = false
 var canGoForward : bool = false
 @onready var uiManager: UiManager = $"../../UiManager"
 
-func enter(data : GameData) -> void:
+func enter(data : GameData, previousState : State) -> void:
 	print("ciao sono nello stato Giocato")
 
 	if data.selectedHandCard == null:

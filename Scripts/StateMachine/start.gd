@@ -9,13 +9,13 @@ extends State
 @onready var carteTavolo : Array[Card]
 @onready var gameData: GameData = $"../../GameData"
 
-
 var selectedHandCard : Card
 var selectedTableCards: Array[Card]
 var currentTableSum : int = 0
 
 signal tableCardsUpdated(cards : Array[Card])
 signal handCardsUpdated(cards : Array[Card])
+signal handCardsDrawn(cards : Array[Card])
 
 @onready var valTavolo: Label = $"../../DebugValoreTavolo"
 @onready var discard: Button = %discard
@@ -24,8 +24,12 @@ signal handCardsUpdated(cards : Array[Card])
 var canDiscard : bool = true
 var handEmpty : bool = false
 
+@onready var discardState = %Scarto
+
 # Called when the node enters the scene tree for the first time.
-func enter(data : GameData) -> void:
+func enter(data : GameData, previousState : State) -> void:
+	var handWasEmpty = false 
+	
 	print("ciao sono nello stato iniziale")
 	if data.mano:
 		mano = data.mano
@@ -43,12 +47,20 @@ func enter(data : GameData) -> void:
 		data.partitaIniziata = true
 	if carteMano.is_empty():
 		carteMano = gameData.deck.drawCard(3, data.mano)
+		handWasEmpty = true
 
+	print('previous state is ', previousState)
 	updateGameData(gameData)
 	gameData.carteMano = carteMano
 	
 	tableCardsUpdated.emit(carteTavolo)
-	handCardsUpdated.emit.call_deferred(carteMano)
+	if previousState == discardState or handWasEmpty:
+		print("Calling HAND DRAWN")
+		handCardsDrawn.emit.call_deferred(carteMano)
+	else:
+		print("Calling HAND UPDATED")
+		handCardsUpdated.emit.call_deferred(carteMano)
+		
 	
 	for carta in carteMano:
 		carta.cardSelected.connect(_on_card_hand_clicked)

@@ -5,7 +5,7 @@ var state_machine : StateMachine
 @onready var EntityRef = get_parent().get_parent()
 signal transitioned
 
-func enter(data : GameData) -> void:
+func enter(data : GameData, previousState : State) -> void:
 	pass
 
 

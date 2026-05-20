@@ -6,7 +6,7 @@ extends State
 var canReturn : bool = false
 var hasWon :bool = false
 
-func enter(data : GameData) -> void:
+func enter(data : GameData, previousState : State) -> void:
 	print("Ecco la fine!")
 	data.carteRimaste -=1
 	if data.carteRimaste <= 0:

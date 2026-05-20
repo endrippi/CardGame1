@@ -27,6 +27,7 @@ func _process(delta):
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	selectionState.handCardsUpdated.connect(_on_handCardsUpdated)
+	selectionState.handCardsDrawn.connect(_on_handCardsDrawn)
 		
 # Function to get an array of angles for all the cards in hand
 # (so they are evenly spaced automatically).
@@ -64,11 +65,12 @@ func fanoutCards(justDrawn : bool) -> void:
 		angles = getRotationAngles(N, fanAngle)
 		
 	print('angoli: ', angles)
-		
+	
+	if tween and tween.is_running():
+		tween.kill()
+	tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+	
 	if justDrawn:
-		if tween and tween.is_running():
-			tween.kill()
-		tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 		for i in range(N):
 			var currPivot = pivot.duplicate()
 			currPivot.add_child(carteArray[i])
@@ -86,20 +88,26 @@ func fanoutCards(justDrawn : bool) -> void:
 			# Instantiate the pivot and the actual card
 			self.add_child(currPivot)
 	else:
+		print("QUIIIIIIII")
+		# Cards are already instantiated, we just need to change pivot rotation
 		for i in range(N):
-			var currPivot = pivot.duplicate()
-			currPivot.add_child(carteArray[i])
-			carteArray[i].scale = Vector2(3, 3)
-			carteArray[i].position = Vector2(0, -radius)  # Placed on pivot's radius
-			
-			currPivot.rotation_degrees = angles[i]
-			
-			# Instantiate the pivot and the actual card
-			self.add_child(currPivot)
-			print('card parent is ', carteArray[i].get_parent())
+			var currPivot = carteArray[i].get_parent()
+			print("This card's (", carteArray[i].value, ' di ', carteArray[i].suit ,") parent is ", currPivot)
+			tween.parallel().tween_property(currPivot, "rotation_degrees", angles[i], 0.3)
+			#currPivot.rotation_degrees = angles[i]
+
+func _on_handCardsDrawn(cards : Array[Card]) -> void:
+	carteArray = cards
+	for card in carteArray:
+		card.cardAreaEntered.connect(_on_cardAreaEntered)
+		card.cardAreaExited.connect(_on_cardAreaExited)
+		card.cardInHandToRaise.connect(_on_cardInHandToRaise)
+		card.cardInHandToLower.connect(_on_cardInHandToLower)
+		card.inHand = true
+	fanoutCards(true)
 	
 func _on_handCardsUpdated(cards : Array[Card]) -> void:
-	print("Segnale ricevuto")
+	print("ON HANDCARDSUPDATED -> Segnale ricevuto")
 	carteArray = cards
 	for card in carteArray:
 		card.cardAreaEntered.connect(_on_cardAreaEntered)
