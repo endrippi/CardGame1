@@ -1,6 +1,6 @@
 [gd_resource type="Resource" format=3 uid="uid://nnsattaqswl7"]
 
-[ext_resource type="Texture2D" uid="uid://ckks0dcdin735" path="res://Assets/Carte/Spade/2 S.jpg" id="1_kk6eo"]
+[ext_resource type="Texture2D" uid="uid://cn47jw6em2n2i" path="res://Assets/CarteDef/2S.png" id="1_kk6eo"]
 [ext_resource type="Script" uid="uid://36jadl667l56" path="res://Resources/card_data_script.gd" id="2_1a5du"]
 
 [resource]

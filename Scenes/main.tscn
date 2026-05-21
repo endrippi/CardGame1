@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://byhtiltp2wtjk" path="res://Scenes/hands_counter.gd" id="2_jkdf5"]
 [ext_resource type="Texture2D" uid="uid://dhwblr3ig35bd" path="res://Assets/Grafica/background.jpg" id="2_pdsj5"]
 [ext_resource type="PackedScene" uid="uid://2refwwm0j7qp" path="res://Scenes/deck.tscn" id="3_8gbba"]
+[ext_resource type="Texture2D" uid="uid://dft0rphv10w1n" path="res://Assets/Grafica/tavolo_gioco.png" id="3_ee4r6"]
 [ext_resource type="Script" uid="uid://bxkxakiwbj2u8" path="res://Scenes/discardsLabel.gd" id="3_wsu2k"]
 [ext_resource type="Script" uid="uid://b3mhnqrn8cu22" path="res://Scripts/mano.gd" id="4_kry3j"]
 [ext_resource type="Script" uid="uid://b2pjw02pn32h3" path="res://Scripts/tavolo.gd" id="5_21xkr"]
@@ -54,12 +55,12 @@ offset_bottom = 722.0
 texture = ExtResource("2_pdsj5")
 expand_mode = 1
 
-[node name="BackgroundBG" type="ColorRect" parent="." unique_id=1293140110]
+[node name="BackgroundBG" type="TextureRect" parent="." unique_id=412753000]
 offset_right = 1287.0
 offset_bottom = 723.0
 mouse_filter = 2
 mouse_force_pass_scroll_events = false
-color = Color(0.4605137, 0.11264803, 0.0737656, 1)
+texture = ExtResource("3_ee4r6")
 
 [node name="handsCounter" type="Label" parent="." unique_id=1425906806]
 unique_name_in_owner = true

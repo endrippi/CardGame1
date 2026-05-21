@@ -1,6 +1,6 @@
 [gd_resource type="Resource" format=3 uid="uid://cxs44sktxri3m"]
 
-[ext_resource type="Texture2D" uid="uid://0s4b7uish16s" path="res://Assets/Carte/Coppe/4 C.jpg" id="1_eauxq"]
+[ext_resource type="Texture2D" uid="uid://bjxdviqvapkk7" path="res://Assets/CarteDef/4C.png" id="1_eauxq"]
 [ext_resource type="Script" uid="uid://36jadl667l56" path="res://Resources/card_data_script.gd" id="2_mlws6"]
 
 [resource]

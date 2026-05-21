@@ -1,6 +1,6 @@
 [gd_resource type="Resource" format=3 uid="uid://cct1jnho7fqcq"]
 
-[ext_resource type="Texture2D" uid="uid://cncivmc8pssd4" path="res://Assets/Carte/Denari/3 D.jpg" id="1_kjfj2"]
+[ext_resource type="Texture2D" uid="uid://cjylqe868v5ow" path="res://Assets/CarteDef/3D.png" id="1_kjfj2"]
 [ext_resource type="Script" uid="uid://36jadl667l56" path="res://Resources/card_data_script.gd" id="2_bp36c"]
 
 [resource]
