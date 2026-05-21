@@ -66,11 +66,11 @@ func hideDiscard(val : bool) -> void:
 # Shaders are activated for every card on the table that can be picked.
 # CALLED when hand card is selected
 func highlightPlayableCards(combs : Array) -> void:
-	print("Chiamata!")
+	#print("Chiamata!")
 	if game_data.selectedHandCard == null:
 		clearCardShaders()
 		return
-	print("SELECTED HAND CARD È ", game_data.selectedHandCard.value, ' di ', game_data.selectedHandCard.suit)
+	#print("SELECTED HAND CARD È ", game_data.selectedHandCard.value, ' di ', game_data.selectedHandCard.suit)
 	var cards = []
 	currentPlayableCombinations = combs
 	# Get all interested cards
@@ -103,22 +103,22 @@ func updateTableCardShaders() -> void:
 	if game_data.selectedHandCard == null:
 		clearCardShaders()
 		return
-	print("SELECTED HAND CARD È ", game_data.selectedHandCard.value, ' di ', game_data.selectedHandCard.suit)
-	print("Sono qui")
+	#print("SELECTED HAND CARD È ", game_data.selectedHandCard.value, ' di ', game_data.selectedHandCard.suit)
+	#print("Sono qui")
 	var possibleCombs = []
 	var cards = []
 	# First retrieve all playable combinations that feature selected table cards
 	for comb in currentPlayableCombinations:
-		print("Vedendo combinazione ", comb)
+		#print("Vedendo combinazione ", comb)
 		if isSubset(game_data.selectedTableCards, comb):
-			print('Una COMBINAZIONE che ha ancora senso è', comb)
+			#print('Una COMBINAZIONE che ha ancora senso è', comb)
 			possibleCombs.append(comb)
 	# Then get which cards are featured in them
 	for comb in possibleCombs:
 		for card in comb:
 			if card not in cards:
 				cards.append(card) 	
-				print('Quindi una CARTA che ha senso è ', card)	
+				#print('Quindi una CARTA che ha senso è ', card)	
 	# Update all table cards depending on whether they can be played or not
 	for card in game_data.carteTavolo:
 		if card in cards:

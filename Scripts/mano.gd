@@ -64,7 +64,7 @@ func fanoutCards(justDrawn : bool) -> void:
 	else:
 		angles = getRotationAngles(N, fanAngle)
 		
-	print('angoli: ', angles)
+	#print('angoli: ', angles)
 	
 	if tween and tween.is_running():
 		tween.kill()
@@ -88,16 +88,18 @@ func fanoutCards(justDrawn : bool) -> void:
 			# Instantiate the pivot and the actual card
 			self.add_child(currPivot)
 	else:
-		print("QUIIIIIIII")
+		#print("QUIIIIIIII")
 		# Cards are already instantiated, we just need to change pivot rotation
 		for i in range(N):
 			var currPivot = carteArray[i].get_parent()
-			print("This card's (", carteArray[i].value, ' di ', carteArray[i].suit ,") parent is ", currPivot)
+			#print("This card's (", carteArray[i].value, ' di ', carteArray[i].suit ,") parent is ", currPivot)
 			tween.parallel().tween_property(currPivot, "rotation_degrees", angles[i], 0.3)
 			#currPivot.rotation_degrees = angles[i]
 
 func _on_handCardsDrawn(cards : Array[Card]) -> void:
+	print("On hand cards DRAWN")
 	carteArray = cards
+	_printHandCards()
 	for card in carteArray:
 		card.cardAreaEntered.connect(_on_cardAreaEntered)
 		card.cardAreaExited.connect(_on_cardAreaExited)
@@ -107,8 +109,10 @@ func _on_handCardsDrawn(cards : Array[Card]) -> void:
 	fanoutCards(true)
 	
 func _on_handCardsUpdated(cards : Array[Card]) -> void:
-	print("ON HANDCARDSUPDATED -> Segnale ricevuto")
+	#print("ON HANDCARDSUPDATED -> Segnale ricevuto")
+	print("On hand cards UPDATED")
 	carteArray = cards
+	_printHandCards()
 	for card in carteArray:
 		card.cardAreaEntered.connect(_on_cardAreaEntered)
 		card.cardAreaExited.connect(_on_cardAreaExited)
@@ -196,3 +200,11 @@ func updateClickableCards() -> void:
 # Decreasing sort by z-index.
 func _sort_by_z_index(c1, c2):
 	return c1.z_index > c2.z_index
+	
+# Print current hand cards
+func _printHandCards():
+	print("\tCURRENT HAND CARDS:")
+	var i = 1
+	for card in carteArray:
+		print("\t\t", i, '. ', card.value, ' di ', card.suit)
+		i += 1

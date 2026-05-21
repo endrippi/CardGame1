@@ -127,6 +127,7 @@ script = ExtResource("6_ynf5e")
 metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 
 [node name="Fine" type="Node" parent="StateMachine" unique_id=258067131]
+unique_name_in_owner = true
 script = ExtResource("9_fdnlq")
 metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 

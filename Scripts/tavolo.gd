@@ -34,7 +34,7 @@ func positionDrawnCards() -> void:
 	
 	var startingPosition = Vector2(-550,-400)
 	var offset_x : float = (spazioCarteTavolo-110)/carteArray.size()
-	print('offset_x: ', offset_x)
+	#print('offset_x: ', offset_x)
 	
 	for i in range(N):
 		carteArray[i].position = startingPosition
@@ -50,7 +50,7 @@ func positionDrawnCards() -> void:
 		
 # Position cards on the table.
 func positionCards() -> void:
-	print("Positioning cards...")
+	#print("Positioning cards...")
 	
 	if carteArray.is_empty():
 		return
@@ -88,10 +88,10 @@ func positionCards() -> void:
 	for i in range(count):
 		var card = carteArray[i]
 
-		print("CARD from position: ", card.value, " di ", card.suit, " with offset ", offset_x)
+		#print("CARD from position: ", card.value, " di ", card.suit, " with offset ", offset_x)
 
 		var final_position = Vector2(start_x + (i * offset_x), 0)
-		print('final position: ', final_position)
+		#print('final position: ', final_position)
 		card.z_index = i
 
 		tween.parallel().tween_property(card, "position", final_position, 0.3)
@@ -122,11 +122,11 @@ func positionCards() -> void:
 
 # On signal _on_tableCardsUpdated, updates current cards in table and later updates visuals.
 func _on_tableCardsUpdated(cards : Array[Card]) -> void:
-	print("Segnale di TABLE UPDATE ricevuto")
+	#print("Segnale di TABLE UPDATE ricevuto")
 	carteArray = cards 
 	for card in carteArray:
 		card.inHand = false
-	print("carteArray da tavolo dopo segnale: ", carteArray)
+	#print("carteArray da tavolo dopo segnale: ", carteArray)
 	positionCards()
 	
 func _on_tableCardsDrawn(cards : Array[Card]) -> void:
