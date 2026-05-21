@@ -25,3 +25,5 @@ var partitaIniziata : bool = false
 @export var targetPunti : int = 80
 @export var maniDisponibili : int = 4
 @export var scartiDisponibili: int = 3
+
+var selectedHandCardHasPlayableCombinations = false

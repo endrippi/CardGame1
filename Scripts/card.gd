@@ -26,6 +26,11 @@ signal cardInHandToLower(card : Card)
 var tweenHover : Tween
 var tweenRaise : Tween
 
+# Visual aids with shaders
+var highlightShader = preload("res://Shaders/cardSelectable.gdshader")
+var highlightShader2 = preload("res://Shaders/cardSelectable2.gdshader")
+var messyOutlineShader = preload("res://Shaders/outline.gdshader")
+
 # To mark whether the card is on the table or in the hand 
 # (needed for different processing of downscaling and on-hover behaviour)
 var inHand : bool
@@ -98,30 +103,35 @@ func updateCardVisual() -> void:
 		
 		
 func upscaleCard() -> void:
+	
+	var handCardIncreasedScale = Vector2(3.25, 3.25)
+	var tableCardIncreasedScale = Vector2(2.2, 2.2)
 	#print('upscaling')
 	if tweenHover and tweenHover.is_running():
 		tweenHover.kill()
 	# Transition elastic makes the "bouncing" effect, otherwise it just "grows" to the desired size linearly
 	# Ease out looks more like in Balatro
 	tweenHover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
-	var upscaleValue : float = 0.2
 	if inHand:
-		upscaleValue += 0.05
-	tweenHover.tween_property(self, "scale", Vector2(scale.x + upscaleValue, scale.y + upscaleValue), 0.4)
+		tweenHover.tween_property(self, "scale", handCardIncreasedScale, 0.4)
+	else:
+		tweenHover.tween_property(self, "scale", tableCardIncreasedScale, 0.4)
 	#scale.x += 0.10
 	#scale.y += 0.10
 	playHoveringSound()
 
 # Different downscaling, depends on whether the card is in hand or on the table.
 func downscaleCard() -> void:
+	var handCardBaseScale = Vector2(3, 3)
+	var tableCardBaseScale = Vector2(2, 2)
 	if tweenHover and tweenHover.is_running():
 		tweenHover.kill()
 	tweenHover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 	
 	if inHand:
-		tweenHover.tween_property(self, "scale", Vector2(3, 3), 0.4)
+		tweenHover.tween_property(self, "scale", handCardBaseScale, 0.4)
 	else:
-		tweenHover.tween_property(self, "scale", Vector2(2, 2), 0.4)
+		tweenHover.tween_property(self, "scale", tableCardBaseScale, 0.4)
 	
 	"""
 	if inHand:
@@ -155,6 +165,20 @@ func _on_clickable_area_2d_card_clicked(left: bool) -> void:
 		print(value, " di ", suit, " con z index: ", z_index)
 		cardSelected.emit(self)
 		updateCardVisual()
+
+# Activate outline shader that marks card as selectable.
+func activateShader() -> void:
+	var material = ShaderMaterial.new()
+	
+	material.shader = messyOutlineShader
+	material.set_shader_parameter('color', Color('ff00fff4'))
+	material.set_shader_parameter('speed', 4.0)
+	
+	$Sprite2D.material = material
+
+# Deactivate outline shader that marks card as not selectable.
+func deactivateShader() -> void:
+	sprite.material = null
 
 # Play hovering sound picking at random from the two available ones.
 # Also randomly changes the pitch.

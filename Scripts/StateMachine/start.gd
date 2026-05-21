@@ -60,21 +60,18 @@ func enter(data : GameData, previousState : State) -> void:
 	else:
 		print("Calling HAND UPDATED")
 		handCardsUpdated.emit.call_deferred(carteMano)
-		
-	
+
 	for carta in carteMano:
 		carta.cardSelected.connect(_on_card_hand_clicked)
 	for carta in carteTavolo:
 		carta.cardSelected.connect(_on_card_table_clicked)
-	
-
-
 
 func _on_play_button_pressed() -> void:
 	if selectedHandCard != null:
 		transitioned.emit(self, "Giocato")
 
 func _on_card_table_clicked(card : Card):
+	print("Carta tavolo cliccata: ", card.value, ' di ', card.suit)
 	if card.selected == true:
 		selectedTableCards.erase(card)
 		card.selected = false
@@ -84,28 +81,54 @@ func _on_card_table_clicked(card : Card):
 		card.selected = true
 		currentTableSum += card.value
 	card.updateCardVisual()
-	print("Array di size ", selectedTableCards.size(), " con somma: ", currentTableSum)
+	#print("Array di size ", selectedTableCards.size(), " con somma: ", currentTableSum)
 	
 	valTavolo.text = str(currentTableSum)
+	# Update shaders to check which cards can be selected now
+	print("Calling update")
+	uiManager.updateTableCardShaders()
 
 
 func _on_card_hand_clicked(card : Card) -> void:
 	if selectedHandCard == card:
 		card.selected = false
 		selectedHandCard = null
-		print("Deselezionata")
+		#print("Deselezionata")
 		valMano.text = "0"
 	else:
 		if selectedHandCard != null:
 			selectedHandCard.selected = false
 			selectedHandCard = card
-			print("Clickata ", selectedHandCard.value, " di papapapa (cambiando da carta)")
+			#print("Clickata ", selectedHandCard.value, " di papapapa (cambiando da carta)")
 			valMano.text = str(selectedHandCard.value)
 		else:
 			selectedHandCard = card
-			print("Clickata ", selectedHandCard.value, " di papapapa")
+			#print("Clickata ", selectedHandCard.value, " di papapapa")
 			valMano.text = str(selectedHandCard.value)
 		selectedHandCard.selected = true
+	
+	updateGameData(gameData)
+	
+	# VISUAL (ogni volta che viene selezionata una carta della mano)
+	# 1. Calcolo le combinazioni
+	# 2. Da UiManager attivo shader delle carte che si possono prendere
+	if selectedHandCard != null:
+		var combs = getTableCombinations()
+		print('Le combinazioni per il ', selectedHandCard.value, ' di ', selectedHandCard.suit, ' sono: ', combs)
+		#if !combs.is_empty():
+		#	print("Yes combs!")
+		#	gameData.selectedHandCardHasPlayableCombinations = true
+		#	print(gameData.selectedHandCardHasPlayableCombinations)
+		#else:
+		#	print("No combs")
+		#	gameData.selectedHandCardHasPlayableCombinations = false
+		#	print(gameData.selectedHandCardHasPlayableCombinations)
+		#updateGameData(gameData)
+		uiManager.highlightPlayableCards(combs)
+	else:
+		uiManager.clearCardShaders()
+		#uiManager.deactivatePlaceOnTableButton()
+		
 	uiManager.updateHandVisuals()
 	
 func updateGameData(data : GameData) -> void:
@@ -117,8 +140,6 @@ func updateGameData(data : GameData) -> void:
 	data.selectedHandCard = selectedHandCard
 	data.selectedTableCards = selectedTableCards
 	data.currentTableSum = currentTableSum
-
-
 
 func exit(data : GameData) -> void:
 	for carta in carteTavolo:
@@ -133,16 +154,10 @@ func exit(data : GameData) -> void:
 	uiManager.updateTableVisuals()
 	updateGameData(gameData)
 	
-
-
 func _on_discard_pressed() -> void:
 	transitioned.emit(self, "Scarto")
 
-
-
-
 func placeCardOnTable(card : Card) -> void:
-
 	gameData.carteMano.erase(card)
 	gameData.carteTavolo.append(card)
 
@@ -167,18 +182,16 @@ func placeCardOnTable(card : Card) -> void:
 		refreshHand()
 		gameData.carteRimaste = 3
 	
-	print("Ecco l'array prima della chiamata al segnale ", gameData.carteTavolo)
+	#print("Ecco l'array prima della chiamata al segnale ", gameData.carteTavolo)
 	# Aggiorna layout
 	tableCardsUpdated.emit(gameData.carteTavolo)
 	handCardsUpdated.emit(gameData.carteMano)
 	uiManager.updateTableVisuals()
 	uiManager.updateHandVisuals()
 
-
 func _on_place_on_table_button_pressed() -> void:
 	if selectedHandCard:
-		placeCardOnTable(selectedHandCard)
-		
+		placeCardOnTable(selectedHandCard)	
 
 func refreshHand() -> void:
 	# Scala le mani disponibili (se le regole del tuo gioco lo prevedono)
@@ -201,3 +214,36 @@ func refreshHand() -> void:
 	
 	# 3. Notifica la Ui
 	handCardsUpdated.emit.call_deferred(gameData.carteMano)
+
+# Get all the possible combinations of table cards that you can choose to select 
+# from the hand card you selected.
+# Uses recursive helper function.
+func getTableCombinations() -> Array:
+	var target := selectedHandCard.value
+	var totalCards := []		# The subsets of cards that have the right sum
+	var curr := []				# Current subset being built via recursion
+	# Start recursion from first card with sum 0
+	_backtrack_table_combinations(0, 0, curr, totalCards, target)
+	return totalCards
+
+# Helper for backtracking combinations
+func _backtrack_table_combinations(idx: int, currSum: int, curr: Array, totalCards: Array, target: int) -> void:
+	# If the current sum is already the target, add current combination to the total ones
+	if currSum == target:
+		totalCards.append(curr.duplicate(true))
+		return
+	# If sum is bigger, skip
+	if currSum > target:
+		return
+	# If we finished the cards, skip
+	if idx >= carteTavolo.size():
+		return
+
+	# Include current card
+	curr.append(carteTavolo[idx])
+	_backtrack_table_combinations(idx + 1, currSum + carteTavolo[idx].value, curr, totalCards, target)
+	
+	# Remove current card from the array to test branch without it
+	curr.pop_back()	
+	# Exclude current card
+	_backtrack_table_combinations(idx + 1, currSum, curr, totalCards, target)

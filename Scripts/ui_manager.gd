@@ -16,19 +16,17 @@ class_name UiManager extends Node
 @onready var sfocatura: ColorRect = %sfocatura
 @onready var placeOnTableButton: Button = $"../placeOnTableButton"
 
-
+# To temporarily store possible playable table card combinations for shaders.
+var currentPlayableCombinations = []
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
 
-
-
 func updatePoints() -> void:
 	pass
 	
-
 func updateHandVisuals() -> void:
 	for carta in game_data.carteMano:
 		carta.updateCardVisual()
@@ -45,6 +43,10 @@ func enableDiscardMode(val : bool) -> void:
 	confirmDiscardButton.visible = val
 	labelCardsDiscard.visible = val
 	placeOnTableButton.visible = !val
+	
+	# Deactivating shaders for cards on the table which were selectable
+	for card in game_data.carteTavolo:
+		card.deactivateShader()
 
 func clearTableVisuals() -> void:
 	for child in get_children():
@@ -54,9 +56,108 @@ func clearTableVisuals() -> void:
 func _on_discard_pressed() -> void:
 	enableDiscardMode(true)
 
-
 func _on_undo_discard_pressed() -> void:
 	enableDiscardMode(false)
 
 func hideDiscard(val : bool) -> void:
 	discardButton.visible = val
+	
+# Function to activate/deactivate shaders for selectable table cards.
+# Shaders are activated for every card on the table that can be picked.
+func highlightPlayableCards(combs : Array) -> void:
+	print("Chiamata!")
+	if game_data.selectedHandCard == null:
+		clearCardShaders()
+		return
+	print("SELECTED HAND CARD È ", game_data.selectedHandCard.value, ' di ', game_data.selectedHandCard.suit)
+	var cards = []
+	currentPlayableCombinations = combs
+	# Get all interested cards
+	for comb in combs:
+		for card in comb:
+			if card not in cards:
+				#print('Aggiungo ', card.value, ' di ', card.suit)
+				cards.append(card)
+				
+	# Update all table cards depending on whether they can be played or not
+	for card in game_data.carteTavolo:
+		if card in cards:
+			#print('Attivo shader di ', card.value, ' di ', card.suit)
+			card.activateShader()
+		else:
+			#print('Disattivo shader di ', card.value, ' di ', card.suit)
+			card.deactivateShader()
+	
+	# If there are no cards which can be played, highlight the place on table button
+	#print("L'array di carte possibili è vuoto? ", cards.is_empty(), ' ed esiste una carta selezionata in mano? ', game_data.selectedHandCard != null)
+	#if cards.is_empty() and game_data.selectedHandCard != null:
+	#	activatePlaceOnTableButton()
+	#else:
+	#	deactivatePlaceOnTableButton()
+			
+# Function to update card shaders on table card click.
+# A table card will still be highlighted if it is in at least one playable combination 
+# that features the other already selected table cards.
+func updateTableCardShaders() -> void:
+	if game_data.selectedHandCard == null:
+		clearCardShaders()
+		return
+	print("SELECTED HAND CARD È ", game_data.selectedHandCard.value, ' di ', game_data.selectedHandCard.suit)
+	print("Sono qui")
+	var possibleCombs = []
+	var cards = []
+	# First retrieve all playable combinations that feature selected table cards
+	for comb in currentPlayableCombinations:
+		print("Vedendo combinazione ", comb)
+		if isSubset(game_data.selectedTableCards, comb):
+			print('Una COMBINAZIONE che ha ancora senso è', comb)
+			possibleCombs.append(comb)
+	# Then get which cards are featured in them
+	for comb in possibleCombs:
+		for card in comb:
+			if card not in cards:
+				cards.append(card) 	
+				print('Quindi una CARTA che ha senso è ', card)	
+	# Update all table cards depending on whether they can be played or not
+	for card in game_data.carteTavolo:
+		if card in cards:
+			card.activateShader()
+		else:
+			card.deactivateShader()
+	
+	print("CARDS ARRAY: ", cards)
+	
+	# If there are no playable combinations, show place on table button
+	#if cards.is_empty():
+	#	# But only if we currently have a selected card
+	#	if game_data.selectedHandCard != null:
+	#		print("ACTIVATING BUTTON")
+	#		activatePlaceOnTableButton()
+	#	# If there are no combinations because we have no card selected, hide it still
+	#	else:
+	#		print("DISABLING BUTTON HERE")
+	#		deactivatePlaceOnTableButton()
+	## Else, hide it
+	#else:
+	#	print("DISABLING BUTTON")
+	#	deactivatePlaceOnTableButton()
+
+# Disable shaders for all table cards
+func clearCardShaders() -> void:
+	for card in game_data.carteTavolo:
+		card.deactivateShader()
+
+# Enable place on table button
+func activatePlaceOnTableButton() -> void:
+	placeOnTableButton.show()
+
+# Disable place on table button
+func deactivatePlaceOnTableButton() -> void:
+	placeOnTableButton.hide()
+
+# Function to check if an array is a subset of another
+func isSubset(subset: Array, biggerSet: Array) -> bool:    
+	for item in subset:        
+		if item not in biggerSet:           
+			return false    
+	return true

@@ -59,7 +59,7 @@ offset_right = 1287.0
 offset_bottom = 723.0
 mouse_filter = 2
 mouse_force_pass_scroll_events = false
-color = Color(0.38202986, 0.24802324, 0.13977504, 1)
+color = Color(0.4605137, 0.11264803, 0.0737656, 1)
 
 [node name="handsCounter" type="Label" parent="." unique_id=1425906806]
 unique_name_in_owner = true
