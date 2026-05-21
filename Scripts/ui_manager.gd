@@ -64,6 +64,7 @@ func hideDiscard(val : bool) -> void:
 	
 # Function to activate/deactivate shaders for selectable table cards.
 # Shaders are activated for every card on the table that can be picked.
+# CALLED when hand card is selected
 func highlightPlayableCards(combs : Array) -> void:
 	print("Chiamata!")
 	if game_data.selectedHandCard == null:
@@ -88,16 +89,16 @@ func highlightPlayableCards(combs : Array) -> void:
 			#print('Disattivo shader di ', card.value, ' di ', card.suit)
 			card.deactivateShader()
 	
-	# If there are no cards which can be played, highlight the place on table button
-	#print("L'array di carte possibili è vuoto? ", cards.is_empty(), ' ed esiste una carta selezionata in mano? ', game_data.selectedHandCard != null)
-	#if cards.is_empty() and game_data.selectedHandCard != null:
-	#	activatePlaceOnTableButton()
-	#else:
-	#	deactivatePlaceOnTableButton()
+	# Immediately show place button if there are no combinations, otherwise hide it
+	if combs.is_empty():
+		activatePlaceOnTableButton()
+	else:
+		deactivatePlaceOnTableButton()
 			
 # Function to update card shaders on table card click.
 # A table card will still be highlighted if it is in at least one playable combination 
 # that features the other already selected table cards.
+# CALLED when table card is selected
 func updateTableCardShaders() -> void:
 	if game_data.selectedHandCard == null:
 		clearCardShaders()
@@ -125,23 +126,6 @@ func updateTableCardShaders() -> void:
 		else:
 			card.deactivateShader()
 	
-	print("CARDS ARRAY: ", cards)
-	
-	# If there are no playable combinations, show place on table button
-	#if cards.is_empty():
-	#	# But only if we currently have a selected card
-	#	if game_data.selectedHandCard != null:
-	#		print("ACTIVATING BUTTON")
-	#		activatePlaceOnTableButton()
-	#	# If there are no combinations because we have no card selected, hide it still
-	#	else:
-	#		print("DISABLING BUTTON HERE")
-	#		deactivatePlaceOnTableButton()
-	## Else, hide it
-	#else:
-	#	print("DISABLING BUTTON")
-	#	deactivatePlaceOnTableButton()
-
 # Disable shaders for all table cards
 func clearCardShaders() -> void:
 	for card in game_data.carteTavolo:

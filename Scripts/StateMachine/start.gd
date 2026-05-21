@@ -14,6 +14,7 @@ var selectedTableCards: Array[Card]
 var currentTableSum : int = 0
 
 signal tableCardsUpdated(cards : Array[Card])
+signal tableCardsDrawn(cards : Array[Card])
 signal handCardsUpdated(cards : Array[Card])
 signal handCardsDrawn(cards : Array[Card])
 
@@ -29,6 +30,7 @@ var handEmpty : bool = false
 # Called when the node enters the scene tree for the first time.
 func enter(data : GameData, previousState : State) -> void:
 	var handWasEmpty = false 
+	var tableWasEmpty = false
 	
 	print("ciao sono nello stato iniziale")
 	if data.mano:
@@ -45,6 +47,7 @@ func enter(data : GameData, previousState : State) -> void:
 	if carteTavolo.is_empty() and !data.partitaIniziata:
 		carteTavolo = gameData.deck.drawCard(4, data.tavolo)
 		data.partitaIniziata = true
+		tableWasEmpty = true
 	if carteMano.is_empty():
 		carteMano = gameData.deck.drawCard(3, data.mano)
 		handWasEmpty = true
@@ -53,7 +56,10 @@ func enter(data : GameData, previousState : State) -> void:
 	updateGameData(gameData)
 	gameData.carteMano = carteMano
 	
-	tableCardsUpdated.emit(carteTavolo)
+	if tableWasEmpty:
+		tableCardsDrawn.emit(carteTavolo)
+	else:
+		tableCardsUpdated.emit(carteTavolo)
 	if previousState == discardState or handWasEmpty:
 		print("Calling HAND DRAWN")
 		handCardsDrawn.emit.call_deferred(carteMano)
@@ -86,6 +92,7 @@ func _on_card_table_clicked(card : Card):
 	valTavolo.text = str(currentTableSum)
 	# Update shaders to check which cards can be selected now
 	print("Calling update")
+	updateGameData(gameData)
 	uiManager.updateTableCardShaders()
 
 
@@ -95,6 +102,7 @@ func _on_card_hand_clicked(card : Card) -> void:
 		selectedHandCard = null
 		#print("Deselezionata")
 		valMano.text = "0"
+		uiManager.deactivatePlaceOnTableButton()
 	else:
 		if selectedHandCard != null:
 			selectedHandCard.selected = false

@@ -18,25 +18,106 @@ var tween : Tween
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	selectionState.tableCardsUpdated.connect(_on_tableCardsUpdated)
+	selectionState.tableCardsDrawn.connect(_on_tableCardsDrawn)
 	spazioCarteTavolo = gameData.spazioCarteTavolo
 	pass
 	
 func _process(delta):
 	time = animationManager.animateCardRow(false, delta, time, sineOffsetMult, cosineOffsetMult, timeMultiplier)
+
+func positionDrawnCards() -> void:
+	var N = carteArray.size()
 	
+	if tween and tween.is_running():
+		tween.kill()
+	tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+	
+	var startingPosition = Vector2(-550,-400)
+	var offset_x : float = (spazioCarteTavolo-110)/carteArray.size()
+	print('offset_x: ', offset_x)
+	
+	for i in range(N):
+		carteArray[i].position = startingPosition
+		#carteArray[i].scale = Vector2(3, 3)
+		var finalPosition = Vector2(i * offset_x + 150,0)
+		
+		carteArray[i].z_index = i
+		
+		tween.parallel().tween_property(carteArray[i], "position", finalPosition, drawingSpeed + (i * 0.075))
+		tween.parallel().tween_property(carteArray[i], "scale", Vector2(2, 2), drawingSpeed + (i * 0.075))
+		
+		self.add_child(carteArray[i])
+		
 # Position cards on the table.
 func positionCards() -> void:
-	var i = 1
-	var offset_x : float = (spazioCarteTavolo-110)/carteArray.size()
+	print("Positioning cards...")
 	
-	for card in carteArray:
-		print(card)
-		# Position the card with offset
-		card.position.x =  i * offset_x
+	if carteArray.is_empty():
+		return
+
+	var left_bound: float = 0
+	var right_bound: float = spazioCarteTavolo
+	var min_offset: float = 60.0
+	var max_offset: float = 150.0
+	
+	# Total available width
+	var available_width = right_bound - left_bound
+	# Number of cards
+	var count = carteArray.size()
+	# If only one card, place it in the center
+	var offset_x: float = 0
+
+	if count > 1:
+		# Ideal spacing between cards
+		offset_x = clamp(
+			available_width / (count - 1),
+			min_offset,
+			max_offset
+		)
+
+	# Total width occupied by the table
+	var total_table_width = offset_x * (count - 1)
+	# Center the hand inside bounds
+	var start_x = left_bound + (available_width - total_table_width) / 2.0
+	
+	if tween and tween.is_running():
+		tween.kill()
+
+	tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+
+	for i in range(count):
+		var card = carteArray[i]
+
+		print("CARD from position: ", card.value, " di ", card.suit, " with offset ", offset_x)
+
+		var final_position = Vector2(start_x + (i * offset_x), 0)
+		print('final position: ', final_position)
 		card.z_index = i
-		# Add it as children to the table
-		self.add_child(card)
-		i += 1
+
+		tween.parallel().tween_property(card, "position", final_position, 0.3)
+
+		# Add card to table if not already added
+		if card.get_parent() != self:
+			self.add_child(card)
+	#var i = 1
+	#var offset_x : float = (spazioCarteTavolo-110)/carteArray.size()
+	#
+	#if tween and tween.is_running():
+	#	tween.kill()
+	#tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+	#
+	#for card in carteArray:
+	#	print('CARD from position: ', card.value, ' di ', card.suit)
+	#	# Position the card with offset
+	#	
+	#	var finalPosition = Vector2(i * offset_x,0)
+	#	card.z_index = i
+	#	
+	#	tween.parallel().tween_property(card, "position", finalPosition, 0.3)
+#
+	#	# Add it as children to the table
+	#	self.add_child(card)
+	#	i += 1
 	#print('figli del tavolo: ', self.get_child_count())
 
 # On signal _on_tableCardsUpdated, updates current cards in table and later updates visuals.
@@ -47,3 +128,9 @@ func _on_tableCardsUpdated(cards : Array[Card]) -> void:
 		card.inHand = false
 	print("carteArray da tavolo dopo segnale: ", carteArray)
 	positionCards()
+	
+func _on_tableCardsDrawn(cards : Array[Card]) -> void:
+	carteArray = cards 
+	for card in carteArray:
+		card.inHand = false
+	positionDrawnCards()

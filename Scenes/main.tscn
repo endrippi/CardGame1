@@ -284,6 +284,7 @@ offset_bottom = 429.0
 text = "Pick cards to discard"
 
 [node name="placeOnTableButton" type="Button" parent="." unique_id=431266765]
+visible = false
 offset_left = 668.0
 offset_top = 372.0
 offset_right = 838.0
