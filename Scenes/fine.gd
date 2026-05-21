@@ -8,11 +8,16 @@ var hasWon :bool = false
 
 func enter(data : GameData, previousState : State) -> void:
 	print("Ecco la fine!")
-	data.carteRimaste -=1
+	data.carteRimaste -= 1
 	if data.carteRimaste <= 0:
 		data.maniDisponibili -= 1
 		data.carteRimaste = 3
 		data.carteMano = data.deck.drawCard(3, data.mano)
+		print("Non ci sono più carte in mano")
+		gameData.handCardsWereAlreadyRefilled = true 
+	else: 
+		print("Ci sono ancora carte in mano")
+		gameData.handCardsWereAlreadyRefilled = false 
 	if data.totalPoints >= data.targetPunti:
 		hasWon = true
 		win()

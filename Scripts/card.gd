@@ -94,11 +94,11 @@ func updateCardVisual() -> void:
 		#print("in hand")
 		#print("This is card ", value, " which has been clicked.")
 		if not selected:
-			print("not selected and in hand, lowering ", value, ' of ', suit)
+			#print("not selected and in hand, lowering ", value, ' of ', suit)
 			cardInHandToLower.emit(self)
 		elif selected:
 			#print("selected")
-			print("selected and in hand, raising ", value, ' of ', suit)
+			#print("selected and in hand, raising ", value, ' of ', suit)
 			cardInHandToRaise.emit(self)
 		
 		
@@ -162,7 +162,7 @@ func enableClicks() -> void:
 
 func _on_clickable_area_2d_card_clicked(left: bool) -> void:
 	if left:
-		print(value, " di ", suit, " con z index: ", z_index)
+		#print(value, " di ", suit, " con z index: ", z_index)
 		cardSelected.emit(self)
 		updateCardVisual()
 

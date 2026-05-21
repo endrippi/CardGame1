@@ -26,6 +26,7 @@ var canDiscard : bool = true
 var handEmpty : bool = false
 
 @onready var discardState = %Scarto
+@onready var endState = %Fine
 
 # Called when the node enters the scene tree for the first time.
 func enter(data : GameData, previousState : State) -> void:
@@ -44,11 +45,15 @@ func enter(data : GameData, previousState : State) -> void:
 	selectedTableCards = data.selectedTableCards
 	currentTableSum = data.currentTableSum
 	
+	print("ENTRATO START, CARTE MANO IS EMPTY?", carteMano.is_empty())
+	print("In carte mano: ", carteMano)
+	
 	if carteTavolo.is_empty() and !data.partitaIniziata:
 		carteTavolo = gameData.deck.drawCard(4, data.tavolo)
 		data.partitaIniziata = true
 		tableWasEmpty = true
 	if carteMano.is_empty():
+		print("Da start, carte mano è vuoto")
 		carteMano = gameData.deck.drawCard(3, data.mano)
 		handWasEmpty = true
 
@@ -60,9 +65,11 @@ func enter(data : GameData, previousState : State) -> void:
 		tableCardsDrawn.emit(carteTavolo)
 	else:
 		tableCardsUpdated.emit(carteTavolo)
-	if previousState == discardState or handWasEmpty:
+	if previousState == discardState or handWasEmpty or gameData.handCardsWereAlreadyRefilled:
 		print("Calling HAND DRAWN")
 		handCardsDrawn.emit.call_deferred(carteMano)
+		if gameData.handCardsWereAlreadyRefilled:
+			gameData.handCardsWereAlreadyRefilled = false
 	else:
 		print("Calling HAND UPDATED")
 		handCardsUpdated.emit.call_deferred(carteMano)
@@ -77,7 +84,7 @@ func _on_play_button_pressed() -> void:
 		transitioned.emit(self, "Giocato")
 
 func _on_card_table_clicked(card : Card):
-	print("Carta tavolo cliccata: ", card.value, ' di ', card.suit)
+	#print("Carta tavolo cliccata: ", card.value, ' di ', card.suit)
 	if card.selected == true:
 		selectedTableCards.erase(card)
 		card.selected = false
@@ -91,7 +98,7 @@ func _on_card_table_clicked(card : Card):
 	
 	valTavolo.text = str(currentTableSum)
 	# Update shaders to check which cards can be selected now
-	print("Calling update")
+	#print("Calling update")
 	updateGameData(gameData)
 	uiManager.updateTableCardShaders()
 
@@ -122,7 +129,7 @@ func _on_card_hand_clicked(card : Card) -> void:
 	# 2. Da UiManager attivo shader delle carte che si possono prendere
 	if selectedHandCard != null:
 		var combs = getTableCombinations()
-		print('Le combinazioni per il ', selectedHandCard.value, ' di ', selectedHandCard.suit, ' sono: ', combs)
+		#print('Le combinazioni per il ', selectedHandCard.value, ' di ', selectedHandCard.suit, ' sono: ', combs)
 		#if !combs.is_empty():
 		#	print("Yes combs!")
 		#	gameData.selectedHandCardHasPlayableCombinations = true
@@ -202,8 +209,10 @@ func _on_place_on_table_button_pressed() -> void:
 		placeCardOnTable(selectedHandCard)	
 
 func refreshHand() -> void:
+	print("Refreshed!")
 	# Scala le mani disponibili (se le regole del tuo gioco lo prevedono)
 	gameData.maniDisponibili -= 1
+	#gameData.handCardsWereAlreadyRefilled = true
 	
 	# Se le mani sono finite, potresti voler gestire la fine della partita qui
 	if gameData.maniDisponibili <= 0:
@@ -221,7 +230,7 @@ func refreshHand() -> void:
 			carta.cardSelected.connect(_on_card_hand_clicked)
 	
 	# 3. Notifica la Ui
-	handCardsUpdated.emit.call_deferred(gameData.carteMano)
+	handCardsDrawn.emit.call_deferred(gameData.carteMano)
 
 # Get all the possible combinations of table cards that you can choose to select 
 # from the hand card you selected.
