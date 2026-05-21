@@ -21,6 +21,7 @@ var cosineOffsetMult : float = 0.00002
 var tween : Tween
 @export var drawingSpeed : float = 0.4
 
+
 func _process(delta):
 	time = animationManager.animateCardRow(true, delta, time, sineOffsetMult, cosineOffsetMult, timeMultiplier)
 
@@ -82,7 +83,7 @@ func fanoutCards(justDrawn : bool) -> void:
 			
 			tween.parallel().tween_property(carteArray[i], "position", finalPosition, drawingSpeed + (i * 0.075))
 			tween.parallel().tween_property(currPivot, "rotation_degrees", angles[i], drawingSpeed + (i * 0.075))
-			tween.parallel().tween_property(carteArray[i], "scale", Vector2(3, 3), drawingSpeed + (i * 0.075))
+			tween.parallel().tween_property(carteArray[i], "scale", carteArray[i].baseHandCardScale, drawingSpeed + (i * 0.075))
 			#currPivot.rotation_degrees = angles[i]
 			
 			# Instantiate the pivot and the actual card
@@ -97,9 +98,9 @@ func fanoutCards(justDrawn : bool) -> void:
 			#currPivot.rotation_degrees = angles[i]
 
 func _on_handCardsDrawn(cards : Array[Card]) -> void:
-	print("On hand cards DRAWN")
+	#print("On hand cards DRAWN")
 	carteArray = cards
-	_printHandCards()
+	#_printHandCards()
 	for card in carteArray:
 		card.cardAreaEntered.connect(_on_cardAreaEntered)
 		card.cardAreaExited.connect(_on_cardAreaExited)
@@ -110,9 +111,9 @@ func _on_handCardsDrawn(cards : Array[Card]) -> void:
 	
 func _on_handCardsUpdated(cards : Array[Card]) -> void:
 	#print("ON HANDCARDSUPDATED -> Segnale ricevuto")
-	print("On hand cards UPDATED")
+	#print("On hand cards UPDATED")
 	carteArray = cards
-	_printHandCards()
+	#_printHandCards()
 	for card in carteArray:
 		card.cardAreaEntered.connect(_on_cardAreaEntered)
 		card.cardAreaExited.connect(_on_cardAreaExited)

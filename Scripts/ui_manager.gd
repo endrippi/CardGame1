@@ -90,6 +90,10 @@ func highlightPlayableCards(combs : Array) -> void:
 			card.deactivateShader()
 	
 	# Immediately show place button if there are no combinations, otherwise hide it
+	print("Is current selected card null? ", game_data.selectedHandCard == null)
+	print("Are current combs empty? ", combs.is_empty())
+	if game_data.selectedHandCard == null:
+		deactivatePlaceOnTableButton()
 	if combs.is_empty():
 		activatePlaceOnTableButton()
 	else:

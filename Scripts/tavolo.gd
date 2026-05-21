@@ -38,13 +38,12 @@ func positionDrawnCards() -> void:
 	
 	for i in range(N):
 		carteArray[i].position = startingPosition
-		#carteArray[i].scale = Vector2(3, 3)
-		var finalPosition = Vector2(i * offset_x + 150,0)
+		var finalPosition = Vector2(i * offset_x + 150,-30)
 		
 		carteArray[i].z_index = i
 		
 		tween.parallel().tween_property(carteArray[i], "position", finalPosition, drawingSpeed + (i * 0.075))
-		tween.parallel().tween_property(carteArray[i], "scale", Vector2(2, 2), drawingSpeed + (i * 0.075))
+		tween.parallel().tween_property(carteArray[i], "scale", carteArray[i].baseTableCardScale, drawingSpeed + (i * 0.075))
 		
 		self.add_child(carteArray[i])
 		
@@ -90,7 +89,7 @@ func positionCards() -> void:
 
 		#print("CARD from position: ", card.value, " di ", card.suit, " with offset ", offset_x)
 
-		var final_position = Vector2(start_x + (i * offset_x), 0)
+		var final_position = Vector2(start_x + (i * offset_x), -30)
 		#print('final position: ', final_position)
 		card.z_index = i
 
@@ -123,6 +122,7 @@ func positionCards() -> void:
 # On signal _on_tableCardsUpdated, updates current cards in table and later updates visuals.
 func _on_tableCardsUpdated(cards : Array[Card]) -> void:
 	#print("Segnale di TABLE UPDATE ricevuto")
+	#_printTableCards()
 	carteArray = cards 
 	for card in carteArray:
 		card.inHand = false
@@ -134,3 +134,12 @@ func _on_tableCardsDrawn(cards : Array[Card]) -> void:
 	for card in carteArray:
 		card.inHand = false
 	positionDrawnCards()
+	
+# Print current hand cards
+func _printTableCards():
+	print("\tCURRENT TABLE CARDS:")
+	var i = 1
+	for card in carteArray:
+		print("\t\t", i, '. ', card.value, ' di ', card.suit, ' con z-index: ', card.z_index)
+		card._printClickingState()
+		i += 1

@@ -25,6 +25,10 @@ signal cardInHandToLower(card : Card)
 # Animations!
 var tweenHover : Tween
 var tweenRaise : Tween
+@export var baseHandCardScale = Vector2(2.50,2.50)
+@export var hoveredHandCardScale = Vector2(2.75,2.75)
+@export var baseTableCardScale = Vector2(1.75,1.75)
+@export var hoveredTableCardScale = Vector2(2,2)
 
 # Visual aids with shaders
 var highlightShader = preload("res://Shaders/cardSelectable.gdshader")
@@ -40,8 +44,8 @@ var offset_y : int = 35
 
 func _ready() -> void:
 	sprite.texture = cardTexture
-	sprite.scale.x = 0.311 #55
-	sprite.scale.y = 0.267 #80
+	#sprite.scale.x = 0.311 #55
+	#sprite.scale.y = 0.267 #80
 	print("Spawnata")
 	
 	
@@ -103,9 +107,6 @@ func updateCardVisual() -> void:
 		
 		
 func upscaleCard() -> void:
-	
-	var handCardIncreasedScale = Vector2(3.25, 3.25)
-	var tableCardIncreasedScale = Vector2(2.2, 2.2)
 	#print('upscaling')
 	if tweenHover and tweenHover.is_running():
 		tweenHover.kill()
@@ -113,25 +114,23 @@ func upscaleCard() -> void:
 	# Ease out looks more like in Balatro
 	tweenHover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 	if inHand:
-		tweenHover.tween_property(self, "scale", handCardIncreasedScale, 0.4)
+		tweenHover.tween_property(self, "scale", hoveredHandCardScale, 0.4)
 	else:
-		tweenHover.tween_property(self, "scale", tableCardIncreasedScale, 0.4)
+		tweenHover.tween_property(self, "scale", hoveredTableCardScale, 0.4)
 	#scale.x += 0.10
 	#scale.y += 0.10
 	playHoveringSound()
 
 # Different downscaling, depends on whether the card is in hand or on the table.
 func downscaleCard() -> void:
-	var handCardBaseScale = Vector2(3, 3)
-	var tableCardBaseScale = Vector2(2, 2)
 	if tweenHover and tweenHover.is_running():
 		tweenHover.kill()
 	tweenHover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 	
 	if inHand:
-		tweenHover.tween_property(self, "scale", handCardBaseScale, 0.4)
+		tweenHover.tween_property(self, "scale", baseHandCardScale, 0.4)
 	else:
-		tweenHover.tween_property(self, "scale", tableCardBaseScale, 0.4)
+		tweenHover.tween_property(self, "scale", baseTableCardScale, 0.4)
 	
 	"""
 	if inHand:
@@ -204,3 +203,7 @@ func playClickingSound():
 	clickingSound.pitch_scale = randf_range(0.8,1.2)
 	clickingSound.volume_db = -5
 	clickingSound.play()
+	
+func _printClickingState():
+	var isClickable = clickableArea2D.clickable
+	print("\t\t\t Is this clickable? ", isClickable)

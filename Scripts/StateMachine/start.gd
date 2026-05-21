@@ -45,19 +45,19 @@ func enter(data : GameData, previousState : State) -> void:
 	selectedTableCards = data.selectedTableCards
 	currentTableSum = data.currentTableSum
 	
-	print("ENTRATO START, CARTE MANO IS EMPTY?", carteMano.is_empty())
-	print("In carte mano: ", carteMano)
+	#print("ENTRATO START, CARTE MANO IS EMPTY?", carteMano.is_empty())
+	#print("In carte mano: ", carteMano)
 	
 	if carteTavolo.is_empty() and !data.partitaIniziata:
 		carteTavolo = gameData.deck.drawCard(4, data.tavolo)
 		data.partitaIniziata = true
 		tableWasEmpty = true
 	if carteMano.is_empty():
-		print("Da start, carte mano è vuoto")
+		#print("Da start, carte mano è vuoto")
 		carteMano = gameData.deck.drawCard(3, data.mano)
 		handWasEmpty = true
 
-	print('previous state is ', previousState)
+	#print('previous state is ', previousState)
 	updateGameData(gameData)
 	gameData.carteMano = carteMano
 	
@@ -66,12 +66,12 @@ func enter(data : GameData, previousState : State) -> void:
 	else:
 		tableCardsUpdated.emit(carteTavolo)
 	if previousState == discardState or handWasEmpty or gameData.handCardsWereAlreadyRefilled:
-		print("Calling HAND DRAWN")
+		#print("Calling HAND DRAWN")
 		handCardsDrawn.emit.call_deferred(carteMano)
 		if gameData.handCardsWereAlreadyRefilled:
 			gameData.handCardsWereAlreadyRefilled = false
 	else:
-		print("Calling HAND UPDATED")
+		#print("Calling HAND UPDATED")
 		handCardsUpdated.emit.call_deferred(carteMano)
 
 	for carta in carteMano:
@@ -84,7 +84,7 @@ func _on_play_button_pressed() -> void:
 		transitioned.emit(self, "Giocato")
 
 func _on_card_table_clicked(card : Card):
-	#print("Carta tavolo cliccata: ", card.value, ' di ', card.suit)
+	print("Carta tavolo cliccata: ", card.value, ' di ', card.suit)
 	if card.selected == true:
 		selectedTableCards.erase(card)
 		card.selected = false
@@ -203,13 +203,25 @@ func placeCardOnTable(card : Card) -> void:
 	handCardsUpdated.emit(gameData.carteMano)
 	uiManager.updateTableVisuals()
 	uiManager.updateHandVisuals()
+	fixTable()
+	
+func fixTable():
+	for card in gameData.carteTavolo:
+		card.enableClicks()
+		card.downscaleCard()
+		if card.cardSelected.is_connected(_on_card_hand_clicked):
+			card.cardSelected.disconnect(_on_card_hand_clicked)
+		if !card.cardSelected.is_connected(_on_card_table_clicked):
+			card.cardSelected.connect(_on_card_table_clicked)	
 
 func _on_place_on_table_button_pressed() -> void:
+	print("Place on table pressed")
 	if selectedHandCard:
+		uiManager.deactivatePlaceOnTableButton()
 		placeCardOnTable(selectedHandCard)	
 
 func refreshHand() -> void:
-	print("Refreshed!")
+	#print("Refreshed!")
 	# Scala le mani disponibili (se le regole del tuo gioco lo prevedono)
 	gameData.maniDisponibili -= 1
 	#gameData.handCardsWereAlreadyRefilled = true

@@ -13,9 +13,11 @@ func _input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) -> vo
 				card_clicked.emit(false)
 
 func enableClicks() -> void:
-	#print("Enabled clicks for ", card.value, ' di ', card.suit)
+	#var parent = get_parent()
+	#print("Enabled clicks for ", parent.value, ' di ', parent.suit)
 	clickable = true 
 
 func disableClicks() -> void:
-	#print("Disabled clicks for ", card.value, ' di ', card.suit)
+	#var parent = get_parent()
+	#print("Disabled clicks for ", parent.value, ' di ', parent.suit)
 	clickable = false

@@ -12,16 +12,16 @@ func enter(data : GameData, previousState : State) -> void:
 		transitioned.emit(self, "SelezioneCarte")
 		return
 
-	print(
-		"Mano di ",
-		data.selectedHandCard.value,
-		" con somma di tavolo di ",
-		data.currentTableSum
-	)
+	#print(
+	#	"Mano di ",
+	#	data.selectedHandCard.value,
+	#	" con somma di tavolo di ",
+	#	data.currentTableSum
+	#)
 
 	# COMBINAZIONE CORRETTA
 	if data.selectedHandCard.value == data.currentTableSum:
-		print("Combinazione giusta")
+		#print("Combinazione giusta")
 		# Punti
 		data.totalPoints += data.currentTableSum + data.selectedHandCard.value
 		numeroPunti.text = str(data.totalPoints)

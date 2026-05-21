@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://r0hhmgyvhs8s" path="res://Scripts/main.gd" id="1_jjvhh"]
 [ext_resource type="Script" uid="uid://b45o4s6ijk315" path="res://Scripts/gameData.gd" id="2_hptm8"]
 [ext_resource type="Script" uid="uid://byhtiltp2wtjk" path="res://Scenes/hands_counter.gd" id="2_jkdf5"]
-[ext_resource type="Texture2D" uid="uid://dhwblr3ig35bd" path="res://Assets/Grafica/background.jpg" id="2_pdsj5"]
 [ext_resource type="PackedScene" uid="uid://2refwwm0j7qp" path="res://Scenes/deck.tscn" id="3_8gbba"]
 [ext_resource type="Texture2D" uid="uid://dft0rphv10w1n" path="res://Assets/Grafica/tavolo_gioco.png" id="3_ee4r6"]
 [ext_resource type="Script" uid="uid://bxkxakiwbj2u8" path="res://Scenes/discardsLabel.gd" id="3_wsu2k"]
@@ -20,8 +19,11 @@
 [ext_resource type="Script" uid="uid://ct4wqj3ltogqq" path="res://Scenes/sconfitta.gd" id="13_h1bgf"]
 [ext_resource type="Script" uid="uid://b01amloy5ykfq" path="res://Scenes/vittoria.gd" id="14_h1bgf"]
 [ext_resource type="Script" uid="uid://f2k5ta251v2q" path="res://Scenes/target.gd" id="16_b3802"]
+[ext_resource type="Texture2D" uid="uid://dhlemb78yevv7" path="res://Assets/Grafica/pulsante1.png" id="18_gt3je"]
+[ext_resource type="Script" uid="uid://davdru4mlwmj3" path="res://Scenes/place_table.gd" id="19_3pmx8"]
 [ext_resource type="Script" uid="uid://bla8gh5k8h4rh" path="res://Scenes/label.gd" id="19_fevyy"]
 [ext_resource type="Script" uid="uid://bohmggogv464r" path="res://Scripts/animationManager.gd" id="19_hibaj"]
+[ext_resource type="FontFile" uid="uid://dtxwu3srol37k" path="res://Assets/Fonts/Munro-2LYe.ttf" id="22_3pmx8"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_344ge"]
 font_color = Color(0, 0, 0, 1)
@@ -48,13 +50,6 @@ font_size = 25
 [node name="Main" type="Node2D" unique_id=1476234443]
 script = ExtResource("1_jjvhh")
 
-[node name="TemporaryBG" type="TextureRect" parent="." unique_id=830360409]
-visible = false
-offset_right = 1280.0
-offset_bottom = 722.0
-texture = ExtResource("2_pdsj5")
-expand_mode = 1
-
 [node name="BackgroundBG" type="TextureRect" parent="." unique_id=412753000]
 offset_right = 1287.0
 offset_bottom = 723.0
@@ -65,19 +60,23 @@ texture = ExtResource("3_ee4r6")
 [node name="handsCounter" type="Label" parent="." unique_id=1425906806]
 unique_name_in_owner = true
 offset_left = 206.0
-offset_top = 323.0
-offset_right = 278.0
-offset_bottom = 372.0
+offset_top = 292.0
+offset_right = 314.0
+offset_bottom = 365.0
+theme_override_fonts/font = ExtResource("22_3pmx8")
+theme_override_font_sizes/font_size = 30
 text = "Hands : 0
 "
 script = ExtResource("2_jkdf5")
 
 [node name="Discards" type="Label" parent="." unique_id=1595919175]
 unique_name_in_owner = true
-offset_left = 206.0
-offset_top = 365.0
-offset_right = 278.0
-offset_bottom = 414.0
+offset_left = 205.0
+offset_top = 339.0
+offset_right = 340.0
+offset_bottom = 412.0
+theme_override_fonts/font = ExtResource("22_3pmx8")
+theme_override_font_sizes/font_size = 30
 text = "Discards : 0
 "
 script = ExtResource("3_wsu2k")
@@ -145,10 +144,11 @@ script = ExtResource("14_h1bgf")
 metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 
 [node name="SegnaPunti" type="ColorRect" parent="." unique_id=1625471360]
-offset_left = 75.0
-offset_top = 590.0
-offset_right = 124.0
-offset_bottom = 630.0
+offset_left = 70.0
+offset_top = 489.0
+offset_right = 119.0
+offset_bottom = 529.0
+rotation = 0.38920844
 
 [node name="scrittaPunti" type="Label" parent="SegnaPunti" unique_id=377623044]
 layout_mode = 0
@@ -160,8 +160,12 @@ text = "Points"
 [node name="numeroPunti" type="Label" parent="SegnaPunti" unique_id=2070132183]
 unique_name_in_owner = true
 layout_mode = 0
-offset_right = 49.0
-offset_bottom = 40.0
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 48.0
+offset_bottom = 39.0
+theme_override_fonts/font = ExtResource("22_3pmx8")
+theme_override_font_sizes/font_size = 25
 text = "0"
 label_settings = SubResource("LabelSettings_344ge")
 horizontal_alignment = 1
@@ -173,6 +177,8 @@ offset_left = 362.0
 offset_top = 538.0
 offset_right = 459.0
 offset_bottom = 624.0
+theme_override_fonts/font = ExtResource("22_3pmx8")
+theme_override_font_sizes/font_size = 25
 text = "Play Cards"
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="." unique_id=360265433]
@@ -199,10 +205,12 @@ text = "0"
 label_settings = SubResource("LabelSettings_6iyac")
 
 [node name="Target" type="Label" parent="." unique_id=593080727]
-offset_left = 75.0
-offset_top = 90.0
-offset_right = 126.0
-offset_bottom = 132.0
+offset_left = 74.0
+offset_top = 100.0
+offset_right = 125.0
+offset_bottom = 142.0
+theme_override_fonts/font = ExtResource("22_3pmx8")
+theme_override_font_sizes/font_size = 25
 text = "100"
 label_settings = SubResource("LabelSettings_fdnlq")
 script = ExtResource("16_b3802")
@@ -214,6 +222,8 @@ offset_left = -21.0
 offset_top = -36.0
 offset_right = 80.0
 offset_bottom = 6.0
+theme_override_fonts/font = ExtResource("22_3pmx8")
+theme_override_font_sizes/font_size = 35
 text = "Target:"
 label_settings = SubResource("LabelSettings_jkdf5")
 
@@ -223,6 +233,8 @@ offset_left = 1070.0
 offset_top = 538.0
 offset_right = 1161.0
 offset_bottom = 624.0
+theme_override_fonts/font = ExtResource("22_3pmx8")
+theme_override_font_sizes/font_size = 25
 text = "Discard"
 
 [node name="PlaceTable" type="Button" parent="." unique_id=1266402985]
@@ -233,6 +245,9 @@ offset_top = 346.0
 offset_right = 800.0
 offset_bottom = 406.0
 text = "Place on table"
+icon = ExtResource("18_gt3je")
+flat = true
+icon_alignment = 1
 
 [node name="UndoDiscard" type="Button" parent="." unique_id=1867683775]
 unique_name_in_owner = true
@@ -241,6 +256,8 @@ offset_left = 340.0
 offset_top = 624.0
 offset_right = 472.0
 offset_bottom = 684.0
+theme_override_fonts/font = ExtResource("22_3pmx8")
+theme_override_font_sizes/font_size = 25
 text = "Undo"
 
 [node name="ConfirmDiscard" type="Button" parent="." unique_id=1732954248]
@@ -250,6 +267,8 @@ offset_left = 1029.0
 offset_top = 630.0
 offset_right = 1161.0
 offset_bottom = 690.0
+theme_override_fonts/font = ExtResource("22_3pmx8")
+theme_override_font_sizes/font_size = 25
 text = "Confirm"
 
 [node name="sfocatura" type="ColorRect" parent="." unique_id=892603717]
@@ -287,11 +306,17 @@ text = "Pick cards to discard"
 
 [node name="placeOnTableButton" type="Button" parent="." unique_id=431266765]
 visible = false
-offset_left = 668.0
-offset_top = 372.0
-offset_right = 838.0
-offset_bottom = 414.0
+offset_left = 669.0
+offset_top = 353.0
+offset_right = 897.0
+offset_bottom = 421.0
+theme_override_fonts/font = ExtResource("22_3pmx8")
+theme_override_font_sizes/font_size = 22
 text = "Place card on table"
+icon = ExtResource("18_gt3je")
+flat = true
+icon_alignment = 1
+script = ExtResource("19_3pmx8")
 
 [node name="counterCarteMano" type="Label" parent="." unique_id=1898004316]
 offset_left = 1188.0
@@ -305,7 +330,11 @@ script = ExtResource("19_fevyy")
 [connection signal="pressed" from="PlayButton" to="StateMachine/SelezioneCarte" method="_on_play_button_pressed"]
 [connection signal="pressed" from="discard" to="StateMachine/SelezioneCarte" method="_on_discard_pressed"]
 [connection signal="pressed" from="discard" to="UiManager" method="_on_discard_pressed"]
+[connection signal="button_down" from="PlaceTable" to="PlaceTable" method="_on_button_down"]
+[connection signal="button_up" from="PlaceTable" to="PlaceTable" method="_on_button_up"]
 [connection signal="pressed" from="UndoDiscard" to="StateMachine/Scarto" method="_on_undo_discard_pressed"]
 [connection signal="pressed" from="UndoDiscard" to="UiManager" method="_on_undo_discard_pressed"]
 [connection signal="pressed" from="ConfirmDiscard" to="StateMachine/Scarto" method="_on_confirm_discard_pressed"]
+[connection signal="button_down" from="placeOnTableButton" to="placeOnTableButton" method="_on_button_down"]
+[connection signal="button_up" from="placeOnTableButton" to="placeOnTableButton" method="_on_button_up"]
 [connection signal="pressed" from="placeOnTableButton" to="StateMachine/SelezioneCarte" method="_on_place_on_table_button_pressed"]
