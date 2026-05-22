@@ -36,11 +36,13 @@ func _on_card_hand_clicked(card : Card) -> void:
 
 
 func _on_undo_discard_pressed() -> void:
+	uiManager.deactivatePlaceOnTableButton()
 	selectedHandCards.clear()
 	transitioned.emit(self, "SelezioneCarte")
 
 
 func _on_confirm_discard_pressed() -> void:
+	uiManager.deactivatePlaceOnTableButton()
 	var sz : int = selectedHandCards.size()
 	if sz == 0:
 		return
@@ -63,8 +65,10 @@ func _on_confirm_discard_pressed() -> void:
 	
 
 func exit(data : GameData) -> void:
+	uiManager.deactivatePlaceOnTableButton()
 	#print("Da stato scarto in exit:")
 	#gameData._printPreviousHandCards()
+	
 	for card in data.carteMano:
 		if is_instance_valid(card):
 			if card.cardSelected.is_connected(_on_card_hand_clicked):

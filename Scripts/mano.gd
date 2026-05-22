@@ -74,24 +74,24 @@ func fanoutCardsRedone() -> void:
 	var cardsToDraw = []
 	var indexToStartFromForDrawing = 0
 	
-	_printHandCards()
+	#_printHandCards()
 	#gamdrawingTweeneData._printPreviousHandCards()
 	
 	if tween and tween.is_running():
-		print("Killing tween")
+		#print("Killing tween")
 		tween.kill()
 	tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	
 	for card in carteArray:
-		print("Current card is ", card.value, ' di ', card.suit)
+		#print("Current card is ", card.value, ' di ', card.suit)
 		# If the card is new, we will instantiate it and animate the drawing
 		if card not in gameData.previousHandContents:
-			print("It is not in previous cards")
+			#print("It is not in previous cards")
 			cardsToDraw.append(card)		
 		# If the card was already there we just reposition it
 		else:
-			print("It is in previous cards")
-			print('It will have rotation degrees ', angles[i])
+			#print("It is in previous cards")
+			#print('It will have rotation degrees ', angles[i])
 			var currPivot = card.get_parent()
 			
 			tween.parallel().tween_property(currPivot, "rotation_degrees", angles[i], 0.3)
@@ -106,7 +106,7 @@ func fanoutCardsRedone() -> void:
 	var drawingTween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	
 	for card in cardsToDraw:
-		print("Card to draw is ", card.value, ' di ', card.suit)
+		#print("Card to draw is ", card.value, ' di ', card.suit)
 		var currPivot = pivot.duplicate()
 		# Instantiate the pivot and the actual card
 		self.add_child(currPivot)
@@ -116,7 +116,7 @@ func fanoutCardsRedone() -> void:
 		card.position = startingPosition
 		var finalPosition = Vector2(0, -radius)  # Placed on pivot's radius
 		
-		print("It will go from ", startingPosition, ' to ', finalPosition, ' with rotation degrees ', angles[indexToStartFromForDrawing])
+		#print("It will go from ", startingPosition, ' to ', finalPosition, ' with rotation degrees ', angles[indexToStartFromForDrawing])
 		
 		drawingTween.parallel().tween_property(card, "position", finalPosition, drawingSpeed + (i * 0.075))
 		drawingTween.parallel().tween_property(currPivot, "rotation_degrees", angles[indexToStartFromForDrawing], drawingSpeed + (i * 0.075))
@@ -130,8 +130,8 @@ func fanoutCardsRedone() -> void:
 # BUG se scarti solo le prime due su tre in mano, va in justDrawn ma 
 # dovrebbe essere gestito diversamente tra carte rimaste e non
 func fanoutCards(justDrawn : bool) -> void:
-	print('Fanout cards, justDrawn = ', justDrawn)
-	_printHandCards()
+	#print('Fanout cards, justDrawn = ', justDrawn)
+	#_printHandCards()
 	var N = carteArray.size()
 	var angles
 	# TODO Get correct fan angle according to number of cards in hand
@@ -140,14 +140,14 @@ func fanoutCards(justDrawn : bool) -> void:
 	else:
 		angles = getRotationAngles(N, fanAngle)
 		
-	print('angoli: ', angles)
+	#print('angoli: ', angles)
 	
 	if tween and tween.is_running():
 		tween.kill()
 	tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	
 	if justDrawn:
-		print("QUI PARTE 1")
+		#print("QUI PARTE 1")
 		for i in range(N):
 			var currPivot = pivot.duplicate()
 			currPivot.add_child(carteArray[i])
@@ -165,7 +165,7 @@ func fanoutCards(justDrawn : bool) -> void:
 			# Instantiate the pivot and the actual card
 			self.add_child(currPivot)
 	else:
-		print("QUI PARTE 2")
+		#print("QUI PARTE 2")
 		# Cards are already instantiated, we just need to change pivot rotation
 		for i in range(N):
 			var currPivot = carteArray[i].get_parent()
@@ -174,7 +174,7 @@ func fanoutCards(justDrawn : bool) -> void:
 			#currPivot.rotation_degrees = angles[i]
 	
 func _on_handCardsUpdated(cards : Array[Card]) -> void:
-	print("ON HANDCARDSUPDATED -> Segnale ricevuto")
+	#print("ON HANDCARDSUPDATED -> Segnale ricevuto")
 	#print("On hand cards UPDATED")
 	carteArray = cards
 	#_printHandCards()
@@ -272,5 +272,6 @@ func _printHandCards():
 	print("\tCURRENT HAND CARDS:")
 	var i = 1
 	for card in carteArray:
-		print("\t\t", i, '. ', card.value, ' di ', card.suit)
+		print("\t\t", i, '. ', card.value, ' di ', card.suit, ' con z-index: ', card.z_index)
+		#card._printClickingState()
 		i += 1

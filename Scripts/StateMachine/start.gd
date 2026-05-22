@@ -74,6 +74,7 @@ func enter(data : GameData, previousState : State) -> void:
 	if tableWasEmpty:
 		tableCardsDrawn.emit(carteTavolo)
 	else:
+		uiManager.deactivatePlaceOnTableButton()
 		tableCardsUpdated.emit(carteTavolo)
 	if handWasEmpty or gameData.handCardsWereAlreadyRefilled:
 		#print("Calling HAND DRAWN")

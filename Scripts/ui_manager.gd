@@ -14,7 +14,7 @@ class_name UiManager extends Node
 @onready var labelCardsDiscard: Label = %labelCardsDiscard
 @onready var playButton: Button = %PlayButton
 @onready var sfocatura: ColorRect = %sfocatura
-@onready var placeOnTableButton: Button = $"../placeOnTableButton"
+@onready var placeOnTableButton: Button = %placeOnTableButton
 
 # To temporarily store possible playable table card combinations for shaders.
 var currentPlayableCombinations = []
@@ -137,6 +137,11 @@ func clearCardShaders() -> void:
 
 # Enable place on table button
 func activatePlaceOnTableButton() -> void:
+	print("ACTIVATE BUTTON")
+	if game_data.selectedHandCard == null:
+		print("NULL SELECTED CARD")
+		return
+	print("SELECTED CARD is ", game_data.selectedHandCard.value, ' di ', game_data.selectedHandCard.suit)
 	placeOnTableButton.show()
 
 # Disable place on table button

@@ -5,6 +5,7 @@ extends Node2D
 @export var cardScene : PackedScene
 #@export var hand : Node2D
 @onready var counterCarte : Label = $counterCarte
+@onready var spazioMano = %mano
 
 var i : int = 0
 
@@ -38,7 +39,11 @@ func drawCard(num : int, spazio : Marker2D) -> Array[Card]:
 		card.value = data.value
 		card.suit = data.suit 
 		card.cardTexture = data.cardTexture
-		card.z_index = i
+		
+		if spazio == spazioMano:
+			card.z_index = 20+i
+		else:
+			card.z_index = i
 		
 		cardsDrawn.append(card)
 		cardAdded.emit(card)

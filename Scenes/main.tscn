@@ -249,9 +249,20 @@ icon = ExtResource("18_gt3je")
 flat = true
 icon_alignment = 1
 
+[node name="sfocatura" type="ColorRect" parent="." unique_id=892603717]
+unique_name_in_owner = true
+visible = false
+z_index = 18
+offset_right = 1287.0
+offset_bottom = 723.0
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
+color = Color(0.28235295, 0.28235295, 0.28235295, 0.4)
+
 [node name="UndoDiscard" type="Button" parent="." unique_id=1867683775]
 unique_name_in_owner = true
 visible = false
+z_index = 19
 offset_left = 340.0
 offset_top = 624.0
 offset_right = 472.0
@@ -263,6 +274,7 @@ text = "Undo"
 [node name="ConfirmDiscard" type="Button" parent="." unique_id=1732954248]
 unique_name_in_owner = true
 visible = false
+z_index = 19
 offset_left = 1029.0
 offset_top = 630.0
 offset_right = 1161.0
@@ -271,16 +283,8 @@ theme_override_fonts/font = ExtResource("22_3pmx8")
 theme_override_font_sizes/font_size = 25
 text = "Confirm"
 
-[node name="sfocatura" type="ColorRect" parent="." unique_id=892603717]
-unique_name_in_owner = true
-visible = false
-offset_right = 1287.0
-offset_bottom = 723.0
-mouse_filter = 2
-mouse_force_pass_scroll_events = false
-color = Color(0.28235295, 0.28235295, 0.28235295, 0.4)
-
 [node name="mano" type="Marker2D" parent="." unique_id=995058845]
+unique_name_in_owner = true
 position = Vector2(773, 656)
 script = ExtResource("4_kry3j")
 
@@ -298,6 +302,7 @@ script = ExtResource("19_hibaj")
 [node name="labelCardsDiscard" type="Label" parent="." unique_id=1488117215]
 unique_name_in_owner = true
 visible = false
+z_index = 19
 offset_left = 647.0
 offset_top = 406.0
 offset_right = 806.0
@@ -307,6 +312,7 @@ theme_override_font_sizes/font_size = 25
 text = "Pick cards to discard"
 
 [node name="placeOnTableButton" type="Button" parent="." unique_id=431266765]
+unique_name_in_owner = true
 visible = false
 offset_left = 669.0
 offset_top = 353.0
