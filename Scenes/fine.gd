@@ -26,7 +26,7 @@ func enter(data : GameData, previousState : State) -> void:
 		hasWon = true
 		win()
 		
-	if data.maniDisponibili == 0:
+	if data.maniDisponibili <= 0:
 		lose()
 	canReturn = true
 
@@ -36,7 +36,7 @@ func update(_delta: float) -> void:
 		transitioned.emit(self, "SelezioneCarte")
 
 func win() -> void:
-	pass
+	transitioned.emit(self, "Vittoria")
 
 func lose() -> void:
-	pass
+	transitioned.emit(self, "Sconfitta")
