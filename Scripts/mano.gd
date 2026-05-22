@@ -193,6 +193,10 @@ func _on_handCardsUpdated(cards : Array[Card]) -> void:
 func _on_cardAreaEntered(card : Card):
 	var needClickableChange = false
 	cardsWhereMouseIsOn.append(card)
+	fixTiPrego()
+	print("ENTERED")
+	_printHandCards()
+	_printCardsWhereMouseIsOn()
 	# If I am not hovering anything yet, I animate the card directly
 	if currentlyHovering == null:
 		card.upscaleCard()
@@ -210,6 +214,9 @@ func _on_cardAreaEntered(card : Card):
 	if needClickableChange:
 		updateClickableCards()
 	
+	if currentlyHovering != null:
+		print("Currently hovering: ", currentlyHovering.value, ' di ', currentlyHovering.suit)
+	
 # If there is potentially another card to switch to, I switch and hover on it.
 func _on_cardAreaExited(card : Card):
 	# If there is nothing to switch to and I am still hovering the card
@@ -217,6 +224,12 @@ func _on_cardAreaExited(card : Card):
 	# then I update the card and that's it
 	var needClickableChange = false
 	cardsWhereMouseIsOn.erase(card)
+	fixTiPrego()
+	
+	print("EXITED")
+	_printHandCards()
+	_printCardsWhereMouseIsOn()
+	
 	if cardsWhereMouseIsOn.is_empty():
 		card.downscaleCard()
 		currentlyHovering = null
@@ -233,6 +246,14 @@ func _on_cardAreaExited(card : Card):
 		
 	if needClickableChange:
 		updateClickableCards()
+	
+	if currentlyHovering != null:
+		print("Currently hovering: ", currentlyHovering.value, ' di ', currentlyHovering.suit)
+
+func fixTiPrego() -> void:
+	for card in cardsWhereMouseIsOn:
+		if card not in carteArray:
+			cardsWhereMouseIsOn.erase(card)
 
 # Raise card in hand.
 func _on_cardInHandToRaise(card : Card) -> void:
@@ -272,6 +293,15 @@ func _printHandCards():
 	print("\tCURRENT HAND CARDS:")
 	var i = 1
 	for card in carteArray:
+		print("\t\t", i, '. ', card.value, ' di ', card.suit, ' con z-index: ', card.z_index)
+		#card._printClickingState()
+		i += 1
+
+# Print cards where mouse is on
+func _printCardsWhereMouseIsOn():
+	print("\tCURRENT CARDS WHERE MOUSE IS ON:")
+	var i = 1
+	for card in cardsWhereMouseIsOn:
 		print("\t\t", i, '. ', card.value, ' di ', card.suit, ' con z-index: ', card.z_index)
 		#card._printClickingState()
 		i += 1

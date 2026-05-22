@@ -159,3 +159,7 @@ func isSubset(subset: Array, biggerSet: Array) -> bool:
 		if item not in biggerSet:           
 			return false    
 	return true
+	
+func isButtonActivated(originPoint : String) -> void:
+	if placeOnTableButton != null:
+		print("\tFrom ", originPoint, ' is the button visible? ', placeOnTableButton.visible)

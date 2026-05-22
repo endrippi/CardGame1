@@ -6,6 +6,8 @@ var canGoForward : bool = false
 @onready var uiManager: UiManager = $"../../UiManager"
 @onready var gameData = %GameData
 
+@onready var scopaSound : AudioStreamPlayer = %ScopaSound
+
 func enter(data : GameData, previousState : State) -> void:
 	print("ciao sono nello stato Giocato")
 
@@ -31,6 +33,10 @@ func enter(data : GameData, previousState : State) -> void:
 		for card in data.selectedTableCards:
 			data.carteTavolo.erase(card)
 			card.queue_free()
+			
+		if data.carteTavolo.is_empty():
+			data.totalPoints += 10
+			scopaSound.play()
 		
 		# FANOUT FIX?
 		data.previousHandContents = data.carteMano.duplicate()
@@ -39,7 +45,7 @@ func enter(data : GameData, previousState : State) -> void:
 		
 		# Rimuove carta mano
 		data.carteMano.erase(data.selectedHandCard)
-		data.selectedHandCard.queue_free()
+		data.selectedHandCard.get_parent().queue_free()		# Also remove pivot
 
 		# Reset selezioni
 		data.selectedTableCards.clear()

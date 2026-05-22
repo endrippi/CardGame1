@@ -24,6 +24,7 @@
 [ext_resource type="Script" uid="uid://bla8gh5k8h4rh" path="res://Scenes/label.gd" id="19_fevyy"]
 [ext_resource type="Script" uid="uid://bohmggogv464r" path="res://Scripts/animationManager.gd" id="19_hibaj"]
 [ext_resource type="FontFile" uid="uid://dtxwu3srol37k" path="res://Assets/Fonts/Munro-2LYe.ttf" id="22_3pmx8"]
+[ext_resource type="AudioStream" uid="uid://cv7nufak05o3s" path="res://Assets/Sound/Effects/points_1.mp3" id="25_u50mg"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_344ge"]
 font_color = Color(0, 0, 0, 1)
@@ -57,14 +58,12 @@ mouse_filter = 2
 mouse_force_pass_scroll_events = false
 texture = ExtResource("3_ee4r6")
 
-[node name="handsCounter" type="Label" parent="." unique_id=1425906806]
+[node name="handsCounter" type="Label" parent="." unique_id=169413063]
 unique_name_in_owner = true
 offset_left = 206.0
 offset_top = 292.0
 offset_right = 314.0
 offset_bottom = 365.0
-theme_override_fonts/font = ExtResource("22_3pmx8")
-theme_override_font_sizes/font_size = 30
 text = "Hands : 0
 "
 script = ExtResource("2_jkdf5")
@@ -303,10 +302,10 @@ script = ExtResource("19_hibaj")
 unique_name_in_owner = true
 visible = false
 z_index = 19
-offset_left = 647.0
-offset_top = 406.0
-offset_right = 806.0
-offset_bottom = 429.0
+offset_left = 678.0
+offset_top = 412.0
+offset_right = 885.0
+offset_bottom = 441.0
 theme_override_fonts/font = ExtResource("22_3pmx8")
 theme_override_font_sizes/font_size = 25
 text = "Pick cards to discard"
@@ -334,6 +333,10 @@ offset_bottom = 594.0
 text = "0/0"
 label_settings = SubResource("LabelSettings_hibaj")
 script = ExtResource("19_fevyy")
+
+[node name="ScopaSound" type="AudioStreamPlayer" parent="." unique_id=2068760984]
+unique_name_in_owner = true
+stream = ExtResource("25_u50mg")
 
 [connection signal="pressed" from="PlayButton" to="StateMachine/SelezioneCarte" method="_on_play_button_pressed"]
 [connection signal="pressed" from="discard" to="StateMachine/SelezioneCarte" method="_on_discard_pressed"]

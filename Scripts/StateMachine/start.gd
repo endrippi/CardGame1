@@ -46,6 +46,7 @@ func enter(data : GameData, previousState : State) -> void:
 	selectedHandCard = data.selectedHandCard
 	selectedTableCards = data.selectedTableCards
 	currentTableSum = data.currentTableSum
+	
 
 	#print("ENTRATO START, CARTE MANO IS EMPTY?", carteMano.is_empty())
 	#print("In carte mano: ", carteMano)
@@ -63,7 +64,7 @@ func enter(data : GameData, previousState : State) -> void:
 			gameData.previousHandContents = carteMano.duplicate()
 		carteMano = gameData.deck.drawCard(3, data.mano)
 		handWasEmpty = true
-
+		
 	print('previous state is ', previousState)
 	updateGameData(gameData)
 	gameData.carteMano = carteMano
@@ -92,6 +93,7 @@ func enter(data : GameData, previousState : State) -> void:
 		carta.cardSelected.connect(_on_card_hand_clicked)
 	for carta in carteTavolo:
 		carta.cardSelected.connect(_on_card_table_clicked)
+	
 
 func _on_play_button_pressed() -> void:
 	if selectedHandCard != null:
@@ -197,6 +199,12 @@ func placeCardOnTable(card : Card) -> void:
 	card.cardSelected.disconnect(_on_card_hand_clicked)
 	card.cardSelected.connect(_on_card_table_clicked)
 	
+	# Disconnect from all hands signals
+	card.cardAreaEntered.disconnect(mano._on_cardAreaEntered)
+	card.cardAreaExited.disconnect(mano._on_cardAreaExited)
+	card.cardInHandToRaise.disconnect(mano._on_cardInHandToRaise)
+	card.cardInHandToLower.disconnect(mano._on_cardInHandToLower)
+	
 	# Rimuove dal pivot della mano
 	if card.get_parent():
 		card.get_parent().remove_child(card)
@@ -222,11 +230,25 @@ func fixTable():
 			card.cardSelected.disconnect(_on_card_hand_clicked)
 		if !card.cardSelected.is_connected(_on_card_table_clicked):
 			card.cardSelected.connect(_on_card_table_clicked)	
+		if card.cardSelected.is_connected(_on_card_hand_clicked):
+			card.cardSelected.disconnect(_on_card_hand_clicked)
+			
+		if card.cardAreaEntered.is_connected(mano._on_cardAreaEntered):
+			card.cardAreaEntered.disconnect(mano._on_cardAreaEntered)
+		if card.cardAreaExited.is_connected(mano._on_cardAreaExited):
+			card.cardAreaExited.disconnect(mano._on_cardAreaExited)
+		if card.cardInHandToRaise.is_connected(mano._on_cardInHandToRaise):
+			card.cardInHandToRaise.disconnect(mano._on_cardInHandToRaise)
+		if card.cardInHandToLower.is_connected(mano._on_cardInHandToLower):
+			card.cardInHandToLower.disconnect(mano._on_cardInHandToLower)
+		
 
 func _on_place_on_table_button_pressed() -> void:
 	if selectedHandCard:
 		uiManager.deactivatePlaceOnTableButton()
 		placeCardOnTable(selectedHandCard)	
+		if gameData.maniDisponibili <= 0 and gameData.carteMano.is_empty():
+			transitioned.emit(self, "Sconfitta")
 
 func refreshHand() -> void:
 	# Scala le mani disponibili (se le regole del tuo gioco lo prevedono)

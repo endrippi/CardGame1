@@ -19,10 +19,8 @@ func enter(data : GameData, previousState : State) -> void:
 func discardCard(card : Card, data : GameData) -> void:
 	if card:
 		data.carteMano.erase(card)
-
 		if data.selectedHandCard == card:
 			data.selectedHandCard = null
-
 		card.queue_free()
 
 func _on_card_hand_clicked(card : Card) -> void:
@@ -46,10 +44,8 @@ func _on_confirm_discard_pressed() -> void:
 	var sz : int = selectedHandCards.size()
 	if sz == 0:
 		return
-	
 	for card in selectedHandCards:
 		discardCard(card, gameData)
-
 	selectedHandCards.clear()
 	uiManager.enableDiscardMode(false)
 	var newCards = gameData.deck.drawCard(sz, gameData.mano)
@@ -58,6 +54,7 @@ func _on_confirm_discard_pressed() -> void:
 	
 	if gameData.scartiDisponibili <= 0:
 		uiManager.discardButton.visible = false
+	
 	
 	#print("Da stato scarto prima di transition:")
 	#gameData._printPreviousHandCards()
@@ -73,5 +70,4 @@ func exit(data : GameData) -> void:
 		if is_instance_valid(card):
 			if card.cardSelected.is_connected(_on_card_hand_clicked):
 				card.cardSelected.disconnect(_on_card_hand_clicked)
-
 	selectedHandCards.clear()
