@@ -39,12 +39,6 @@ font_size = 50
 outline_size = 7
 outline_color = Color(0, 0, 0, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_fdnlq"]
-font_size = 30
-
-[sub_resource type="LabelSettings" id="LabelSettings_jkdf5"]
-font_size = 30
-
 [sub_resource type="LabelSettings" id="LabelSettings_hibaj"]
 font_size = 25
 
@@ -58,26 +52,36 @@ mouse_filter = 2
 mouse_force_pass_scroll_events = false
 texture = ExtResource("3_ee4r6")
 
-[node name="handsCounter" type="Label" parent="." unique_id=169413063]
+[node name="handsCounter" type="RichTextLabel" parent="." unique_id=568644643]
 unique_name_in_owner = true
+texture_filter = 1
 offset_left = 206.0
 offset_top = 292.0
 offset_right = 314.0
 offset_bottom = 365.0
-text = "Hands : 0
+theme_override_fonts/normal_font = ExtResource("22_3pmx8")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[wave]Hands : 0[/wave]
 "
+fit_content = true
+scroll_active = false
 script = ExtResource("2_jkdf5")
 
-[node name="Discards" type="Label" parent="." unique_id=1595919175]
+[node name="Discards" type="RichTextLabel" parent="." unique_id=2111509897]
 unique_name_in_owner = true
+texture_filter = 1
 offset_left = 205.0
 offset_top = 339.0
 offset_right = 340.0
 offset_bottom = 412.0
-theme_override_fonts/font = ExtResource("22_3pmx8")
-theme_override_font_sizes/font_size = 30
-text = "Discards : 0
+theme_override_fonts/normal_font = ExtResource("22_3pmx8")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[wave]Discards : 0[/wave]
 "
+fit_content = true
+scroll_active = false
 script = ExtResource("3_wsu2k")
 
 [node name="GameData" type="Node" parent="." unique_id=746342371 node_paths=PackedStringArray("mano", "tavolo", "deck")]
@@ -143,6 +147,7 @@ script = ExtResource("14_h1bgf")
 metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 
 [node name="SegnaPunti" type="ColorRect" parent="." unique_id=1625471360]
+visible = false
 offset_left = 70.0
 offset_top = 489.0
 offset_right = 119.0
@@ -204,27 +209,28 @@ text = "0"
 label_settings = SubResource("LabelSettings_6iyac")
 
 [node name="Target" type="Label" parent="." unique_id=593080727]
-offset_left = 74.0
-offset_top = 100.0
-offset_right = 125.0
-offset_bottom = 142.0
+offset_left = 68.0
+offset_top = 97.0
+offset_right = 119.0
+offset_bottom = 143.0
 theme_override_fonts/font = ExtResource("22_3pmx8")
-theme_override_font_sizes/font_size = 25
+theme_override_font_sizes/font_size = 40
 text = "100"
-label_settings = SubResource("LabelSettings_fdnlq")
+horizontal_alignment = 1
+vertical_alignment = 1
 script = ExtResource("16_b3802")
 
-[node name="Label" type="Label" parent="Target" unique_id=1497851860]
+[node name="Label" type="RichTextLabel" parent="Target" unique_id=257489605]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = -21.0
-offset_top = -36.0
-offset_right = 80.0
-offset_bottom = 6.0
-theme_override_fonts/font = ExtResource("22_3pmx8")
-theme_override_font_sizes/font_size = 35
-text = "Target:"
-label_settings = SubResource("LabelSettings_jkdf5")
+offset_left = -22.0
+offset_top = -37.0
+offset_right = 251.0
+offset_bottom = 5.0
+theme_override_fonts/normal_font = ExtResource("22_3pmx8")
+theme_override_font_sizes/normal_font_size = 35
+bbcode_enabled = true
+text = "[wave]Target:[/wave]"
 
 [node name="discard" type="Button" parent="." unique_id=1674142596]
 unique_name_in_owner = true
@@ -298,27 +304,33 @@ metadata/_custom_type_script = "uid://5eb6n7a8rvut"
 unique_name_in_owner = true
 script = ExtResource("19_hibaj")
 
-[node name="labelCardsDiscard" type="Label" parent="." unique_id=1488117215]
+[node name="labelCardsDiscard" type="RichTextLabel" parent="." unique_id=1036755452]
 unique_name_in_owner = true
 visible = false
 z_index = 19
-offset_left = 678.0
-offset_top = 412.0
-offset_right = 885.0
-offset_bottom = 441.0
-theme_override_fonts/font = ExtResource("22_3pmx8")
-theme_override_font_sizes/font_size = 25
-text = "Pick cards to discard"
+offset_left = 644.0
+offset_top = 378.0
+offset_right = 914.0
+offset_bottom = 412.0
+theme_override_fonts/normal_font = ExtResource("22_3pmx8")
+theme_override_font_sizes/normal_font_size = 29
+bbcode_enabled = true
+text = "[wave]Pick cards to discard[/wave]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="placeOnTableButton" type="Button" parent="." unique_id=431266765]
 unique_name_in_owner = true
 visible = false
+texture_filter = 1
 offset_left = 669.0
 offset_top = 353.0
 offset_right = 897.0
 offset_bottom = 421.0
 theme_override_fonts/font = ExtResource("22_3pmx8")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 26
 text = "Place card on table"
 icon = ExtResource("18_gt3je")
 flat = true
@@ -337,6 +349,46 @@ script = ExtResource("19_fevyy")
 [node name="ScopaSound" type="AudioStreamPlayer" parent="." unique_id=2068760984]
 unique_name_in_owner = true
 stream = ExtResource("25_u50mg")
+
+[node name="SegnapuntiNew" type="Control" parent="." unique_id=1664630371]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 378.0
+offset_top = 60.0
+offset_right = 444.0
+offset_bottom = 90.0
+
+[node name="PuntiLabel" type="RichTextLabel" parent="SegnapuntiNew" unique_id=1565641035]
+texture_filter = 1
+layout_mode = 0
+offset_left = -328.99997
+offset_top = 438.99994
+offset_right = -206.99997
+offset_bottom = 484.99994
+rotation = 0.38920844
+theme_override_colors/default_color = Color(0.6340418, 0.23030269, 0.16405615, 1)
+theme_override_fonts/normal_font = ExtResource("22_3pmx8")
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+text = "[wave]Points:[/wave]"
+fit_content = true
+scroll_active = false
+
+[node name="ContaPunti" type="RichTextLabel" parent="SegnapuntiNew" unique_id=610736398]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -210.0
+offset_top = 471.0
+offset_right = -102.817474
+offset_bottom = 550.0
+rotation = 0.38920844
+theme_override_colors/default_color = Color(0.63529414, 0.23137255, 0.16470589, 1)
+theme_override_fonts/normal_font = ExtResource("22_3pmx8")
+theme_override_font_sizes/normal_font_size = 70
+bbcode_enabled = true
+text = "0"
+fit_content = true
+scroll_active = false
 
 [connection signal="pressed" from="PlayButton" to="StateMachine/SelezioneCarte" method="_on_play_button_pressed"]
 [connection signal="pressed" from="discard" to="StateMachine/SelezioneCarte" method="_on_discard_pressed"]

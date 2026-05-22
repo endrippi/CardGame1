@@ -35,6 +35,7 @@ func _on_card_hand_clicked(card : Card) -> void:
 
 func _on_undo_discard_pressed() -> void:
 	uiManager.deactivatePlaceOnTableButton()
+	uiManager.lowerGivenCards(selectedHandCards)
 	selectedHandCards.clear()
 	transitioned.emit(self, "SelezioneCarte")
 

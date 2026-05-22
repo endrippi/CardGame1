@@ -1,4 +1,4 @@
-extends Label
+extends RichTextLabel
 
 @onready var gameData: GameData = $"../GameData"
 
@@ -9,4 +9,4 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	text = str("Hands: ", gameData.maniDisponibili)
+	text = str("[wave]Hands: ", gameData.maniDisponibili, '[/wave]')

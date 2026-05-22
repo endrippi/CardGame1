@@ -74,8 +74,8 @@ func fanoutCardsRedone() -> void:
 	var cardsToDraw = []
 	var indexToStartFromForDrawing = 0
 	
-	#_printHandCards()
-	#gamdrawingTweeneData._printPreviousHandCards()
+	_printHandCards()
+	#gameData._printPreviousHandCards()
 	
 	if tween and tween.is_running():
 		#print("Killing tween")
@@ -83,14 +83,14 @@ func fanoutCardsRedone() -> void:
 	tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	
 	for card in carteArray:
-		#print("Current card is ", card.value, ' di ', card.suit)
+		print("Current card is ", card.value, ' di ', card.suit)
 		# If the card is new, we will instantiate it and animate the drawing
 		if card not in gameData.previousHandContents:
-			#print("It is not in previous cards")
+			print("It is not in previous cards")
 			cardsToDraw.append(card)		
 		# If the card was already there we just reposition it
 		else:
-			#print("It is in previous cards")
+			print("It is in previous cards")
 			#print('It will have rotation degrees ', angles[i])
 			var currPivot = card.get_parent()
 			
@@ -194,9 +194,9 @@ func _on_cardAreaEntered(card : Card):
 	var needClickableChange = false
 	cardsWhereMouseIsOn.append(card)
 	fixTiPrego()
-	print("ENTERED")
-	_printHandCards()
-	_printCardsWhereMouseIsOn()
+	#print("ENTERED")
+	#_printHandCards()
+	#_printCardsWhereMouseIsOn()
 	# If I am not hovering anything yet, I animate the card directly
 	if currentlyHovering == null:
 		card.upscaleCard()
@@ -214,8 +214,8 @@ func _on_cardAreaEntered(card : Card):
 	if needClickableChange:
 		updateClickableCards()
 	
-	if currentlyHovering != null:
-		print("Currently hovering: ", currentlyHovering.value, ' di ', currentlyHovering.suit)
+	#if currentlyHovering != null:
+	#	print("Currently hovering: ", currentlyHovering.value, ' di ', currentlyHovering.suit)
 	
 # If there is potentially another card to switch to, I switch and hover on it.
 func _on_cardAreaExited(card : Card):
@@ -226,9 +226,9 @@ func _on_cardAreaExited(card : Card):
 	cardsWhereMouseIsOn.erase(card)
 	fixTiPrego()
 	
-	print("EXITED")
-	_printHandCards()
-	_printCardsWhereMouseIsOn()
+	#print("EXITED")
+	#_printHandCards()
+	#_printCardsWhereMouseIsOn()
 	
 	if cardsWhereMouseIsOn.is_empty():
 		card.downscaleCard()
@@ -247,8 +247,8 @@ func _on_cardAreaExited(card : Card):
 	if needClickableChange:
 		updateClickableCards()
 	
-	if currentlyHovering != null:
-		print("Currently hovering: ", currentlyHovering.value, ' di ', currentlyHovering.suit)
+	#if currentlyHovering != null:
+	#	print("Currently hovering: ", currentlyHovering.value, ' di ', currentlyHovering.suit)
 
 func fixTiPrego() -> void:
 	for card in cardsWhereMouseIsOn:

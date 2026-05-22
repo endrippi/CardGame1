@@ -75,10 +75,7 @@ func updateCardVisual() -> void:
 	if !inHand:
 		#print("in table")
 		if not selected:
-			if tweenRaise and tweenRaise.is_running():
-				tweenRaise.kill()
-			tweenRaise = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-			tweenRaise.tween_property(self, 'position', Vector2(position.x, -30),0.1)
+			deselectCardOnTable()
 			#print("not selected")
 			#position.y = 0
 			# Animating going back down
@@ -86,10 +83,7 @@ func updateCardVisual() -> void:
 			#selected = true
 		elif selected:
 			# Animating going up
-			if tweenRaise and tweenRaise.is_running():
-				tweenRaise.kill()
-			tweenRaise = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-			tweenRaise.tween_property(self, 'position', Vector2(position.x, position.y-offset_y),0.1)
+			selectCardOnTable()
 			#position.y -= offset_y
 		playClickingSound()
 			#selected = false
@@ -152,7 +146,19 @@ func deselectCardInHand(radius : float) -> void:
 		tweenRaise.kill()
 	tweenRaise = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	tweenRaise.tween_property(self,'position', Vector2(0, -radius), 0.1)
-		
+
+func deselectCardOnTable() -> void:
+	if tweenRaise and tweenRaise.is_running():
+		tweenRaise.kill()
+	tweenRaise = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	tweenRaise.tween_property(self, 'position', Vector2(position.x, -30),0.1)
+
+func selectCardOnTable() -> void:
+	if tweenRaise and tweenRaise.is_running():
+		tweenRaise.kill()
+	tweenRaise = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	tweenRaise.tween_property(self, 'position', Vector2(position.x, position.y-offset_y),0.1)	
+	
 func disableClicks() -> void:
 	clickableArea2D.disableClicks()
 	

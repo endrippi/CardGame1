@@ -47,6 +47,7 @@ func enter(data : GameData, previousState : State) -> void:
 	selectedTableCards = data.selectedTableCards
 	currentTableSum = data.currentTableSum
 	
+	print("Current table sum: ", currentTableSum)
 
 	#print("ENTRATO START, CARTE MANO IS EMPTY?", carteMano.is_empty())
 	#print("In carte mano: ", carteMano)
@@ -60,9 +61,10 @@ func enter(data : GameData, previousState : State) -> void:
 		# If we were not at the beginning of the game
 		# FANOUT FIX?
 		print("Entrato qui")
-		if !tableWasEmpty:
-			gameData.previousHandContents = carteMano.duplicate()
 		carteMano = gameData.deck.drawCard(3, data.mano)
+		if !tableWasEmpty:
+			print("Entrato anche qui")
+			gameData.previousHandContents = carteMano.duplicate()
 		handWasEmpty = true
 		
 	print('previous state is ', previousState)
@@ -100,17 +102,20 @@ func _on_play_button_pressed() -> void:
 		transitioned.emit(self, "Giocato")
 
 func _on_card_table_clicked(card : Card):
-	print("Carta tavolo cliccata: ", card.value, ' di ', card.suit)
+	#print("Carta tavolo cliccata: ", card.value, ' di ', card.suit)
 	if card.selected == true:
 		selectedTableCards.erase(card)
 		card.selected = false
 		currentTableSum -= card.value
 	else:
+		print("Adding ", card, " ovvero ", card.value, " di ", card.suit, " alle selected table cards")
 		selectedTableCards.append(card)
 		card.selected = true
 		currentTableSum += card.value
 	card.updateCardVisual()
 	#print("Array di size ", selectedTableCards.size(), " con somma: ", currentTableSum)
+	
+	print("Selected table cards: ", selectedTableCards)
 	
 	valTavolo.text = str(currentTableSum)
 	# Update shaders to check which cards can be selected now

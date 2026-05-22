@@ -1,17 +1,17 @@
 class_name UiManager extends Node
 @onready var game_data: GameData = $"../GameData"
 
-@onready var discardsLabel: Label = %Discards
+@onready var discardsLabel: RichTextLabel = %Discards
 @onready var counterCarte: Label = %counterCarte
-@onready var numero_punti: Label = %numeroPunti
+@onready var numero_punti: RichTextLabel = %ContaPunti
 @onready var debug_valore_mano: Label = %DebugValoreMano
 @onready var debug_valore_tavolo: Label = %DebugValoreTavolo
-@onready var label: Label = %Label
+@onready var label: RichTextLabel = %Label
 @onready var discardButton: Button = %discard
 @onready var place_table: Button = %PlaceTable
 @onready var undoDiscardButton: Button = %UndoDiscard
 @onready var confirmDiscardButton: Button = %ConfirmDiscard
-@onready var labelCardsDiscard: Label = %labelCardsDiscard
+@onready var labelCardsDiscard: RichTextLabel = %labelCardsDiscard
 @onready var playButton: Button = %PlayButton
 @onready var sfocatura: ColorRect = %sfocatura
 @onready var placeOnTableButton: Button = %placeOnTableButton
@@ -42,7 +42,7 @@ func enableDiscardMode(val : bool) -> void:
 	undoDiscardButton.visible = val
 	confirmDiscardButton.visible = val
 	labelCardsDiscard.visible = val
-	placeOnTableButton.visible = !val
+	placeOnTableButton.visible = false
 	
 	# Deactivating shaders for cards on the table which were selectable
 	for card in game_data.carteTavolo:
@@ -107,22 +107,23 @@ func updateTableCardShaders() -> void:
 	if game_data.selectedHandCard == null:
 		clearCardShaders()
 		return
-	#print("SELECTED HAND CARD È ", game_data.selectedHandCard.value, ' di ', game_data.selectedHandCard.suit)
+	print("SELECTED HAND CARD È ", game_data.selectedHandCard.value, ' di ', game_data.selectedHandCard.suit)
 	#print("Sono qui")
 	var possibleCombs = []
 	var cards = []
 	# First retrieve all playable combinations that feature selected table cards
+	print("Selected table cards: ", game_data.selectedTableCards)
 	for comb in currentPlayableCombinations:
-		#print("Vedendo combinazione ", comb)
+		print("Vedendo combinazione ", comb)
 		if isSubset(game_data.selectedTableCards, comb):
-			#print('Una COMBINAZIONE che ha ancora senso è', comb)
+			print('Una COMBINAZIONE che ha ancora senso è', comb)
 			possibleCombs.append(comb)
 	# Then get which cards are featured in them
 	for comb in possibleCombs:
 		for card in comb:
 			if card not in cards:
 				cards.append(card) 	
-				#print('Quindi una CARTA che ha senso è ', card)	
+				print('Quindi una CARTA che ha senso è ', card)	
 	# Update all table cards depending on whether they can be played or not
 	for card in game_data.carteTavolo:
 		if card in cards:
@@ -152,6 +153,10 @@ func deselectTableCards() -> void:
 	for card in game_data.carteTavolo:
 		card.selected = false
 		card.updateCardVisual()
+
+func lowerGivenCards(cards : Array[Card])-> void:
+	for card in cards:
+		card.deselectCardInHand(game_data.mano.radius)
 
 # Function to check if an array is a subset of another
 func isSubset(subset: Array, biggerSet: Array) -> bool:    
