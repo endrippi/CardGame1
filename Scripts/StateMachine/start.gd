@@ -16,7 +16,6 @@ var currentTableSum : int = 0
 signal tableCardsUpdated(cards : Array[Card])
 signal tableCardsDrawn(cards : Array[Card])
 signal handCardsUpdated(cards : Array[Card])
-signal handCardsDrawn(cards : Array[Card])
 
 @onready var valTavolo: Label = $"../../DebugValoreTavolo"
 @onready var discard: Button = %discard
@@ -30,9 +29,12 @@ var handEmpty : bool = false
 
 # Called when the node enters the scene tree for the first time.
 func enter(data : GameData, previousState : State) -> void:
+	#print("Da start 1: ")
+	#gameData._printPreviousHandCards()
+	
 	var handWasEmpty = false 
 	var tableWasEmpty = false
-	
+
 	print("ciao sono nello stato iniziale")
 	if data.mano:
 		mano = data.mano
@@ -44,32 +46,43 @@ func enter(data : GameData, previousState : State) -> void:
 	selectedHandCard = data.selectedHandCard
 	selectedTableCards = data.selectedTableCards
 	currentTableSum = data.currentTableSum
-	
+
 	#print("ENTRATO START, CARTE MANO IS EMPTY?", carteMano.is_empty())
 	#print("In carte mano: ", carteMano)
-	
+
 	if carteTavolo.is_empty() and !data.partitaIniziata:
 		carteTavolo = gameData.deck.drawCard(4, data.tavolo)
 		data.partitaIniziata = true
 		tableWasEmpty = true
 	if carteMano.is_empty():
 		#print("Da start, carte mano è vuoto")
+		# If we were not at the beginning of the game
+		# FANOUT FIX?
+		print("Entrato qui")
+		if !tableWasEmpty:
+			gameData.previousHandContents = carteMano.duplicate()
 		carteMano = gameData.deck.drawCard(3, data.mano)
 		handWasEmpty = true
 
-	#print('previous state is ', previousState)
+	print('previous state is ', previousState)
 	updateGameData(gameData)
 	gameData.carteMano = carteMano
 	
+	#print("Da start 2: ")
+	#gameData._printPreviousHandCards()
+
 	if tableWasEmpty:
 		tableCardsDrawn.emit(carteTavolo)
 	else:
 		tableCardsUpdated.emit(carteTavolo)
-	if previousState == discardState or handWasEmpty or gameData.handCardsWereAlreadyRefilled:
+	if handWasEmpty or gameData.handCardsWereAlreadyRefilled:
 		#print("Calling HAND DRAWN")
-		handCardsDrawn.emit.call_deferred(carteMano)
+		handCardsUpdated.emit.call_deferred(carteMano)
 		if gameData.handCardsWereAlreadyRefilled:
 			gameData.handCardsWereAlreadyRefilled = false
+	# FANOUT FIX?
+	elif previousState == discardState:
+		handCardsUpdated.emit.call_deferred(carteMano)
 	else:
 		#print("Calling HAND UPDATED")
 		handCardsUpdated.emit.call_deferred(carteMano)
@@ -129,16 +142,6 @@ func _on_card_hand_clicked(card : Card) -> void:
 	# 2. Da UiManager attivo shader delle carte che si possono prendere
 	if selectedHandCard != null:
 		var combs = getTableCombinations()
-		#print('Le combinazioni per il ', selectedHandCard.value, ' di ', selectedHandCard.suit, ' sono: ', combs)
-		#if !combs.is_empty():
-		#	print("Yes combs!")
-		#	gameData.selectedHandCardHasPlayableCombinations = true
-		#	print(gameData.selectedHandCardHasPlayableCombinations)
-		#else:
-		#	print("No combs")
-		#	gameData.selectedHandCardHasPlayableCombinations = false
-		#	print(gameData.selectedHandCardHasPlayableCombinations)
-		#updateGameData(gameData)
 		uiManager.highlightPlayableCards(combs)
 	else:
 		uiManager.clearCardShaders()
@@ -173,9 +176,14 @@ func _on_discard_pressed() -> void:
 	transitioned.emit(self, "Scarto")
 
 func placeCardOnTable(card : Card) -> void:
+	# FANOUT FIX?
+	gameData.previousHandContents = carteMano.duplicate()
+	#print("\tDa placeCardOnTable:")
+	#gameData._printPreviousHandCards()
+	
 	gameData.carteMano.erase(card)
 	gameData.carteTavolo.append(card)
-
+	
 	card.selected = false
 	card.inHand = false
 
@@ -215,13 +223,11 @@ func fixTable():
 			card.cardSelected.connect(_on_card_table_clicked)	
 
 func _on_place_on_table_button_pressed() -> void:
-	print("Place on table pressed")
 	if selectedHandCard:
 		uiManager.deactivatePlaceOnTableButton()
 		placeCardOnTable(selectedHandCard)	
 
 func refreshHand() -> void:
-	#print("Refreshed!")
 	# Scala le mani disponibili (se le regole del tuo gioco lo prevedono)
 	gameData.maniDisponibili -= 1
 	#gameData.handCardsWereAlreadyRefilled = true
@@ -233,6 +239,10 @@ func refreshHand() -> void:
 
 	# 1. Pesca e salva le nuove carte
 	var nuoveCarte = gameData.deck.drawCard(3, gameData.mano)
+	
+	# FANOUT FIX?
+	gameData.previousHandContents = carteMano.duplicate()
+	
 	gameData.carteMano.append_array(nuoveCarte)
 	carteMano = gameData.carteMano
 	
@@ -242,7 +252,7 @@ func refreshHand() -> void:
 			carta.cardSelected.connect(_on_card_hand_clicked)
 	
 	# 3. Notifica la Ui
-	handCardsDrawn.emit.call_deferred(gameData.carteMano)
+	handCardsUpdated.emit.call_deferred(gameData.carteMano)
 
 # Get all the possible combinations of table cards that you can choose to select 
 # from the hand card you selected.

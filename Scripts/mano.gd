@@ -2,6 +2,7 @@ extends Marker2D
 
 var carteArray : Array[Card]
 @onready var selectionState: Node = $"../StateMachine/SelezioneCarte"
+@onready var gameData = %GameData
 
 @export var fanAngle : float = 25
 @onready var pivot : Node2D = $CardPivot
@@ -19,6 +20,7 @@ var sineOffsetMult : float = 0.003		# How much to emphasize the sine curve when 
 var cosineOffsetMult : float = 0.00002
 @export var timeMultiplier : float = 2.0
 var tween : Tween
+var tweenForDrawing : Tween
 @export var drawingSpeed : float = 0.4
 
 
@@ -28,7 +30,7 @@ func _process(delta):
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	selectionState.handCardsUpdated.connect(_on_handCardsUpdated)
-	selectionState.handCardsDrawn.connect(_on_handCardsDrawn)
+	#selectionState.handCardsDrawn.connect(_on_handCardsDrawn)
 		
 # Function to get an array of angles for all the cards in hand
 # (so they are evenly spaced automatically).
@@ -55,8 +57,81 @@ func adjustFanAngle(count : int, angle : float) -> float:
 	# Normally with 3 cards it covers 50 degrees, I want to evenly distribute that
 	return angle/count
 
+# FANOUT FIX?
+func fanoutCardsRedone() -> void:
+	var N = carteArray.size()
+	var angles
+	
+	if N > 3:
+		angles = getRotationAngles(N, adjustFanAngle(N, fanAngle*2.5))
+	else:
+		angles = getRotationAngles(N, fanAngle)
+	
+	# Now check whether the card we are fanning out was already in the hand 
+	# previously or if it has just been drawn
+	var i = 0
+	
+	var cardsToDraw = []
+	var indexToStartFromForDrawing = 0
+	
+	_printHandCards()
+	#gamdrawingTweeneData._printPreviousHandCards()
+	
+	if tween and tween.is_running():
+		print("Killing tween")
+		tween.kill()
+	tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+	
+	for card in carteArray:
+		print("Current card is ", card.value, ' di ', card.suit)
+		# If the card is new, we will instantiate it and animate the drawing
+		if card not in gameData.previousHandContents:
+			print("It is not in previous cards")
+			cardsToDraw.append(card)		
+		# If the card was already there we just reposition it
+		else:
+			print("It is in previous cards")
+			print('It will have rotation degrees ', angles[i])
+			var currPivot = card.get_parent()
+			
+			tween.parallel().tween_property(currPivot, "rotation_degrees", angles[i], 0.3)
+			indexToStartFromForDrawing += 1
+		i += 1	
+	
+	i = 0
+	
+	#if tweenForDrawing and tweenForDrawing.is_running():
+	#	print("Killing tween here")
+	#	tweenForDrawing.kill()
+	var drawingTween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+	
+	for card in cardsToDraw:
+		print("Card to draw is ", card.value, ' di ', card.suit)
+		var currPivot = pivot.duplicate()
+		# Instantiate the pivot and the actual card
+		self.add_child(currPivot)
+		currPivot.add_child(card)
+		
+		var startingPosition = Vector2(-550,-400)
+		card.position = startingPosition
+		var finalPosition = Vector2(0, -radius)  # Placed on pivot's radius
+		
+		print("It will go from ", startingPosition, ' to ', finalPosition, ' with rotation degrees ', angles[indexToStartFromForDrawing])
+		
+		drawingTween.parallel().tween_property(card, "position", finalPosition, drawingSpeed + (i * 0.075))
+		drawingTween.parallel().tween_property(currPivot, "rotation_degrees", angles[indexToStartFromForDrawing], drawingSpeed + (i * 0.075))
+		drawingTween.parallel().tween_property(card, "scale", card.baseHandCardScale, drawingSpeed + (i * 0.075))
+		
+		indexToStartFromForDrawing += 1
+		i += 1
+
+
 # Fan out cards in hand.
+# BUG se scarti solo le prime due su tre in mano, va in justDrawn ma 
+# dovrebbe essere gestito diversamente tra carte rimaste e non
 func fanoutCards(justDrawn : bool) -> void:
+	print('Fanout cards, justDrawn = ', justDrawn)
+	_printHandCards()
 	var N = carteArray.size()
 	var angles
 	# TODO Get correct fan angle according to number of cards in hand
@@ -65,13 +140,14 @@ func fanoutCards(justDrawn : bool) -> void:
 	else:
 		angles = getRotationAngles(N, fanAngle)
 		
-	#print('angoli: ', angles)
+	print('angoli: ', angles)
 	
 	if tween and tween.is_running():
 		tween.kill()
 	tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	
 	if justDrawn:
+		print("QUI PARTE 1")
 		for i in range(N):
 			var currPivot = pivot.duplicate()
 			currPivot.add_child(carteArray[i])
@@ -89,28 +165,16 @@ func fanoutCards(justDrawn : bool) -> void:
 			# Instantiate the pivot and the actual card
 			self.add_child(currPivot)
 	else:
-		#print("QUIIIIIIII")
+		print("QUI PARTE 2")
 		# Cards are already instantiated, we just need to change pivot rotation
 		for i in range(N):
 			var currPivot = carteArray[i].get_parent()
 			#print("This card's (", carteArray[i].value, ' di ', carteArray[i].suit ,") parent is ", currPivot)
 			tween.parallel().tween_property(currPivot, "rotation_degrees", angles[i], 0.3)
 			#currPivot.rotation_degrees = angles[i]
-
-func _on_handCardsDrawn(cards : Array[Card]) -> void:
-	#print("On hand cards DRAWN")
-	carteArray = cards
-	#_printHandCards()
-	for card in carteArray:
-		card.cardAreaEntered.connect(_on_cardAreaEntered)
-		card.cardAreaExited.connect(_on_cardAreaExited)
-		card.cardInHandToRaise.connect(_on_cardInHandToRaise)
-		card.cardInHandToLower.connect(_on_cardInHandToLower)
-		card.inHand = true
-	fanoutCards(true)
 	
 func _on_handCardsUpdated(cards : Array[Card]) -> void:
-	#print("ON HANDCARDSUPDATED -> Segnale ricevuto")
+	print("ON HANDCARDSUPDATED -> Segnale ricevuto")
 	#print("On hand cards UPDATED")
 	carteArray = cards
 	#_printHandCards()
@@ -120,7 +184,8 @@ func _on_handCardsUpdated(cards : Array[Card]) -> void:
 		card.cardInHandToRaise.connect(_on_cardInHandToRaise)
 		card.cardInHandToLower.connect(_on_cardInHandToLower)
 		card.inHand = true
-	fanoutCards(false)
+	#fanoutCards(false)
+	fanoutCardsRedone()
 	
 # We don't want to receive interrupts to hover card IF: we have not exited the area of 
 # the currently hovered card AND we have not entered the area of the NEXT card in hand.

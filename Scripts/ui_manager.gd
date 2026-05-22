@@ -90,8 +90,8 @@ func highlightPlayableCards(combs : Array) -> void:
 			card.deactivateShader()
 	
 	# Immediately show place button if there are no combinations, otherwise hide it
-	print("Is current selected card null? ", game_data.selectedHandCard == null)
-	print("Are current combs empty? ", combs.is_empty())
+	#print("Is current selected card null? ", game_data.selectedHandCard == null)
+	#print("Are current combs empty? ", combs.is_empty())
 	if game_data.selectedHandCard == null:
 		deactivatePlaceOnTableButton()
 	if combs.is_empty():
@@ -142,6 +142,11 @@ func activatePlaceOnTableButton() -> void:
 # Disable place on table button
 func deactivatePlaceOnTableButton() -> void:
 	placeOnTableButton.hide()
+	
+func deselectTableCards() -> void:
+	for card in game_data.carteTavolo:
+		card.selected = false
+		card.updateCardVisual()
 
 # Function to check if an array is a subset of another
 func isSubset(subset: Array, biggerSet: Array) -> bool:    

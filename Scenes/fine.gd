@@ -12,6 +12,10 @@ func enter(data : GameData, previousState : State) -> void:
 	if data.carteRimaste <= 0:
 		data.maniDisponibili -= 1
 		data.carteRimaste = 3
+		
+		# FANOUT FIX?
+		data.previousHandContents = data.carteMano.duplicate()
+	
 		data.carteMano = data.deck.drawCard(3, data.mano)
 		print("Non ci sono più carte in mano")
 		gameData.handCardsWereAlreadyRefilled = true 

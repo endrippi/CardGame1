@@ -302,6 +302,8 @@ offset_left = 647.0
 offset_top = 406.0
 offset_right = 806.0
 offset_bottom = 429.0
+theme_override_fonts/font = ExtResource("22_3pmx8")
+theme_override_font_sizes/font_size = 25
 text = "Pick cards to discard"
 
 [node name="placeOnTableButton" type="Button" parent="." unique_id=431266765]

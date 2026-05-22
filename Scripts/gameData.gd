@@ -2,7 +2,6 @@ class_name GameData extends Node
 
 
 
-
 @export var mano : Marker2D
 @export var tavolo : Marker2D
 @export var deck : Deck
@@ -26,4 +25,17 @@ var partitaIniziata : bool = false
 @export var maniDisponibili : int = 4
 @export var scartiDisponibili: int = 3
 
+# Mark whether the deck has been refilled by a state other than SelezioneCarte
 var handCardsWereAlreadyRefilled = false
+# FANOUT FIX?
+# Store previous hand contents (to check which cards need to be instantiated)
+var previousHandContents : Array[Card] 
+
+
+# Print previous hand cards
+func _printPreviousHandCards():
+	print("\tPREVIOUS HAND CARDS:")
+	var i = 1
+	for card in previousHandContents:
+		print("\t\t", i, '. ', card.value, ' di ', card.suit)
+		i += 1

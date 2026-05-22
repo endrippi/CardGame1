@@ -7,8 +7,13 @@ var selectedHandCards : Array[Card]
 
 func enter(data : GameData, previousState : State) -> void:
 	print("Sono nello scarto")
+	uiManager.deselectTableCards()
 	for card in data.carteMano:
 		card.cardSelected.connect(_on_card_hand_clicked)
+	# FANOUT FIX?
+	data.previousHandContents = data.carteMano.duplicate()
+	#print("Da stato scarto in enter:")
+	#data._printPreviousHandCards()
 
 
 func discardCard(card : Card, data : GameData) -> void:
@@ -39,7 +44,7 @@ func _on_confirm_discard_pressed() -> void:
 	var sz : int = selectedHandCards.size()
 	if sz == 0:
 		return
-
+	
 	for card in selectedHandCards:
 		discardCard(card, gameData)
 
@@ -52,10 +57,14 @@ func _on_confirm_discard_pressed() -> void:
 	if gameData.scartiDisponibili <= 0:
 		uiManager.discardButton.visible = false
 	
+	#print("Da stato scarto prima di transition:")
+	#gameData._printPreviousHandCards()
 	transitioned.emit(self, "SelezioneCarte")
 	
 
 func exit(data : GameData) -> void:
+	#print("Da stato scarto in exit:")
+	#gameData._printPreviousHandCards()
 	for card in data.carteMano:
 		if is_instance_valid(card):
 			if card.cardSelected.is_connected(_on_card_hand_clicked):

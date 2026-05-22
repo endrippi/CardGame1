@@ -4,6 +4,7 @@ extends State
 var shouldGoBack : bool = false
 var canGoForward : bool = false
 @onready var uiManager: UiManager = $"../../UiManager"
+@onready var gameData = %GameData
 
 func enter(data : GameData, previousState : State) -> void:
 	print("ciao sono nello stato Giocato")
@@ -30,7 +31,12 @@ func enter(data : GameData, previousState : State) -> void:
 		for card in data.selectedTableCards:
 			data.carteTavolo.erase(card)
 			card.queue_free()
-			
+		
+		# FANOUT FIX?
+		data.previousHandContents = data.carteMano.duplicate()
+		#print("\tDa update in Giocato:")
+		#data._printPreviousHandCards()
+		
 		# Rimuove carta mano
 		data.carteMano.erase(data.selectedHandCard)
 		data.selectedHandCard.queue_free()
@@ -48,7 +54,7 @@ func enter(data : GameData, previousState : State) -> void:
 		shouldGoBack = true
 
 
-func update(_delta: float) -> void:
+func update(_delta: float) -> void:	
 	if shouldGoBack:
 		transitioned.emit(self, "SelezioneCarte")
 	if canGoForward:
