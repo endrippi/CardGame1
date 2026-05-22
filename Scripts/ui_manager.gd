@@ -16,9 +16,14 @@ class_name UiManager extends Node
 @onready var sfocatura: ColorRect = %sfocatura
 @onready var placeOnTableButton: Button = %placeOnTableButton
 
+@onready var sfocaturaSuTutto : ColorRect = %sfocaturaSuTutto
+@onready var scopaLabel : RichTextLabel = %scopaLabel
+
+
 # To temporarily store possible playable table card combinations for shaders.
 var currentPlayableCombinations = []
 
+var scopaScreenTimeout = 1.75
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -157,6 +162,16 @@ func deselectTableCards() -> void:
 func lowerGivenCards(cards : Array[Card])-> void:
 	for card in cards:
 		card.deselectCardInHand(game_data.mano.radius)
+
+func showScopaScreen() -> void:
+	sfocaturaSuTutto.visible = true 
+	scopaLabel.startTextAnimation()
+	await get_tree().create_timer(scopaScreenTimeout).timeout
+	hideScopaScreen()
+	
+func hideScopaScreen() -> void:
+	sfocaturaSuTutto.visible = false 
+	scopaLabel.hide()
 
 # Function to check if an array is a subset of another
 func isSubset(subset: Array, biggerSet: Array) -> bool:    

@@ -40,6 +40,7 @@ func enter(data : GameData, previousState : State) -> void:
 		if data.carteTavolo.is_empty():
 			data.totalPoints += 10
 			scopaSound.play()
+			uiManager.showScopaScreen()
 		
 		# FANOUT FIX?
 		data.previousHandContents = data.carteMano.duplicate()
