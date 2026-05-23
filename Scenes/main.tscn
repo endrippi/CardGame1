@@ -453,6 +453,16 @@ text = "[wave]You lost :([/wave]"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="ResetRun" type="Button" parent="." unique_id=1855919311]
+z_index = 31
+offset_left = 1070.0
+offset_top = 21.0
+offset_right = 1253.0
+offset_bottom = 102.0
+theme_override_fonts/font = ExtResource("22_3pmx8")
+theme_override_font_sizes/font_size = 35
+text = "! Reset Run !"
+
 [connection signal="pressed" from="PlayButton" to="StateMachine/SelezioneCarte" method="_on_play_button_pressed"]
 [connection signal="pressed" from="discard" to="StateMachine/SelezioneCarte" method="_on_discard_pressed"]
 [connection signal="pressed" from="discard" to="UiManager" method="_on_discard_pressed"]
@@ -464,3 +474,4 @@ vertical_alignment = 1
 [connection signal="button_down" from="placeOnTableButton" to="placeOnTableButton" method="_on_button_down"]
 [connection signal="button_up" from="placeOnTableButton" to="placeOnTableButton" method="_on_button_up"]
 [connection signal="pressed" from="placeOnTableButton" to="StateMachine/SelezioneCarte" method="_on_place_on_table_button_pressed"]
+[connection signal="pressed" from="ResetRun" to="." method="_on_button_pressed"]
