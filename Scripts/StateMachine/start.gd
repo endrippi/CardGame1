@@ -96,6 +96,10 @@ func enter(data : GameData, previousState : State) -> void:
 	for carta in carteTavolo:
 		carta.cardSelected.connect(_on_card_table_clicked)
 	
+func update(_delta: float) -> void:
+	if gameData.totalPoints >= gameData.targetPunti:
+		transitioned.emit(self, "Vittoria")
+
 
 func _on_play_button_pressed() -> void:
 	if selectedHandCard != null:

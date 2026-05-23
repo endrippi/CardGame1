@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://2refwwm0j7qp"]
 
 [ext_resource type="Script" uid="uid://c0534splnvhyd" path="res://Scripts/deck.gd" id="1_io7pv"]
-[ext_resource type="Texture2D" uid="uid://cxha1tpfmrvyd" path="res://Assets/Carte/Retro.jpg" id="1_ukesx"]
 [ext_resource type="Resource" uid="uid://cwd7c5qp7g8m7" path="res://Resources/Carte/1B.tres" id="2_25ny6"]
 [ext_resource type="Resource" uid="uid://bq1jhuh483dub" path="res://Resources/Carte/1C.tres" id="3_myoyy"]
 [ext_resource type="Resource" uid="uid://dyqmb00mpsof4" path="res://Resources/Carte/1D.tres" id="4_d106x"]
@@ -42,11 +41,11 @@
 [ext_resource type="Resource" uid="uid://bux1brx6dj5ub" path="res://Resources/Carte/10C.tres" id="39_2agxv"]
 [ext_resource type="Resource" uid="uid://cfp13nvthimjo" path="res://Resources/Carte/10D.tres" id="40_5y87k"]
 [ext_resource type="Resource" uid="uid://dji2jef8un785" path="res://Resources/Carte/10S.tres" id="41_5sktt"]
+[ext_resource type="Texture2D" uid="uid://c6xjp1ckble7w" path="res://Assets/Carte/Retro/retro_carte.png" id="42_25ny6"]
 
 [node name="Deck" type="Node2D" unique_id=1553971301]
 script = ExtResource("1_io7pv")
 carte = Array[Resource]([ExtResource("2_25ny6"), ExtResource("3_myoyy"), ExtResource("4_d106x"), ExtResource("5_ibb0w"), ExtResource("6_jut54"), ExtResource("7_xmd34"), ExtResource("8_1581o"), ExtResource("9_j8v03"), ExtResource("10_a7xgp"), ExtResource("11_d4yn3"), ExtResource("12_ry3rk"), ExtResource("13_yvfm3"), ExtResource("14_uj0am"), ExtResource("15_4123b"), ExtResource("16_kl7gv"), ExtResource("17_842jc"), ExtResource("18_ob60r"), ExtResource("19_71dbp"), ExtResource("20_3qlgq"), ExtResource("21_cqocy"), ExtResource("22_j34ea"), ExtResource("23_nbea7"), ExtResource("24_s33p3"), ExtResource("25_h0rja"), ExtResource("26_wxbko"), ExtResource("27_bfsym"), ExtResource("28_yn4yr"), ExtResource("29_7ee0t"), ExtResource("30_fbsd5"), ExtResource("31_fvvjy"), ExtResource("32_820t8"), ExtResource("33_qu0ld"), ExtResource("34_qxare"), ExtResource("35_vowkl"), ExtResource("36_bntr8"), ExtResource("37_nlmu2"), ExtResource("38_i5rm7"), ExtResource("39_2agxv"), ExtResource("40_5y87k"), ExtResource("41_5sktt")])
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1095359054]
-scale = Vector2(0.311, 0.267)
-texture = ExtResource("1_ukesx")
+texture = ExtResource("42_25ny6")

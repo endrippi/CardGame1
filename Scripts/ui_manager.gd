@@ -183,3 +183,12 @@ func isSubset(subset: Array, biggerSet: Array) -> bool:
 func isButtonActivated(originPoint : String) -> void:
 	if placeOnTableButton != null:
 		print("\tFrom ", originPoint, ' is the button visible? ', placeOnTableButton.visible)
+	
+	
+func hideAllButtons() -> void:
+	confirmDiscardButton.visible = false
+	discardButton.visible = false
+	playButton.visible = false
+	undoDiscardButton.visible = false
+	labelCardsDiscard.visible = false
+	placeOnTableButton.visible = false
