@@ -26,7 +26,7 @@
 [ext_resource type="FontFile" uid="uid://dtxwu3srol37k" path="res://Assets/Fonts/Munro-2LYe.ttf" id="22_3pmx8"]
 [ext_resource type="AudioStream" uid="uid://cv7nufak05o3s" path="res://Assets/Sound/Effects/points_1.mp3" id="25_u50mg"]
 [ext_resource type="Script" uid="uid://dn751kv2ulitv" path="res://Scenes/scopa_label.gd" id="26_cbgmd"]
-[ext_resource type="AudioStream" uid="uid://0w1jhiekuttr" path="res://Assets/Sound/StockSounds/Pop Bubbles 2.mp3" id="27_1w6v2"]
+[ext_resource type="AudioStream" uid="uid://c84i5d858bctc" path="res://Assets/Sound/Effects/coin_up_noPop.mp3" id="27_1w6v2"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_cbgmd"]
 font = ExtResource("22_3pmx8")
@@ -104,7 +104,7 @@ position = Vector2(429, 254)
 script = ExtResource("5_21xkr")
 
 [node name="Deck" parent="." unique_id=1553971301 instance=ExtResource("3_8gbba")]
-position = Vector2(1161, 372)
+position = Vector2(1194, 365)
 cardScene = ExtResource("7_6bp64")
 
 [node name="counterCarte" type="Label" parent="Deck" unique_id=1833304008]
