@@ -1,6 +1,6 @@
 extends State
 @onready var persoLabel : RichTextLabel = $"../../haiPersoLabel"
-@onready var sfocatura_su_tutto: ColorRect = %sfocaturaSuTutto
+@onready var sfocatura_su_tutto: ColorRect = %sfocaturaFinePartita
 @onready var backgroundMusic: AudioStreamPlayer = $"../../BackgroundMusic"
 @onready var ui_manager: UiManager = $"../../UiManager"
 

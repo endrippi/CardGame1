@@ -7,6 +7,11 @@ var canGoForward : bool = false
 @onready var gameData = %GameData
 
 @onready var scopaSound : AudioStreamPlayer = %ScopaSound
+@onready var pointSound : AudioStreamPlayer = $"../../SuonoPunti"
+var ultimoPunteggio : int = 0
+
+var pointsTween : Tween
+
 
 func enter(data : GameData, previousState : State) -> void:
 	print("ciao sono nello stato Giocato")
@@ -26,8 +31,8 @@ func enter(data : GameData, previousState : State) -> void:
 	if data.selectedHandCard.value == data.currentTableSum:
 		print("Combinazione giusta, uso ", data.selectedHandCard.value, " di ", data.selectedHandCard.suit)
 		# Punti
-		data.totalPoints += data.currentTableSum + data.selectedHandCard.value
-		numeroPunti.text = str(data.totalPoints)
+		var puntiIniziali : int = data.totalPoints
+		var puntiDaAggiungere : int = data.selectedHandCard.value + data.currentTableSum
 
 		_printSelectedTableCards()
 		
@@ -38,9 +43,15 @@ func enter(data : GameData, previousState : State) -> void:
 			card.queue_free()
 			
 		if data.carteTavolo.is_empty():
-			data.totalPoints += 10
+			puntiDaAggiungere += 10
+			numeroPunti.text = str(data.totalPoints)
 			scopaSound.play()
 			uiManager.showScopaScreen()
+		
+		data.totalPoints += puntiDaAggiungere
+		resetTween()
+		pointsTween.tween_method(updatePointsText, puntiIniziali, data.totalPoints, 1.0)
+		resetPitch()
 		
 		# FANOUT FIX?
 		data.previousHandContents = data.carteMano.duplicate()
@@ -86,6 +97,21 @@ func enter(data : GameData, previousState : State) -> void:
 #	if canGoForward:
 #		transitioned.emit(self, "Fine")
 		
+func resetTween() -> void:
+	if pointsTween:
+		pointsTween.kill()
+	pointsTween = create_tween().set_ease(Tween.EASE_OUT)
+
+func updatePointsText(val : int) -> void:
+	numeroPunti.text = str(val)
+	
+	if val > ultimoPunteggio:
+		ultimoPunteggio = val
+		pointSound.pitch_scale += 0.02
+		pointSound.play()
+
+func resetPitch() -> void:
+	pointSound.pitch_scale = 1.0
 
 
 # Print current hand cards
