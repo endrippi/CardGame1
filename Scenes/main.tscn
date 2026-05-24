@@ -26,7 +26,8 @@
 [ext_resource type="FontFile" uid="uid://dtxwu3srol37k" path="res://Assets/Fonts/Munro-2LYe.ttf" id="22_3pmx8"]
 [ext_resource type="AudioStream" uid="uid://cv7nufak05o3s" path="res://Assets/Sound/Effects/points_1.mp3" id="25_u50mg"]
 [ext_resource type="Script" uid="uid://dn751kv2ulitv" path="res://Scenes/scopa_label.gd" id="26_cbgmd"]
-[ext_resource type="AudioStream" uid="uid://0w1jhiekuttr" path="res://Assets/Sound/StockSounds/Pop Bubbles 2.mp3" id="27_1w6v2"]
+[ext_resource type="AudioStream" uid="uid://c84i5d858bctc" path="res://Assets/Sound/Effects/coin_up_noPop.mp3" id="27_1w6v2"]
+[ext_resource type="AudioStream" uid="uid://bwyboot4eqpvs" path="res://Assets/Sound/Effects/deck_cut_attempt.mp3" id="28_ueoa1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_cbgmd"]
 font = ExtResource("22_3pmx8")
@@ -477,6 +478,10 @@ text = "! Reset Run !"
 [node name="SuonoPunti" type="AudioStreamPlayer" parent="." unique_id=1427209441]
 stream = ExtResource("27_1w6v2")
 volume_db = -4.8
+
+[node name="SuonoPescaCarte" type="AudioStreamPlayer" parent="." unique_id=1308133363]
+unique_name_in_owner = true
+stream = ExtResource("28_ueoa1")
 
 [connection signal="pressed" from="PlayButton" to="StateMachine/SelezioneCarte" method="_on_play_button_pressed"]
 [connection signal="pressed" from="discard" to="StateMachine/SelezioneCarte" method="_on_discard_pressed"]
