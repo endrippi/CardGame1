@@ -23,6 +23,7 @@ var tween : Tween
 var tweenForDrawing : Tween
 @export var drawingSpeed : float = 0.4
 
+@onready var drawingSound : AudioStreamPlayer = %SuonoPescaCarte
 
 func _process(delta):
 	time = animationManager.animateCardRow(true, delta, time, sineOffsetMult, cosineOffsetMult, timeMultiplier)
@@ -105,6 +106,9 @@ func fanoutCardsRedone() -> void:
 	#	tweenForDrawing.kill()
 	var drawingTween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	
+	if !cardsToDraw.is_empty():
+		playDrawingSound(cardsToDraw.size())
+		
 	for card in cardsToDraw:
 		#print("Card to draw is ", card.value, ' di ', card.suit)
 		var currPivot = pivot.duplicate()
@@ -125,54 +129,6 @@ func fanoutCardsRedone() -> void:
 		indexToStartFromForDrawing += 1
 		i += 1
 
-
-# Fan out cards in hand.
-# BUG se scarti solo le prime due su tre in mano, va in justDrawn ma 
-# dovrebbe essere gestito diversamente tra carte rimaste e non
-func fanoutCards(justDrawn : bool) -> void:
-	#print('Fanout cards, justDrawn = ', justDrawn)
-	#_printHandCards()
-	var N = carteArray.size()
-	var angles
-	# TODO Get correct fan angle according to number of cards in hand
-	if N > 3:
-		angles = getRotationAngles(N, adjustFanAngle(N, fanAngle*2.5))
-	else:
-		angles = getRotationAngles(N, fanAngle)
-		
-	#print('angoli: ', angles)
-	
-	if tween and tween.is_running():
-		tween.kill()
-	tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
-	
-	if justDrawn:
-		#print("QUI PARTE 1")
-		for i in range(N):
-			var currPivot = pivot.duplicate()
-			currPivot.add_child(carteArray[i])
-			
-			var startingPosition = Vector2(-550,-400)
-			carteArray[i].position = startingPosition
-			#carteArray[i].scale = Vector2(3, 3)
-			var finalPosition = Vector2(0, -radius)  # Placed on pivot's radius
-			
-			tween.parallel().tween_property(carteArray[i], "position", finalPosition, drawingSpeed + (i * 0.075))
-			tween.parallel().tween_property(currPivot, "rotation_degrees", angles[i], drawingSpeed + (i * 0.075))
-			tween.parallel().tween_property(carteArray[i], "scale", carteArray[i].baseHandCardScale, drawingSpeed + (i * 0.075))
-			#currPivot.rotation_degrees = angles[i]
-			
-			# Instantiate the pivot and the actual card
-			self.add_child(currPivot)
-	else:
-		#print("QUI PARTE 2")
-		# Cards are already instantiated, we just need to change pivot rotation
-		for i in range(N):
-			var currPivot = carteArray[i].get_parent()
-			#print("This card's (", carteArray[i].value, ' di ', carteArray[i].suit ,") parent is ", currPivot)
-			tween.parallel().tween_property(currPivot, "rotation_degrees", angles[i], 0.3)
-			#currPivot.rotation_degrees = angles[i]
-	
 func _on_handCardsUpdated(cards : Array[Card]) -> void:
 	#print("ON HANDCARDSUPDATED -> Segnale ricevuto")
 	#print("On hand cards UPDATED")
@@ -283,6 +239,12 @@ func updateClickableCards() -> void:
 		else:
 			#print('abilitando ', card.value, ' di ', card.suit)
 			card.enableClicks()
+			
+func playDrawingSound(cards : int) -> void:
+	var animationDuration = drawingSpeed + (cards * 0.075)
+	var pitch = 0.1/animationDuration
+	drawingSound.pitch_scale = 2.0
+	drawingSound.play()
 	
 # Decreasing sort by z-index.
 func _sort_by_z_index(c1, c2):
