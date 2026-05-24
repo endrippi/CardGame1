@@ -29,7 +29,7 @@ func enter(data : GameData, previousState : State) -> void:
 
 	# COMBINAZIONE CORRETTA
 	if data.selectedHandCard.value == data.currentTableSum:
-		print("Combinazione giusta, uso ", data.selectedHandCard.value, " di ", data.selectedHandCard.suit)
+		#print("Combinazione giusta, uso ", data.selectedHandCard.value, " di ", data.selectedHandCard.suit)
 		# Punti
 		var puntiIniziali : int = data.totalPoints
 		var puntiDaAggiungere : int = data.selectedHandCard.value + data.currentTableSum
@@ -38,7 +38,7 @@ func enter(data : GameData, previousState : State) -> void:
 		
 		# Rimuove carte tavolo
 		for card in data.selectedTableCards:
-			print("Sto togliendo dal tavolo il ", card.value, " di ", card.suit)
+			#print("Sto togliendo dal tavolo il ", card.value, " di ", card.suit)
 			data.carteTavolo.erase(card)
 			card.queue_free()
 			
@@ -59,7 +59,7 @@ func enter(data : GameData, previousState : State) -> void:
 		#data._printPreviousHandCards()
 		
 		# Rimuove carta mano
-		print("Rimuovo dalla mano il ", data.selectedHandCard.value, " di ", data.selectedHandCard.suit)
+		#print("Rimuovo dalla mano il ", data.selectedHandCard.value, " di ", data.selectedHandCard.suit)
 		data.carteMano.erase(data.selectedHandCard)
 		data.selectedHandCard.get_parent().queue_free()		# Also remove pivot
 
@@ -72,9 +72,9 @@ func enter(data : GameData, previousState : State) -> void:
 		canGoForward = true
 		transitioned.emit.call_deferred(self, "Fine")
 	else:
-		print("Combinazione sbagliata!")
-		print("volevo usare ", data.selectedHandCard.value, " di ", data.selectedHandCard.suit, ' per prendere:')
-		_printSelectedTableCards()
+		#print("Combinazione sbagliata!")
+		#print("volevo usare ", data.selectedHandCard.value, " di ", data.selectedHandCard.suit, ' per prendere:')
+		#_printSelectedTableCards()
 		
 		data.currentTableSum = 0
 		
@@ -116,9 +116,10 @@ func resetPitch() -> void:
 
 # Print current hand cards
 func _printSelectedTableCards():
-	print("\tSELECTED TABLE CARDS:")
-	var i = 1
-	for card in gameData.selectedTableCards:
-		print("\t\t", i, '. ', card.value, ' di ', card.suit, ' con z-index: ', card.z_index)
+	pass
+	#print("\tSELECTED TABLE CARDS:")
+	#var i = 1
+	#for card in gameData.selectedTableCards:
+	#	print("\t\t", i, '. ', card.value, ' di ', card.suit, ' con z-index: ', card.z_index)
 		#card._printClickingState()
-		i += 1
+	#	i += 1
