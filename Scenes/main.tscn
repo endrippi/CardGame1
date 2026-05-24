@@ -482,6 +482,7 @@ volume_db = -4.8
 [node name="SuonoPescaCarte" type="AudioStreamPlayer" parent="." unique_id=1308133363]
 unique_name_in_owner = true
 stream = ExtResource("28_ueoa1")
+volume_db = -22.0
 
 [connection signal="pressed" from="PlayButton" to="StateMachine/SelezioneCarte" method="_on_play_button_pressed"]
 [connection signal="pressed" from="discard" to="StateMachine/SelezioneCarte" method="_on_discard_pressed"]
