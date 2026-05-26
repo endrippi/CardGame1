@@ -21,12 +21,14 @@
 [ext_resource type="Script" uid="uid://f2k5ta251v2q" path="res://Scenes/target.gd" id="16_b3802"]
 [ext_resource type="Texture2D" uid="uid://cx7d55wuck5wr" path="res://Assets/Bottoni/pulsante_quadrato1.png" id="17_6vcvc"]
 [ext_resource type="Texture2D" uid="uid://un6ws23tfie4" path="res://Assets/Bottoni/pulsante_quadrato2.png" id="18_7k868"]
-[ext_resource type="Texture2D" uid="uid://dhlemb78yevv7" path="res://Assets/Grafica/pulsante1.png" id="18_gt3je"]
 [ext_resource type="Texture2D" uid="uid://n0iiwyys0h5o" path="res://Assets/Bottoni/pulsante_quadrato3.png" id="18_hpc6h"]
 [ext_resource type="Script" uid="uid://davdru4mlwmj3" path="res://Scenes/place_table.gd" id="19_3pmx8"]
 [ext_resource type="Script" uid="uid://bla8gh5k8h4rh" path="res://Scenes/label.gd" id="19_fevyy"]
 [ext_resource type="Script" uid="uid://bohmggogv464r" path="res://Scripts/animationManager.gd" id="19_hibaj"]
 [ext_resource type="FontFile" uid="uid://dtxwu3srol37k" path="res://Assets/Fonts/Munro-2LYe.ttf" id="22_3pmx8"]
+[ext_resource type="Texture2D" uid="uid://bb567lo3x60cx" path="res://Assets/Bottoni/pulsante_quadrato_giallo3.png" id="22_neg2b"]
+[ext_resource type="Texture2D" uid="uid://dwjeasvkthtvw" path="res://Assets/Bottoni/pulsante_quadrato_giallo2.png" id="23_r33sp"]
+[ext_resource type="Texture2D" uid="uid://dl2ipln4sukw6" path="res://Assets/Bottoni/pulsante_quadrato_giallo1.png" id="24_hdf80"]
 [ext_resource type="AudioStream" uid="uid://cv7nufak05o3s" path="res://Assets/Sound/Effects/points_1.mp3" id="25_u50mg"]
 [ext_resource type="Script" uid="uid://dn751kv2ulitv" path="res://Scenes/scopa_label.gd" id="26_cbgmd"]
 [ext_resource type="AudioStream" uid="uid://c84i5d858bctc" path="res://Assets/Sound/Effects/coin_up_noPop.mp3" id="27_1w6v2"]
@@ -39,15 +41,14 @@ font_size = 17
 [sub_resource type="LabelSettings" id="LabelSettings_344ge"]
 font_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7k868"]
-content_margin_bottom = 9.0
-texture = ExtResource("17_6vcvc")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e08e2"]
+texture = ExtResource("22_neg2b")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kltya"]
-texture = ExtResource("18_hpc6h")
+texture = ExtResource("24_hdf80")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hpc6h"]
-texture = ExtResource("18_7k868")
+texture = ExtResource("23_r33sp")
 
 [sub_resource type="LabelSettings" id="LabelSettings_d1ilt"]
 font_size = 50
@@ -60,8 +61,56 @@ font_size = 50
 outline_size = 7
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jwpg7"]
+texture = ExtResource("22_neg2b")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_neg2b"]
+texture = ExtResource("24_hdf80")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k2e45"]
+texture = ExtResource("23_r33sp")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nwwfm"]
+texture = ExtResource("22_neg2b")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_r33sp"]
+texture = ExtResource("22_neg2b")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hdf80"]
+texture = ExtResource("24_hdf80")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_536cc"]
+texture = ExtResource("23_r33sp")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aqgau"]
+texture = ExtResource("22_neg2b")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8cuat"]
+texture = ExtResource("24_hdf80")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o1aky"]
+texture = ExtResource("23_r33sp")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s8vy0"]
+texture = ExtResource("22_neg2b")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jut3y"]
+texture = ExtResource("24_hdf80")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v2nl5"]
+texture = ExtResource("23_r33sp")
+
 [sub_resource type="LabelSettings" id="LabelSettings_hibaj"]
 font_size = 25
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kwxat"]
+texture = ExtResource("17_6vcvc")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aa8k8"]
+texture = ExtResource("18_hpc6h")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kqrg6"]
+texture = ExtResource("18_7k868")
 
 [node name="Main" type="Node2D" unique_id=1476234443]
 script = ExtResource("1_jjvhh")
@@ -205,7 +254,7 @@ offset_right = 472.0
 offset_bottom = 624.0
 theme_override_fonts/font = ExtResource("22_3pmx8")
 theme_override_font_sizes/font_size = 26
-theme_override_styles/normal = SubResource("StyleBoxTexture_7k868")
+theme_override_styles/normal = SubResource("StyleBoxTexture_e08e2")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_kltya")
 theme_override_styles/hover = SubResource("StyleBoxTexture_hpc6h")
 text = "Play
@@ -267,6 +316,9 @@ offset_right = 1161.0
 offset_bottom = 624.0
 theme_override_fonts/font = ExtResource("22_3pmx8")
 theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxTexture_jwpg7")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_neg2b")
+theme_override_styles/hover = SubResource("StyleBoxTexture_k2e45")
 text = "Discard"
 
 [node name="PlaceTable" type="Button" parent="." unique_id=1266402985]
@@ -276,8 +328,8 @@ offset_left = 668.0
 offset_top = 346.0
 offset_right = 800.0
 offset_bottom = 406.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_nwwfm")
 text = "Place on table"
-icon = ExtResource("18_gt3je")
 flat = true
 icon_alignment = 1
 
@@ -301,6 +353,9 @@ offset_right = 472.0
 offset_bottom = 684.0
 theme_override_fonts/font = ExtResource("22_3pmx8")
 theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxTexture_r33sp")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_hdf80")
+theme_override_styles/hover = SubResource("StyleBoxTexture_536cc")
 text = "Undo"
 
 [node name="ConfirmDiscard" type="Button" parent="." unique_id=1732954248]
@@ -313,6 +368,9 @@ offset_right = 1161.0
 offset_bottom = 690.0
 theme_override_fonts/font = ExtResource("22_3pmx8")
 theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxTexture_aqgau")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_8cuat")
+theme_override_styles/hover = SubResource("StyleBoxTexture_o1aky")
 text = "Confirm"
 
 [node name="mano" type="Marker2D" parent="." unique_id=995058845]
@@ -358,9 +416,10 @@ offset_right = 897.0
 offset_bottom = 421.0
 theme_override_fonts/font = ExtResource("22_3pmx8")
 theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxTexture_s8vy0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_jut3y")
+theme_override_styles/hover = SubResource("StyleBoxTexture_v2nl5")
 text = "Place card on table"
-icon = ExtResource("18_gt3je")
-flat = true
 icon_alignment = 1
 script = ExtResource("19_3pmx8")
 
@@ -484,12 +543,15 @@ vertical_alignment = 1
 
 [node name="ResetRun" type="Button" parent="." unique_id=1855919311]
 z_index = 31
-offset_left = 1070.0
+offset_left = 1029.0
 offset_top = 21.0
 offset_right = 1253.0
-offset_bottom = 102.0
+offset_bottom = 90.0
 theme_override_fonts/font = ExtResource("22_3pmx8")
 theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxTexture_kwxat")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_aa8k8")
+theme_override_styles/hover = SubResource("StyleBoxTexture_kqrg6")
 text = "! Reset Run !"
 
 [node name="SuonoPunti" type="AudioStreamPlayer" parent="." unique_id=1427209441]
