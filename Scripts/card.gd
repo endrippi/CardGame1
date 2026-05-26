@@ -1,5 +1,7 @@
 class_name Card extends Node2D
 
+@onready var shadow: ColorRect = $Shadow
+@export var shader_smoothing: float = 12.0
 @export_range(1, 10) var value : int = 1
 @export_enum("Bastoni", "Coppe", "Denari", "Spade") var suit : String = "Denari"
 @export var cardTexture : Texture
@@ -7,6 +9,12 @@ class_name Card extends Node2D
 signal cardSelected(card : Card)
 
 @onready var area2d : Area2D = $Area2D
+# Massima rotazione (se il tuo shader accetta gradi, es. 25.0. Se accetta radianti usa es. 0.4)
+@export var shader_max_rotation: float = 25.0
+
+var current_x_rot: float = 0.0
+var current_y_rot: float = 0.0
+
 
 signal cardAreaEntered(card : Card)
 signal cardAreaExited(card : Card)
@@ -42,6 +50,9 @@ var inHand : bool
 var selected : bool = false
 var offset_y : int = 35
 
+var isMouseOnCard : bool = false
+
+
 func _ready() -> void:
 	sprite.texture = cardTexture
 	#sprite.scale.x = 0.311 #55
@@ -58,7 +69,7 @@ func _on_area_2d_mouse_entered() -> void:
 		upscaleCard()
 	#area2d.z_index += 10
 	#print("Questa carta è il ", self.value, " di ", self.suit, " con z-index ", self.z_index)
-
+	isMouseOnCard = true
 
 func _on_area_2d_mouse_exited() -> void:
 	#scale.x -= 0.10
@@ -68,6 +79,7 @@ func _on_area_2d_mouse_exited() -> void:
 	else:
 		downscaleCard()
 	#area2d.z_index +- 10
+	isMouseOnCard = false
 
 func updateCardVisual() -> void:
 	#print("updating (card) visuals")

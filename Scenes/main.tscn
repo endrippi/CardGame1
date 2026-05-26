@@ -19,7 +19,10 @@
 [ext_resource type="Script" uid="uid://ct4wqj3ltogqq" path="res://Scenes/sconfitta.gd" id="13_h1bgf"]
 [ext_resource type="Script" uid="uid://b01amloy5ykfq" path="res://Scenes/vittoria.gd" id="14_h1bgf"]
 [ext_resource type="Script" uid="uid://f2k5ta251v2q" path="res://Scenes/target.gd" id="16_b3802"]
+[ext_resource type="Texture2D" uid="uid://cx7d55wuck5wr" path="res://Assets/Bottoni/pulsante_quadrato1.png" id="17_6vcvc"]
+[ext_resource type="Texture2D" uid="uid://un6ws23tfie4" path="res://Assets/Bottoni/pulsante_quadrato2.png" id="18_7k868"]
 [ext_resource type="Texture2D" uid="uid://dhlemb78yevv7" path="res://Assets/Grafica/pulsante1.png" id="18_gt3je"]
+[ext_resource type="Texture2D" uid="uid://n0iiwyys0h5o" path="res://Assets/Bottoni/pulsante_quadrato3.png" id="18_hpc6h"]
 [ext_resource type="Script" uid="uid://davdru4mlwmj3" path="res://Scenes/place_table.gd" id="19_3pmx8"]
 [ext_resource type="Script" uid="uid://bla8gh5k8h4rh" path="res://Scenes/label.gd" id="19_fevyy"]
 [ext_resource type="Script" uid="uid://bohmggogv464r" path="res://Scripts/animationManager.gd" id="19_hibaj"]
@@ -35,6 +38,16 @@ font_size = 17
 
 [sub_resource type="LabelSettings" id="LabelSettings_344ge"]
 font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7k868"]
+content_margin_bottom = 9.0
+texture = ExtResource("17_6vcvc")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kltya"]
+texture = ExtResource("18_hpc6h")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hpc6h"]
+texture = ExtResource("18_7k868")
 
 [sub_resource type="LabelSettings" id="LabelSettings_d1ilt"]
 font_size = 50
@@ -188,11 +201,15 @@ vertical_alignment = 1
 unique_name_in_owner = true
 offset_left = 362.0
 offset_top = 538.0
-offset_right = 459.0
+offset_right = 472.0
 offset_bottom = 624.0
 theme_override_fonts/font = ExtResource("22_3pmx8")
-theme_override_font_sizes/font_size = 25
-text = "Play Cards"
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxTexture_7k868")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_kltya")
+theme_override_styles/hover = SubResource("StyleBoxTexture_hpc6h")
+text = "Play
+Cards"
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="." unique_id=360265433]
 stream = ExtResource("9_ynf5e")
