@@ -22,7 +22,6 @@
 [ext_resource type="Texture2D" uid="uid://cx7d55wuck5wr" path="res://Assets/Bottoni/pulsante_quadrato1.png" id="17_6vcvc"]
 [ext_resource type="Texture2D" uid="uid://un6ws23tfie4" path="res://Assets/Bottoni/pulsante_quadrato2.png" id="18_7k868"]
 [ext_resource type="Texture2D" uid="uid://n0iiwyys0h5o" path="res://Assets/Bottoni/pulsante_quadrato3.png" id="18_hpc6h"]
-[ext_resource type="Script" uid="uid://davdru4mlwmj3" path="res://Scenes/place_table.gd" id="19_3pmx8"]
 [ext_resource type="Script" uid="uid://bla8gh5k8h4rh" path="res://Scenes/label.gd" id="19_fevyy"]
 [ext_resource type="Script" uid="uid://bohmggogv464r" path="res://Scripts/animationManager.gd" id="19_hibaj"]
 [ext_resource type="FontFile" uid="uid://dtxwu3srol37k" path="res://Assets/Fonts/Munro-2LYe.ttf" id="22_3pmx8"]
@@ -421,7 +420,6 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_jut3y")
 theme_override_styles/hover = SubResource("StyleBoxTexture_v2nl5")
 text = "Place card on table"
 icon_alignment = 1
-script = ExtResource("19_3pmx8")
 
 [node name="counterCarteMano" type="Label" parent="." unique_id=1898004316]
 visible = false

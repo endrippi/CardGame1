@@ -88,6 +88,7 @@ func enter(data : GameData, previousState : State) -> void:
 		uiManager.updateTableVisuals()
 		
 		shouldGoBack = true
+		data.wasWrongCombination = true
 		transitioned.emit.call_deferred(self, "SelezioneCarte")
 
 

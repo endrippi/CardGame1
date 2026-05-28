@@ -30,6 +30,9 @@ var handCardsWereAlreadyRefilled = false
 # FANOUT FIX?
 # Store previous hand contents (to check which cards need to be instantiated)
 var previousHandContents : Array[Card] 
+# Mark whether the played cards are actually new and to play the drawing
+# animation for or if it was just a wrong combination
+var wasWrongCombination = false
 
 
 # Print previous hand cards
