@@ -20,8 +20,10 @@
 [ext_resource type="Script" uid="uid://b01amloy5ykfq" path="res://Scenes/vittoria.gd" id="14_h1bgf"]
 [ext_resource type="Script" uid="uid://f2k5ta251v2q" path="res://Scenes/target.gd" id="16_b3802"]
 [ext_resource type="Texture2D" uid="uid://cx7d55wuck5wr" path="res://Assets/Bottoni/pulsante_quadrato1.png" id="17_6vcvc"]
+[ext_resource type="Shader" uid="uid://cxwe6vjs2vdu2" path="res://Shaders/coffeeSwirl.gdshader" id="17_neg2b"]
 [ext_resource type="Texture2D" uid="uid://un6ws23tfie4" path="res://Assets/Bottoni/pulsante_quadrato2.png" id="18_7k868"]
 [ext_resource type="Texture2D" uid="uid://n0iiwyys0h5o" path="res://Assets/Bottoni/pulsante_quadrato3.png" id="18_hpc6h"]
+[ext_resource type="Texture2D" uid="uid://dsvofvlr6uadb" path="res://Assets/Items/caffe2.png" id="18_neg2b"]
 [ext_resource type="Script" uid="uid://bla8gh5k8h4rh" path="res://Scenes/label.gd" id="19_fevyy"]
 [ext_resource type="Script" uid="uid://bohmggogv464r" path="res://Scripts/animationManager.gd" id="19_hibaj"]
 [ext_resource type="FontFile" uid="uid://dtxwu3srol37k" path="res://Assets/Fonts/Munro-2LYe.ttf" id="22_3pmx8"]
@@ -36,6 +38,22 @@
 [sub_resource type="LabelSettings" id="LabelSettings_cbgmd"]
 font = ExtResource("22_3pmx8")
 font_size = 17
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r33sp"]
+shader = ExtResource("17_neg2b")
+shader_parameter/polar_coordinates = false
+shader_parameter/polar_center = Vector2(0.5, 0.5)
+shader_parameter/polar_zoom = 1.0
+shader_parameter/polar_repeat = 1.0
+shader_parameter/spin_rotation = 0.0
+shader_parameter/spin_speed = 10.0
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/colour_1 = Color(0.2509804, 0.14901961, 0, 1)
+shader_parameter/colour_2 = Color(0.3019608, 0.18039216, 0, 1)
+shader_parameter/colour_3 = Color(0.39215687, 0.23529412, 0, 1)
+shader_parameter/contrast = 2.0
+shader_parameter/spin_amount = 0.36
+shader_parameter/pixel_filter = 700.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_344ge"]
 font_color = Color(0, 0, 0, 1)
@@ -215,6 +233,14 @@ metadata/_custom_type_script = "uid://fm5pmuxg1t41"
 [node name="Vittoria" type="Node" parent="StateMachine" unique_id=665810551]
 script = ExtResource("14_h1bgf")
 metadata/_custom_type_script = "uid://fm5pmuxg1t41"
+
+[node name="Tazzina" type="Node2D" parent="." unique_id=1777939626]
+
+[node name="Caffe" type="Sprite2D" parent="Tazzina" unique_id=79507080]
+material = SubResource("ShaderMaterial_r33sp")
+position = Vector2(95.49999, 98)
+scale = Vector2(1.9072164, 2)
+texture = ExtResource("18_neg2b")
 
 [node name="SegnaPunti" type="ColorRect" parent="." unique_id=1625471360]
 visible = false
