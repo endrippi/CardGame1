@@ -34,6 +34,20 @@
 [ext_resource type="Script" uid="uid://dn751kv2ulitv" path="res://Scenes/scopa_label.gd" id="26_cbgmd"]
 [ext_resource type="AudioStream" uid="uid://c84i5d858bctc" path="res://Assets/Sound/Effects/coin_up_noPop.mp3" id="27_1w6v2"]
 [ext_resource type="AudioStream" uid="uid://bwyboot4eqpvs" path="res://Assets/Sound/Effects/deck_cut_attempt.mp3" id="28_ueoa1"]
+[ext_resource type="Texture2D" uid="uid://dhrkqdn5osjg7" path="res://Assets/Animations/Scopa/scopa1.png" id="35_jut3y"]
+[ext_resource type="Texture2D" uid="uid://qqgl5c6egbvj" path="res://Assets/Animations/Scopa/scopa3.png" id="36_v2nl5"]
+[ext_resource type="Texture2D" uid="uid://c5etm704lfbe6" path="res://Assets/Animations/Scopa/scopa4.png" id="37_dmskm"]
+[ext_resource type="Texture2D" uid="uid://0pb1d70fyt6o" path="res://Assets/Animations/Scopa/scopa5.png" id="38_xdkp6"]
+[ext_resource type="Texture2D" uid="uid://dmoqdskiek1gf" path="res://Assets/Animations/Scopa/scopa6.png" id="39_54nrm"]
+[ext_resource type="Texture2D" uid="uid://b6vmvgll20rty" path="res://Assets/Animations/Scopa/scopa7.png" id="40_55jeb"]
+[ext_resource type="Texture2D" uid="uid://cmodwf6atdsw5" path="res://Assets/Animations/Scopa/scopa8.png" id="41_gsvbx"]
+[ext_resource type="Texture2D" uid="uid://dfl6f6hyptan3" path="res://Assets/Animations/Scopa/scopa9.png" id="42_bv80c"]
+[ext_resource type="Texture2D" uid="uid://de038ietqcwm1" path="res://Assets/Animations/Scopa/scopa10.png" id="43_ptfg5"]
+[ext_resource type="Texture2D" uid="uid://b3ox5naru7knd" path="res://Assets/Animations/Scopa/scopa11.png" id="44_2daye"]
+[ext_resource type="Texture2D" uid="uid://bupkpgxbb0aqn" path="res://Assets/Animations/Scopa/scopa12.png" id="45_1semv"]
+[ext_resource type="Texture2D" uid="uid://cwfp07mwrwk6p" path="res://Assets/Animations/Scopa/scopa13.png" id="46_2060n"]
+[ext_resource type="Texture2D" uid="uid://cthlrsp3bd58j" path="res://Assets/Animations/Scopa/scopa14.png" id="47_6ml46"]
+[ext_resource type="Texture2D" uid="uid://dbdrxusn12v1a" path="res://Assets/Animations/Scopa/scopa15.png" id="48_qax2n"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_cbgmd"]
 font = ExtResource("22_3pmx8")
@@ -128,6 +142,65 @@ texture = ExtResource("18_hpc6h")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kqrg6"]
 texture = ExtResource("18_7k868")
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y86h7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("35_jut3y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_v2nl5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_v2nl5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_v2nl5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_v2nl5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_dmskm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_xdkp6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_54nrm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_55jeb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_gsvbx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_bv80c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_ptfg5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_2daye")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_1semv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_2060n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_6ml46")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_qax2n")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
 
 [node name="Main" type="Node2D" unique_id=1476234443]
 script = ExtResource("1_jjvhh")
@@ -586,6 +659,16 @@ volume_db = -4.8
 unique_name_in_owner = true
 stream = ExtResource("28_ueoa1")
 volume_db = -22.0
+
+[node name="ScopaAnimation" type="AnimatedSprite2D" parent="." unique_id=1969279608]
+unique_name_in_owner = true
+visible = false
+z_index = 31
+position = Vector2(641.50006, 360.50003)
+scale = Vector2(1.8838234, 2.0083334)
+sprite_frames = SubResource("SpriteFrames_y86h7")
+frame = 7
+frame_progress = 0.21285313
 
 [connection signal="pressed" from="PlayButton" to="StateMachine/SelezioneCarte" method="_on_play_button_pressed"]
 [connection signal="pressed" from="discard" to="StateMachine/SelezioneCarte" method="_on_discard_pressed"]

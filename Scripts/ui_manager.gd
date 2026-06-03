@@ -18,7 +18,7 @@ class_name UiManager extends Node
 
 @onready var sfocaturaSuTutto : ColorRect = %sfocaturaSuTutto
 @onready var scopaLabel : RichTextLabel = %scopaLabel
-
+@onready var animationManager = %AnimationManager
 
 # To temporarily store possible playable table card combinations for shaders.
 var currentPlayableCombinations = []
@@ -165,13 +165,14 @@ func lowerGivenCards(cards : Array[Card])-> void:
 
 func showScopaScreen() -> void:
 	sfocaturaSuTutto.visible = true 
-	scopaLabel.startTextAnimation()
-	await get_tree().create_timer(scopaScreenTimeout).timeout
+	await animationManager.playScopaAnimation()
+	#scopaLabel.startTextAnimation()
+	#await get_tree().create_timer(scopaScreenTimeout).timeout
 	hideScopaScreen()
 	
 func hideScopaScreen() -> void:
 	sfocaturaSuTutto.visible = false 
-	scopaLabel.hide()
+	#scopaLabel.hide()
 
 # Function to check if an array is a subset of another
 func isSubset(subset: Array, biggerSet: Array) -> bool:    

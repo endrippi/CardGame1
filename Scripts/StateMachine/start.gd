@@ -155,11 +155,19 @@ func _on_card_hand_clicked(card : Card) -> void:
 	if selectedHandCard != null:
 		var combs = getTableCombinations()
 		uiManager.highlightPlayableCards(combs)
+		# If there is only one combination, then automatically select the table cards
+		if combs.size() == 1:
+			handleSingleCombination(combs[0])
 	else:
 		uiManager.clearCardShaders()
 		#uiManager.deactivatePlaceOnTableButton()
 		
 	uiManager.updateHandVisuals()
+	
+# TODO QoL: If there is only one possible combination of cards,
+# then automatically select those
+func handleSingleCombination(cards) -> void:
+	pass
 	
 func updateGameData(data : GameData) -> void:
 	data.mano = mano

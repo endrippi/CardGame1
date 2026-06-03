@@ -1,6 +1,7 @@
 extends Node
 
 @onready var gameData: GameData = %GameData
+@onready var scopaAnimation = %ScopaAnimation
 
 func animateCardRow(isHand, delta, time, sineOffsetMult, cosineOffsetMult, timeMultiplier) -> float:
 	time += delta
@@ -21,3 +22,13 @@ func animateCardRow(isHand, delta, time, sineOffsetMult, cosineOffsetMult, timeM
 		i += 1
 		
 	return time
+
+func playScopaAnimation() -> void:
+	scopaAnimation.show()
+	scopaAnimation.frame = 0
+	scopaAnimation.play("default")
+	await scopaAnimation.animation_finished
+	scopaAnimation.hide()
+
+	
+	
