@@ -34,6 +34,8 @@ var previousHandContents : Array[Card]
 # animation for or if it was just a wrong combination
 var wasWrongCombination = false
 
+func _ready() -> void:
+	targetPunti = HighScore.load_highscore()
 
 # Print previous hand cards
 func _printPreviousHandCards():

@@ -2,6 +2,7 @@ extends State
 
 @onready var gameData: GameData = $"../../GameData"
 @onready var uiManager: UiManager = $"../../UiManager"
+@onready var hai_vinto_label: RichTextLabel = $"../../haiVintoLabel"
 
 var canReturn : bool = false
 var hasWon :bool = false
@@ -24,6 +25,7 @@ func enter(data : GameData, previousState : State) -> void:
 		gameData.handCardsWereAlreadyRefilled = false 
 	if data.totalPoints >= data.targetPunti:
 		hasWon = true
+		HighScore.save_highscore(data.totalPoints)
 		win()
 		
 	if data.maniDisponibili <= 0 and data.totalPoints < data.targetPunti:

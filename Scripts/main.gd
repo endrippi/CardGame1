@@ -9,3 +9,7 @@ func _ready() -> void:
 
 func _on_button_pressed() -> void:
 	get_tree().reload_current_scene()
+
+func _process(delta: float) -> void:
+	if Input.is_key_pressed(KEY_P) and Input.is_key_pressed(KEY_O) and Input.is_key_pressed(KEY_I):
+		HighScore.save_highscore(80)

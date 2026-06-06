@@ -197,7 +197,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("48_qax2n")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
 "speed": 10.0
 }]
@@ -397,14 +397,14 @@ script = ExtResource("16_b3802")
 [node name="Label" type="RichTextLabel" parent="Target" unique_id=257489605]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = -22.0
+offset_left = -42.0
 offset_top = -37.0
-offset_right = 251.0
+offset_right = 231.0
 offset_bottom = 5.0
 theme_override_fonts/normal_font = ExtResource("22_3pmx8")
 theme_override_font_sizes/normal_font_size = 35
 bbcode_enabled = true
-text = "[wave]Target:[/wave]"
+text = "[wave]HighScore:[/wave]"
 
 [node name="discard" type="Button" parent="." unique_id=1674142596]
 unique_name_in_owner = true
@@ -613,14 +613,16 @@ script = ExtResource("26_cbgmd")
 [node name="haiVintoLabel" type="RichTextLabel" parent="." unique_id=979799926]
 visible = false
 z_index = 31
-offset_left = 513.0
-offset_top = 254.0
-offset_right = 1002.0
-offset_bottom = 518.0
+offset_left = 491.0
+offset_top = 258.0
+offset_right = 1048.0
+offset_bottom = 522.0
+theme_override_constants/line_separation = -19
 theme_override_fonts/normal_font = ExtResource("22_3pmx8")
 theme_override_font_sizes/normal_font_size = 100
 bbcode_enabled = true
-text = "[wave]You win![/wave]"
+text = "[wave]You win!
+New Record[/wave]"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -649,7 +651,7 @@ theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxTexture_kwxat")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_aa8k8")
 theme_override_styles/hover = SubResource("StyleBoxTexture_kqrg6")
-text = "! Reset Run !"
+text = "! New Run !"
 
 [node name="SuonoPunti" type="AudioStreamPlayer" parent="." unique_id=1427209441]
 stream = ExtResource("27_1w6v2")
