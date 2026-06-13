@@ -4,9 +4,15 @@ extends State
 @onready var backgroundMusic: AudioStreamPlayer = $"../../BackgroundMusic"
 @onready var ui_manager: UiManager = $"../../UiManager"
 
+@onready var animationManager = %AnimationManager
+
 # Called when the node enters the scene tree for the first time.
 func enter(data : GameData, previousState : State) -> void:
 	print("Hai perso! :(")
+	
+	# One might lose while doing scopa, let's avoid overlapping animations
+	await animationManager.checkAndWaitScopaAnimation()
+	
 	persoLabel.visible = true
 	sfocatura_su_tutto.visible = true
 	backgroundMusic.pitch_scale = 0.8

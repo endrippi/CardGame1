@@ -143,6 +143,15 @@ texture = ExtResource("18_hpc6h")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kqrg6"]
 texture = ExtResource("18_7k868")
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dmskm"]
+texture = ExtResource("17_6vcvc")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xdkp6"]
+texture = ExtResource("18_hpc6h")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_54nrm"]
+texture = ExtResource("18_7k868")
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_y86h7"]
 animations = [{
 "frames": [{
@@ -653,6 +662,18 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_aa8k8")
 theme_override_styles/hover = SubResource("StyleBoxTexture_kqrg6")
 text = "! New Run !"
 
+[node name="ResetHighScore" type="Button" parent="." unique_id=1144432655]
+offset_left = 826.0
+offset_top = 35.0
+offset_right = 1018.0
+offset_bottom = 81.0
+theme_override_fonts/font = ExtResource("22_3pmx8")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxTexture_dmskm")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_xdkp6")
+theme_override_styles/hover = SubResource("StyleBoxTexture_54nrm")
+text = "Reset High Score"
+
 [node name="SuonoPunti" type="AudioStreamPlayer" parent="." unique_id=1427209441]
 stream = ExtResource("27_1w6v2")
 volume_db = -4.8
@@ -684,3 +705,4 @@ frame_progress = 0.21285313
 [connection signal="button_up" from="placeOnTableButton" to="placeOnTableButton" method="_on_button_up"]
 [connection signal="pressed" from="placeOnTableButton" to="StateMachine/SelezioneCarte" method="_on_place_on_table_button_pressed"]
 [connection signal="pressed" from="ResetRun" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="ResetHighScore" to="." method="_on_reset_high_score_pressed"]

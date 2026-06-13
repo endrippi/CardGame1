@@ -29,6 +29,10 @@ func playScopaAnimation() -> void:
 	scopaAnimation.play("default")
 	await scopaAnimation.animation_finished
 	scopaAnimation.hide()
+	
+func checkAndWaitScopaAnimation() -> void:
+	if scopaAnimation.is_playing():
+		await scopaAnimation.animation_finished
 
 	
 	
