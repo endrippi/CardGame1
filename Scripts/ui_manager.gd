@@ -112,23 +112,23 @@ func updateTableCardShaders() -> void:
 	if game_data.selectedHandCard == null:
 		clearCardShaders()
 		return
-	print("SELECTED HAND CARD È ", game_data.selectedHandCard.value, ' di ', game_data.selectedHandCard.suit)
+	#print("SELECTED HAND CARD È ", game_data.selectedHandCard.value, ' di ', game_data.selectedHandCard.suit)
 	#print("Sono qui")
 	var possibleCombs = []
 	var cards = []
 	# First retrieve all playable combinations that feature selected table cards
-	print("Selected table cards: ", game_data.selectedTableCards)
+	#print("Selected table cards: ", game_data.selectedTableCards)
 	for comb in currentPlayableCombinations:
-		print("Vedendo combinazione ", comb)
+		#print("Vedendo combinazione ", comb)
 		if isSubset(game_data.selectedTableCards, comb):
-			print('Una COMBINAZIONE che ha ancora senso è', comb)
+			#print('Una COMBINAZIONE che ha ancora senso è', comb)
 			possibleCombs.append(comb)
 	# Then get which cards are featured in them
 	for comb in possibleCombs:
 		for card in comb:
 			if card not in cards:
 				cards.append(card) 	
-				print('Quindi una CARTA che ha senso è ', card)	
+				#print('Quindi una CARTA che ha senso è ', card)	
 	# Update all table cards depending on whether they can be played or not
 	for card in game_data.carteTavolo:
 		if card in cards:
@@ -143,11 +143,11 @@ func clearCardShaders() -> void:
 
 # Enable place on table button
 func activatePlaceOnTableButton() -> void:
-	print("ACTIVATE BUTTON")
+	#print("ACTIVATE BUTTON")
 	if game_data.selectedHandCard == null:
-		print("NULL SELECTED CARD")
+		#print("NULL SELECTED CARD")
 		return
-	print("SELECTED CARD is ", game_data.selectedHandCard.value, ' di ', game_data.selectedHandCard.suit)
+	#print("SELECTED CARD is ", game_data.selectedHandCard.value, ' di ', game_data.selectedHandCard.suit)
 	placeOnTableButton.show()
 
 # Disable place on table button

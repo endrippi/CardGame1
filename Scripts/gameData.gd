@@ -34,6 +34,13 @@ var previousHandContents : Array[Card]
 # animation for or if it was just a wrong combination
 var wasWrongCombination = false
 
+# QoL: If player selects a hand card that has a single playable combination,
+# they can only press "play card" without explicitly selecting it:
+# the game will remember (I hope)
+var singleCombination = false
+# Memorize previously auto-selected cards
+var autoSelectedCards : Array[Card] = []
+
 func _ready() -> void:
 	targetPunti = HighScore.load_highscore()
 

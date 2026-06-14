@@ -27,6 +27,9 @@ var handEmpty : bool = false
 @onready var discardState = %Scarto
 @onready var endState = %Fine
 
+var tableWasPreviouslyAutoSelected = false
+var autoSelectedCards : Array[Card] = []
+
 # Called when the node enters the scene tree for the first time.
 func enter(data : GameData, previousState : State) -> void:
 	#print("Da start 1: ")
@@ -60,14 +63,14 @@ func enter(data : GameData, previousState : State) -> void:
 		#print("Da start, carte mano è vuoto")
 		# If we were not at the beginning of the game
 		# FANOUT FIX?
-		print("Entrato qui")
+		#print("Entrato qui")
 		carteMano = gameData.deck.drawCard(3, data.mano)
 		if !tableWasEmpty:
-			print("Entrato anche qui")
+			#print("Entrato anche qui")
 			gameData.previousHandContents = carteMano.duplicate()
 		handWasEmpty = true
 		
-	print('previous state is ', previousState)
+	#print('previous state is ', previousState)
 	updateGameData(gameData)
 	gameData.carteMano = carteMano
 	
@@ -95,6 +98,8 @@ func enter(data : GameData, previousState : State) -> void:
 		carta.cardSelected.connect(_on_card_hand_clicked)
 	for carta in carteTavolo:
 		carta.cardSelected.connect(_on_card_table_clicked)
+		
+	valTavolo.text = "0"
 	
 func update(_delta: float) -> void:
 	if gameData.totalPoints >= gameData.targetPunti:
@@ -106,17 +111,31 @@ func _on_play_button_pressed() -> void:
 		transitioned.emit(self, "Giocato")
 
 func _on_card_table_clicked(card : Card):
-	#print("Carta tavolo cliccata: ", card.value, ' di ', card.suit)
+	print("Carta tavolo cliccata: ", card.value, ' di ', card.suit)
+		
 	if card.selected == true:
+		print("Sto abbassando la carta")
 		selectedTableCards.erase(card)
 		card.selected = false
-		currentTableSum -= card.value
+		# If previously we had to force a single combination, reset
+		if gameData.singleCombination:
+			resetAfterSingleCombination()
+		elif currentTableSum > 0:
+			currentTableSum -= card.value
+			print("\tHo tolto ", card.value, " alla table sum")
 	else:
 		print("Adding ", card, " ovvero ", card.value, " di ", card.suit, " alle selected table cards")
 		selectedTableCards.append(card)
 		card.selected = true
+		# If previously we had to force a single combination, reset
+		if gameData.singleCombination:
+			resetAfterSingleCombination()
+		
 		currentTableSum += card.value
+		print("\tHo aggiunto", card.value, " alla table sum")
 	card.updateCardVisual()
+	
+	print("Valore tavolo: ", currentTableSum)
 	#print("Array di size ", selectedTableCards.size(), " con somma: ", currentTableSum)
 	
 	print("Selected table cards: ", selectedTableCards)
@@ -141,6 +160,7 @@ func _on_card_hand_clicked(card : Card) -> void:
 			selectedHandCard = card
 			#print("Clickata ", selectedHandCard.value, " di papapapa (cambiando da carta)")
 			valMano.text = str(selectedHandCard.value)
+			
 		else:
 			selectedHandCard = card
 			#print("Clickata ", selectedHandCard.value, " di papapapa")
@@ -149,6 +169,10 @@ func _on_card_hand_clicked(card : Card) -> void:
 	
 	updateGameData(gameData)
 	
+	# If previously we had to force a single combination, reset
+	if gameData.singleCombination:
+		resetAfterSingleCombination()
+	
 	# VISUAL (ogni volta che viene selezionata una carta della mano)
 	# 1. Calcolo le combinazioni
 	# 2. Da UiManager attivo shader delle carte che si possono prendere
@@ -156,7 +180,8 @@ func _on_card_hand_clicked(card : Card) -> void:
 		var combs = getTableCombinations()
 		uiManager.highlightPlayableCards(combs)
 		# If there is only one combination, then automatically select the table cards
-		if combs.size() == 1:
+		if combs.size() == 1  and selectedTableCards.size() == 0:
+			#print(combs[0])
 			handleSingleCombination(combs[0])
 	else:
 		uiManager.clearCardShaders()
@@ -167,7 +192,36 @@ func _on_card_hand_clicked(card : Card) -> void:
 # TODO QoL: If there is only one possible combination of cards,
 # then automatically select those
 func handleSingleCombination(cards) -> void:
-	pass
+	for card in cards:
+		print("Ora ", card.value, " di ", card.suit, " è selezionata automaticamente")
+		selectedTableCards.append(card)
+		card.selected = true 
+		card.updateCardVisual()
+		autoSelectedCards.append(card)
+	gameData.singleCombination = true
+	print("Currentsum passa da ", gameData.currentTableSum, " a ", selectedHandCard.value)
+	currentTableSum = selectedHandCard.value
+	updateGameData(gameData)
+	valTavolo.text = str(currentTableSum)
+	_printAutoSelectedCards()
+	
+# Reset auto-selection once a hand card is not clicked anymore.
+func resetAfterSingleCombination() -> void:
+	print("Reset:")
+	_printAutoSelectedCards()
+	gameData.singleCombination = false 
+	for card in autoSelectedCards:
+		print("Ora ", card.value, " di ", card.suit, " non è più selezionata automaticamente")
+		card.selected = false 
+		card.updateCardVisual()
+		selectedTableCards.erase(card)
+		print("CurrentTableSum sarebbe ", currentTableSum, ", gli tolgo ", card.value)
+	autoSelectedCards = []
+	currentTableSum = 0
+	updateGameData(gameData)
+	valTavolo.text = str(currentTableSum)
+	print("Function end: ")
+	_printAutoSelectedCards()
 	
 func updateGameData(data : GameData) -> void:
 	data.mano = mano
@@ -178,6 +232,7 @@ func updateGameData(data : GameData) -> void:
 	data.selectedHandCard = selectedHandCard
 	data.selectedTableCards = selectedTableCards
 	data.currentTableSum = currentTableSum
+	data.autoSelectedCards = autoSelectedCards
 
 func exit(data : GameData) -> void:
 	for carta in carteTavolo:
@@ -326,3 +381,12 @@ func _backtrack_table_combinations(idx: int, currSum: int, curr: Array, totalCar
 	curr.pop_back()	
 	# Exclude current card
 	_backtrack_table_combinations(idx + 1, currSum, curr, totalCards, target)
+
+# Print autoselected cards
+func _printAutoSelectedCards():
+	print("\tAUTOSELECTED CARDS:")
+	var i = 1
+	for card in autoSelectedCards:
+		print("\t\t", i, '. ', card.value, ' di ', card.suit, ' con z-index: ', card.z_index)
+		#card._printClickingState()
+		i += 1

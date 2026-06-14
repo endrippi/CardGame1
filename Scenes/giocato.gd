@@ -26,9 +26,9 @@ func enter(data : GameData, previousState : State) -> void:
 	#	" con somma di tavolo di ",
 	#	data.currentTableSum
 	#)
-
+	# Anche AUTO SELEZIONE SE SOLO UNA COMBINAZIONE 
 	# COMBINAZIONE CORRETTA
-	if data.selectedHandCard.value == data.currentTableSum:
+	if data.selectedHandCard.value == data.currentTableSum or data.singleCombination:
 		#print("Combinazione giusta, uso ", data.selectedHandCard.value, " di ", data.selectedHandCard.suit)
 		# Punti
 		var puntiIniziali : int = data.totalPoints
@@ -39,6 +39,8 @@ func enter(data : GameData, previousState : State) -> void:
 		# Rimuove carte tavolo
 		for card in data.selectedTableCards:
 			#print("Sto togliendo dal tavolo il ", card.value, " di ", card.suit)
+			if card in data.autoSelectedCards:
+				data.autoSelectedCards.erase(card)
 			data.carteTavolo.erase(card)
 			card.queue_free()
 			

@@ -75,7 +75,7 @@ func fanoutCardsRedone() -> void:
 	var cardsToDraw = []
 	var indexToStartFromForDrawing = 0
 	
-	_printHandCards()
+	#_printHandCards()
 	#gameData._printPreviousHandCards()
 	
 	if tween and tween.is_running():
@@ -84,15 +84,15 @@ func fanoutCardsRedone() -> void:
 	tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	
 	for card in carteArray:
-		print("Current card is ", card.value, ' di ', card.suit)
+		#print("Current card is ", card.value, ' di ', card.suit)
 		# If the card is new, we will instantiate it and animate the drawing
 		# It also checks whether it was just a wrong combination
 		if card not in gameData.previousHandContents and !gameData.wasWrongCombination:
-			print("It is not in previous cards")
+			#print("It is not in previous cards")
 			cardsToDraw.append(card)		
 		# If the card was already there we just reposition it
 		else:
-			print("It is in previous cards")
+			#print("It is in previous cards")
 			#print('It will have rotation degrees ', angles[i])
 			var currPivot = card.get_parent()
 			

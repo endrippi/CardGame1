@@ -169,7 +169,7 @@ func selectCardOnTable() -> void:
 	if tweenRaise and tweenRaise.is_running():
 		tweenRaise.kill()
 	tweenRaise = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-	tweenRaise.tween_property(self, 'position', Vector2(position.x, position.y-offset_y),0.1)	
+	tweenRaise.tween_property(self, 'position', Vector2(position.x, -65),0.1)	
 	
 func disableClicks() -> void:
 	clickableArea2D.disableClicks()
