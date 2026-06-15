@@ -15,7 +15,6 @@ signal cardSelected(card : Card)
 var current_x_rot: float = 0.0
 var current_y_rot: float = 0.0
 
-
 signal cardAreaEntered(card : Card)
 signal cardAreaExited(card : Card)
 
@@ -125,6 +124,7 @@ func upscaleCard() -> void:
 		tweenHover.tween_property(self, "scale", hoveredTableCardScale, 0.4)
 	#scale.x += 0.10
 	#scale.y += 0.10
+	
 	playHoveringSound()
 
 # Different downscaling, depends on whether the card is in hand or on the table.

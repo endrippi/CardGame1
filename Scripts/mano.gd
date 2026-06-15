@@ -25,6 +25,8 @@ var tweenForDrawing : Tween
 
 @onready var drawingSound : AudioStreamPlayer = %SuonoPescaCarte
 
+#signal combinationsNeeded(value : int)
+
 func _process(delta):
 	time = animationManager.animateCardRow(true, delta, time, sineOffsetMult, cosineOffsetMult, timeMultiplier)
 
@@ -243,6 +245,8 @@ func updateClickableCards() -> void:
 		else:
 			#print('abilitando ', card.value, ' di ', card.suit)
 			card.enableClicks()
+			#combinationsNeeded.emit(card.value)
+			
 			
 func playDrawingSound(cards : int) -> void:
 	var animationDuration = drawingSpeed + (cards * 0.075)

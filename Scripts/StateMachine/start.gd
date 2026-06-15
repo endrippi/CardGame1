@@ -177,7 +177,7 @@ func _on_card_hand_clicked(card : Card) -> void:
 	# 1. Calcolo le combinazioni
 	# 2. Da UiManager attivo shader delle carte che si possono prendere
 	if selectedHandCard != null:
-		var combs = getTableCombinations()
+		var combs = getTableCombinations(selectedHandCard.value)
 		uiManager.highlightPlayableCards(combs)
 		# If there is only one combination, then automatically select the table cards
 		if combs.size() == 1  and selectedTableCards.size() == 0:
@@ -364,8 +364,7 @@ func refreshHand() -> void:
 # Get all the possible combinations of table cards that you can choose to select 
 # from the hand card you selected.
 # Uses recursive helper function.
-func getTableCombinations() -> Array:
-	var target := selectedHandCard.value
+func getTableCombinations(target) -> Array:
 	var totalCards := []		# The subsets of cards that have the right sum
 	var curr := []				# Current subset being built via recursion
 	# Start recursion from first card with sum 0

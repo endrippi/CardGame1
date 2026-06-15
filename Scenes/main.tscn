@@ -288,6 +288,7 @@ gameData = NodePath("../GameData")
 metadata/_custom_type_script = "uid://bhwanv608gnhw"
 
 [node name="SelezioneCarte" type="Node" parent="StateMachine" unique_id=104914660 node_paths=PackedStringArray("mano", "tavolo", "deck")]
+unique_name_in_owner = true
 script = ExtResource("5_344ge")
 mano = NodePath("../../mano")
 tavolo = NodePath("../../tavolo")
@@ -489,6 +490,7 @@ script = ExtResource("4_kry3j")
 position = Vector2(3, 264)
 
 [node name="UiManager" type="Node" parent="." unique_id=1122069883]
+unique_name_in_owner = true
 script = ExtResource("12_6iyac")
 metadata/_custom_type_script = "uid://5eb6n7a8rvut"
 
