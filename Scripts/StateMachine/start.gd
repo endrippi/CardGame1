@@ -192,6 +192,7 @@ func _on_card_hand_clicked(card : Card) -> void:
 # TODO QoL: If there is only one possible combination of cards,
 # then automatically select those
 func handleSingleCombination(cards) -> void:
+	print("HANDLE SINGLE COMB")
 	for card in cards:
 		print("Ora ", card.value, " di ", card.suit, " è selezionata automaticamente")
 		selectedTableCards.append(card)
@@ -319,6 +320,17 @@ func _on_place_on_table_button_pressed() -> void:
 	if selectedHandCard:
 		uiManager.deactivatePlaceOnTableButton()
 		placeCardOnTable(selectedHandCard)	
+		# If we place a card, deselect everything that was on the table and 
+		# update accordingly
+		for card in selectedTableCards:
+			card.selected = false 
+			currentTableSum = 0 
+			valTavolo.text = "0"
+			card.updateCardVisual()
+		if gameData.singleCombination:
+			resetAfterSingleCombination()
+		selectedTableCards = []
+		updateGameData(gameData)
 		if gameData.maniDisponibili <= 0 and gameData.carteMano.is_empty():
 			transitioned.emit(self, "Sconfitta")
 
