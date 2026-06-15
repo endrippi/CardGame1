@@ -141,10 +141,14 @@ func _on_handCardsUpdated(cards : Array[Card]) -> void:
 	carteArray = cards
 	#_printHandCards()
 	for card in carteArray:
-		card.cardAreaEntered.connect(_on_cardAreaEntered)
-		card.cardAreaExited.connect(_on_cardAreaExited)
-		card.cardInHandToRaise.connect(_on_cardInHandToRaise)
-		card.cardInHandToLower.connect(_on_cardInHandToLower)
+		if !card.cardAreaEntered.is_connected(_on_cardAreaEntered):
+			card.cardAreaEntered.connect(_on_cardAreaEntered)
+		if !card.cardAreaEntered.is_connected(_on_cardAreaExited):
+			card.cardAreaExited.connect(_on_cardAreaExited)
+		if !card.cardAreaEntered.is_connected(_on_cardInHandToRaise):
+			card.cardInHandToRaise.connect(_on_cardInHandToRaise)
+		if !card.cardAreaEntered.is_connected(_on_cardInHandToLower):
+			card.cardInHandToLower.connect(_on_cardInHandToLower)
 		card.inHand = true
 	#fanoutCards(false)
 	fanoutCardsRedone()

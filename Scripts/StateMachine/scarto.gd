@@ -71,4 +71,5 @@ func exit(data : GameData) -> void:
 		if is_instance_valid(card):
 			if card.cardSelected.is_connected(_on_card_hand_clicked):
 				card.cardSelected.disconnect(_on_card_hand_clicked)
+			card.selected = false
 	selectedHandCards.clear()

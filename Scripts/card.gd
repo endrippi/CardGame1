@@ -147,6 +147,7 @@ func downscaleCard() -> void:
 
 # Function to animate card in hand being selected.
 func selectCardInHand(radius : float, radius_offset : float) -> void:
+	print("Selezionata carta in mano ", value, " di ", suit)
 	if tweenRaise and tweenRaise.is_running():
 		tweenRaise.kill()
 	tweenRaise = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
@@ -154,6 +155,7 @@ func selectCardInHand(radius : float, radius_offset : float) -> void:
 
 # Function to animate card in hand being de-selected.	
 func deselectCardInHand(radius : float) -> void:
+	print("Deselezionata carta in mano ", value, " di ", suit)
 	if tweenRaise and tweenRaise.is_running():
 		tweenRaise.kill()
 	tweenRaise = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)

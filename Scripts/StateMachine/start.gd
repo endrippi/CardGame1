@@ -111,10 +111,10 @@ func _on_play_button_pressed() -> void:
 		transitioned.emit(self, "Giocato")
 
 func _on_card_table_clicked(card : Card):
-	print("Carta tavolo cliccata: ", card.value, ' di ', card.suit)
+	#print("Carta tavolo cliccata: ", card.value, ' di ', card.suit)
 		
 	if card.selected == true:
-		print("Sto abbassando la carta")
+		#print("Sto abbassando la carta")
 		selectedTableCards.erase(card)
 		card.selected = false
 		# If previously we had to force a single combination, reset
@@ -122,9 +122,9 @@ func _on_card_table_clicked(card : Card):
 			resetAfterSingleCombination()
 		elif currentTableSum > 0:
 			currentTableSum -= card.value
-			print("\tHo tolto ", card.value, " alla table sum")
+			#print("\tHo tolto ", card.value, " alla table sum")
 	else:
-		print("Adding ", card, " ovvero ", card.value, " di ", card.suit, " alle selected table cards")
+		#print("Adding ", card, " ovvero ", card.value, " di ", card.suit, " alle selected table cards")
 		selectedTableCards.append(card)
 		card.selected = true
 		# If previously we had to force a single combination, reset
@@ -132,13 +132,13 @@ func _on_card_table_clicked(card : Card):
 			resetAfterSingleCombination()
 		
 		currentTableSum += card.value
-		print("\tHo aggiunto", card.value, " alla table sum")
+		#print("\tHo aggiunto", card.value, " alla table sum")
 	card.updateCardVisual()
 	
-	print("Valore tavolo: ", currentTableSum)
+	#print("Valore tavolo: ", currentTableSum)
 	#print("Array di size ", selectedTableCards.size(), " con somma: ", currentTableSum)
 	
-	print("Selected table cards: ", selectedTableCards)
+	#print("Selected table cards: ", selectedTableCards)
 	
 	valTavolo.text = str(currentTableSum)
 	# Update shaders to check which cards can be selected now
@@ -192,37 +192,37 @@ func _on_card_hand_clicked(card : Card) -> void:
 # TODO QoL: If there is only one possible combination of cards,
 # then automatically select those
 func handleSingleCombination(cards) -> void:
-	print("HANDLE SINGLE COMB")
+	#print("HANDLE SINGLE COMB")
 	for card in cards:
-		print("Ora ", card.value, " di ", card.suit, " è selezionata automaticamente")
+		#print("Ora ", card.value, " di ", card.suit, " è selezionata automaticamente")
 		selectedTableCards.append(card)
 		card.selected = true 
 		card.updateCardVisual()
 		autoSelectedCards.append(card)
 	gameData.singleCombination = true
-	print("Currentsum passa da ", gameData.currentTableSum, " a ", selectedHandCard.value)
+	#print("Currentsum passa da ", gameData.currentTableSum, " a ", selectedHandCard.value)
 	currentTableSum = selectedHandCard.value
 	updateGameData(gameData)
 	valTavolo.text = str(currentTableSum)
-	_printAutoSelectedCards()
+	#_printAutoSelectedCards()
 	
 # Reset auto-selection once a hand card is not clicked anymore.
 func resetAfterSingleCombination() -> void:
-	print("Reset:")
-	_printAutoSelectedCards()
+	#print("Reset:")
+	#_printAutoSelectedCards()
 	gameData.singleCombination = false 
 	for card in autoSelectedCards:
-		print("Ora ", card.value, " di ", card.suit, " non è più selezionata automaticamente")
+		#print("Ora ", card.value, " di ", card.suit, " non è più selezionata automaticamente")
 		card.selected = false 
 		card.updateCardVisual()
 		selectedTableCards.erase(card)
-		print("CurrentTableSum sarebbe ", currentTableSum, ", gli tolgo ", card.value)
+		#print("CurrentTableSum sarebbe ", currentTableSum, ", gli tolgo ", card.value)
 	autoSelectedCards = []
 	currentTableSum = 0
 	updateGameData(gameData)
 	valTavolo.text = str(currentTableSum)
-	print("Function end: ")
-	_printAutoSelectedCards()
+	#print("Function end: ")
+	#_printAutoSelectedCards()
 	
 func updateGameData(data : GameData) -> void:
 	data.mano = mano
