@@ -1,0 +1,152 @@
+[gd_scene format=3 uid="uid://8ifuj3g8np7n"]
+
+[ext_resource type="Texture2D" uid="uid://dft0rphv10w1n" path="res://Assets/Grafica/tavolo_gioco.png" id="1_60k44"]
+[ext_resource type="Texture2D" uid="uid://drjphjt4jyhpv" path="res://Assets/Grafica/goodCoffee.png" id="2_v10og"]
+[ext_resource type="FontFile" uid="uid://dtxwu3srol37k" path="res://Assets/Fonts/Munro-2LYe.ttf" id="3_kqm77"]
+[ext_resource type="Texture2D" uid="uid://cx7d55wuck5wr" path="res://Assets/Bottoni/pulsante_quadrato1.png" id="4_snj4n"]
+[ext_resource type="Texture2D" uid="uid://n0iiwyys0h5o" path="res://Assets/Bottoni/pulsante_quadrato3.png" id="5_wofhc"]
+[ext_resource type="Texture2D" uid="uid://un6ws23tfie4" path="res://Assets/Bottoni/pulsante_quadrato2.png" id="6_qmf6k"]
+[ext_resource type="Shader" uid="uid://cxwe6vjs2vdu2" path="res://Shaders/coffeeSwirl.gdshader" id="7_snj4n"]
+[ext_resource type="Script" uid="uid://b23nfrsnuq76j" path="res://Scripts/menuPlayButton.gd" id="7_wofhc"]
+[ext_resource type="Script" uid="uid://dgdxbwklh53yx" path="res://Scripts/menuQuitButton.gd" id="8_qmf6k"]
+[ext_resource type="Texture2D" uid="uid://dsvofvlr6uadb" path="res://Assets/Items/caffe2.png" id="8_wofhc"]
+[ext_resource type="AudioStream" uid="uid://d3htxx1bl1qp1" path="res://Assets/Sound/Cardello-sinth trumpet.mp3" id="11_rn1t7"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rn1t7"]
+texture = ExtResource("4_snj4n")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yij4q"]
+texture = ExtResource("5_wofhc")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o8ral"]
+texture = ExtResource("6_qmf6k")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_urxp8"]
+texture = ExtResource("4_snj4n")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j8oe5"]
+texture = ExtResource("5_wofhc")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0gbn6"]
+texture = ExtResource("6_qmf6k")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_snj4n"]
+shader = ExtResource("7_snj4n")
+shader_parameter/polar_coordinates = false
+shader_parameter/polar_center = Vector2(0.5, 0.5)
+shader_parameter/polar_zoom = 1.0
+shader_parameter/polar_repeat = 1.0
+shader_parameter/spin_rotation = 0.0
+shader_parameter/spin_speed = 10.0
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/colour_1 = Color(0.2509804, 0.14901961, 0, 1)
+shader_parameter/colour_2 = Color(0.3019608, 0.18039216, 0, 1)
+shader_parameter/colour_3 = Color(0.39215687, 0.23529412, 0, 1)
+shader_parameter/contrast = 2.0
+shader_parameter/spin_amount = 0.36
+shader_parameter/pixel_filter = 700.0
+
+[node name="MainMenu" type="Node2D" unique_id=96860524]
+
+[node name="BackgroundBG" type="TextureRect" parent="." unique_id=1022647857]
+offset_right = 1287.0
+offset_bottom = 723.0
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
+texture = ExtResource("1_60k44")
+
+[node name="Title" type="TextureRect" parent="." unique_id=404599256]
+offset_left = 488.0
+offset_top = 80.0
+offset_right = 1079.0
+offset_bottom = 413.0
+texture = ExtResource("2_v10og")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="PlayButton" type="Button" parent="." unique_id=1255827632]
+z_index = 31
+offset_left = 689.0
+offset_top = 466.0
+offset_right = 914.0
+offset_bottom = 535.0
+theme_override_fonts/font = ExtResource("3_kqm77")
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxTexture_rn1t7")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_yij4q")
+theme_override_styles/hover = SubResource("StyleBoxTexture_o8ral")
+script = ExtResource("7_wofhc")
+
+[node name="PlayLabel" type="RichTextLabel" parent="PlayButton" unique_id=482247654]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -41.5
+offset_top = -32.5
+offset_right = 38.5
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("3_kqm77")
+theme_override_font_sizes/normal_font_size = 42
+bbcode_enabled = true
+text = "[wave]Play[/wave]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="QuitButton" type="Button" parent="." unique_id=1983021686]
+offset_left = 689.0
+offset_top = 561.0
+offset_right = 914.0
+offset_bottom = 629.0
+theme_override_fonts/font = ExtResource("3_kqm77")
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxTexture_urxp8")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_j8oe5")
+theme_override_styles/hover = SubResource("StyleBoxTexture_0gbn6")
+script = ExtResource("8_qmf6k")
+
+[node name="QuitLabel" type="Label" parent="QuitButton" unique_id=761430618]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -29.0
+offset_right = 40.0
+offset_bottom = 19.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("3_kqm77")
+theme_override_font_sizes/font_size = 42
+text = "Quit"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tazzina" type="Node2D" parent="." unique_id=422258942]
+
+[node name="Caffe" type="Sprite2D" parent="Tazzina" unique_id=1672347047]
+material = SubResource("ShaderMaterial_snj4n")
+position = Vector2(95.49999, 98)
+scale = Vector2(1.9072164, 2)
+texture = ExtResource("8_wofhc")
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="." unique_id=1388458756]
+stream = ExtResource("11_rn1t7")
+autoplay = true
+
+[connection signal="mouse_entered" from="PlayButton" to="PlayButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PlayButton" to="PlayButton" method="_on_mouse_exited"]
+[connection signal="pressed" from="PlayButton" to="PlayButton" method="_on_pressed"]
+[connection signal="mouse_entered" from="QuitButton" to="QuitButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="QuitButton" to="QuitButton" method="_on_mouse_exited"]
+[connection signal="pressed" from="QuitButton" to="QuitButton" method="_on_pressed"]
