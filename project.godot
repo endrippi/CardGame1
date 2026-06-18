@@ -27,6 +27,7 @@ HighScore="*uid://y1cqlf1jcjs1"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+window/size/mode=3
 window/stretch/mode="viewport"
 window/vsync/vsync_mode=0
 
