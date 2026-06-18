@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://8ifuj3g8np7n"]
 
-[ext_resource type="Texture2D" uid="uid://dft0rphv10w1n" path="res://Assets/Grafica/tavolo_gioco.png" id="1_60k44"]
 [ext_resource type="Texture2D" uid="uid://drjphjt4jyhpv" path="res://Assets/Grafica/goodCoffee.png" id="2_v10og"]
 [ext_resource type="FontFile" uid="uid://dtxwu3srol37k" path="res://Assets/Fonts/Munro-2LYe.ttf" id="3_kqm77"]
 [ext_resource type="Texture2D" uid="uid://cx7d55wuck5wr" path="res://Assets/Bottoni/pulsante_quadrato1.png" id="4_snj4n"]
@@ -10,7 +9,28 @@
 [ext_resource type="Script" uid="uid://b23nfrsnuq76j" path="res://Scripts/menuPlayButton.gd" id="7_wofhc"]
 [ext_resource type="Script" uid="uid://dgdxbwklh53yx" path="res://Scripts/menuQuitButton.gd" id="8_qmf6k"]
 [ext_resource type="Texture2D" uid="uid://dsvofvlr6uadb" path="res://Assets/Items/caffe2.png" id="8_wofhc"]
+[ext_resource type="Texture2D" uid="uid://bggwggopx6uwo" path="res://Assets/CarteDef/4B.png" id="11_0gbn6"]
 [ext_resource type="AudioStream" uid="uid://d3htxx1bl1qp1" path="res://Assets/Sound/Cardello-sinth trumpet.mp3" id="11_rn1t7"]
+[ext_resource type="Texture2D" uid="uid://cxve1jrw77isp" path="res://Assets/CarteDef/8D.png" id="12_nyik7"]
+[ext_resource type="Texture2D" uid="uid://bjxdviqvapkk7" path="res://Assets/CarteDef/4C.png" id="13_ji1pb"]
+[ext_resource type="Texture2D" uid="uid://kx50jd1plkkd" path="res://Assets/CarteDef/8B.png" id="14_fgyr6"]
+[ext_resource type="Texture2D" uid="uid://c6xjp1ckble7w" path="res://Assets/Carte/Retro/retro_carte.png" id="15_b2t46"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_snj4n"]
+shader = ExtResource("7_snj4n")
+shader_parameter/polar_coordinates = false
+shader_parameter/polar_center = Vector2(0.5, 0.5)
+shader_parameter/polar_zoom = 1.0
+shader_parameter/polar_repeat = 1.0
+shader_parameter/spin_rotation = 0.0
+shader_parameter/spin_speed = 10.0
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/colour_1 = Color(0.2509804, 0.14901961, 0, 1)
+shader_parameter/colour_2 = Color(0.3019608, 0.18039216, 0, 1)
+shader_parameter/colour_3 = Color(0.39215687, 0.23529412, 0, 1)
+shader_parameter/contrast = 2.0
+shader_parameter/spin_amount = 0.36
+shader_parameter/pixel_filter = 700.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rn1t7"]
 texture = ExtResource("4_snj4n")
@@ -30,46 +50,96 @@ texture = ExtResource("5_wofhc")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0gbn6"]
 texture = ExtResource("6_qmf6k")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_snj4n"]
-shader = ExtResource("7_snj4n")
-shader_parameter/polar_coordinates = false
-shader_parameter/polar_center = Vector2(0.5, 0.5)
-shader_parameter/polar_zoom = 1.0
-shader_parameter/polar_repeat = 1.0
-shader_parameter/spin_rotation = 0.0
-shader_parameter/spin_speed = 10.0
-shader_parameter/offset = Vector2(0, 0)
-shader_parameter/colour_1 = Color(0.2509804, 0.14901961, 0, 1)
-shader_parameter/colour_2 = Color(0.3019608, 0.18039216, 0, 1)
-shader_parameter/colour_3 = Color(0.39215687, 0.23529412, 0, 1)
-shader_parameter/contrast = 2.0
-shader_parameter/spin_amount = 0.36
-shader_parameter/pixel_filter = 700.0
-
 [node name="MainMenu" type="Node2D" unique_id=96860524]
 
-[node name="BackgroundBG" type="TextureRect" parent="." unique_id=1022647857]
-offset_right = 1287.0
-offset_bottom = 723.0
-mouse_filter = 2
-mouse_force_pass_scroll_events = false
-texture = ExtResource("1_60k44")
+[node name="Background" type="ColorRect" parent="." unique_id=767208697]
+offset_right = 1280.0
+offset_bottom = 720.0
+color = Color(0.7254902, 0.27450982, 0.2, 1)
 
-[node name="Title" type="TextureRect" parent="." unique_id=404599256]
-offset_left = 488.0
-offset_top = 80.0
-offset_right = 1079.0
-offset_bottom = 413.0
+[node name="Cards" type="Node2D" parent="." unique_id=339762323]
+
+[node name="Card1" type="TextureRect" parent="Cards" unique_id=1719365551]
+offset_left = -160.0
+offset_top = 279.99994
+offset_right = 325.04175
+offset_bottom = 1001.71173
+rotation = -0.2617994
+texture = ExtResource("11_0gbn6")
+stretch_mode = 4
+
+[node name="Card2" type="TextureRect" parent="Cards" unique_id=1751823693]
+offset_left = 112.0
+offset_top = 152.0
+offset_right = 597.04175
+offset_bottom = 873.7118
+rotation = -0.1308997
+texture = ExtResource("12_nyik7")
+stretch_mode = 4
+
+[node name="Back" type="TextureRect" parent="Cards" unique_id=1332994039]
+offset_left = 1031.9999
+offset_top = 167.99998
+offset_right = 1517.0416
+offset_bottom = 889.7117
+rotation = 0.2617994
+texture = ExtResource("13_ji1pb")
+stretch_mode = 4
+
+[node name="Card3" type="TextureRect" parent="Cards" unique_id=2018799094]
+offset_left = 712.00006
+offset_top = 88.00001
+offset_right = 1197.0417
+offset_bottom = 809.7118
+rotation = 0.1308997
+texture = ExtResource("14_fgyr6")
+stretch_mode = 4
+
+[node name="Card4" type="TextureRect" parent="Cards" unique_id=786467708]
+offset_left = 376.0
+offset_top = 48.0
+offset_right = 936.0
+offset_bottom = 872.0
+texture = ExtResource("15_b2t46")
+stretch_mode = 4
+
+[node name="Tazzina" type="Node2D" parent="." unique_id=422258942]
+visible = false
+
+[node name="Caffe" type="Sprite2D" parent="Tazzina" unique_id=1672347047]
+visible = false
+material = SubResource("ShaderMaterial_snj4n")
+position = Vector2(95.49999, 98)
+scale = Vector2(1.9072164, 2)
+texture = ExtResource("8_wofhc")
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="." unique_id=1388458756]
+stream = ExtResource("11_rn1t7")
+autoplay = true
+
+[node name="TitleBG" type="ColorRect" parent="." unique_id=1444933269]
+offset_left = 392.0
+offset_top = 117.0
+offset_right = 912.0
+offset_bottom = 485.0
+color = Color(0.3764706, 0.003921569, 0.29803923, 0.59607846)
+
+[node name="Title" type="TextureRect" parent="TitleBG" unique_id=404599256]
+layout_mode = 0
+offset_left = -35.0
+offset_top = 19.0
+offset_right = 556.0
+offset_bottom = 352.0
 texture = ExtResource("2_v10og")
 expand_mode = 1
 stretch_mode = 4
 
 [node name="PlayButton" type="Button" parent="." unique_id=1255827632]
 z_index = 31
-offset_left = 689.0
-offset_top = 466.0
-offset_right = 914.0
-offset_bottom = 535.0
+offset_left = 536.0
+offset_top = 520.0
+offset_right = 761.0
+offset_bottom = 589.0
 theme_override_fonts/font = ExtResource("3_kqm77")
 theme_override_font_sizes/font_size = 42
 theme_override_styles/normal = SubResource("StyleBoxTexture_rn1t7")
@@ -100,10 +170,10 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="QuitButton" type="Button" parent="." unique_id=1983021686]
-offset_left = 689.0
-offset_top = 561.0
-offset_right = 914.0
-offset_bottom = 629.0
+offset_left = 536.0
+offset_top = 608.0
+offset_right = 761.0
+offset_bottom = 676.0
 theme_override_fonts/font = ExtResource("3_kqm77")
 theme_override_font_sizes/font_size = 42
 theme_override_styles/normal = SubResource("StyleBoxTexture_urxp8")
@@ -131,18 +201,6 @@ theme_override_font_sizes/font_size = 42
 text = "Quit"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Tazzina" type="Node2D" parent="." unique_id=422258942]
-
-[node name="Caffe" type="Sprite2D" parent="Tazzina" unique_id=1672347047]
-material = SubResource("ShaderMaterial_snj4n")
-position = Vector2(95.49999, 98)
-scale = Vector2(1.9072164, 2)
-texture = ExtResource("8_wofhc")
-
-[node name="BackgroundMusic" type="AudioStreamPlayer" parent="." unique_id=1388458756]
-stream = ExtResource("11_rn1t7")
-autoplay = true
 
 [connection signal="mouse_entered" from="PlayButton" to="PlayButton" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="PlayButton" to="PlayButton" method="_on_mouse_exited"]
